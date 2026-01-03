@@ -1,568 +1,49 @@
+
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Primary Meta Tags -->
-  <title>Elementary Study Tips (Grades 1-6) — Study Buddy</title>
-  <meta name="title" content="Elementary Study Tips (Grades 1-6) — Study Buddy">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Fun and engaging study tips for elementary students in grades 1-6. Make learning enjoyable with colorful flashcards, songs, and bite-sized study sessions.">
-  <meta name="keywords" content="study tips, elementary school, grades 1-6, learning, flashcards, education, kids study habits">
-  <meta name="author" content="Study Buddy">
-  <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#ff6b6b" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ff6b6b">
   
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yourdomain.com/elementary.html">
-  <meta property="og:title" content="Elementary Study Tips (Grades 1-6) — Study Buddy">
-  <meta property="og:description" content="Fun, bite-sized study techniques for grades 1-6. Make learning enjoyable!">
-  <meta property="og:image" content="https://yourdomain.com/images/elementary-og.png">
-  <meta property="og:image:alt" content="Elementary Study Tips - colorful learning cards">
-  <meta property="og:site_name" content="Study Buddy">
-  <meta property="og:locale" content="en_US">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://yourdomain.com/elementary.html">
-  <meta name="twitter:title" content="Elementary Study Tips (Grades 1-6) — Study Buddy">
-  <meta name="twitter:description" content="Fun, bite-sized study techniques for grades 1-6. Make learning enjoyable!">
-  <meta name="twitter:image" content="https://yourdomain.com/images/elementary-twitter.png">
-
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://yourdomain.com/elementary.html">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z' fill='%23ff6b6b'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
-  <link rel="manifest" href="/manifest.json">
-
-  <!-- Preconnect to external resources (if any) -->
-  <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+  <title>Elementary Study Tips — Study Buddy</title>
   
-  <!-- Preload critical resources -->
   <link rel="preload" href="elementary.css" as="style">
-  <link rel="preload" href="script.js" as="script">
-  
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="elementary.css">
   
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Elementary Study Tips",
-    "description": "Fun and engaging study tips for elementary students in grades 1-6",
-    "url": "https://yourdomain.com/elementary.html",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Study Buddy",
-      "url": "https://yourdomain.com"
-    },
-    "about": {
-      "@type": "EducationalAudience",
-      "educationalRole": "student",
-      "audienceType": "Elementary School Students"
-    },
-    "mainEntity": {
-      "@type": "ItemList",
-      "name": "Study Tips for Elementary Students",
-      "numberOfItems": 10,
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Sing & Rhyme",
-          "description": "Turn lessons into songs to improve retention and make learning fun"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Colorful Flashcards",
-          "description": "Use colors and images for vocabulary and facts to enhance memory"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Short Sessions",
-          "description": "Study for 15-25 minutes, then take a break to maintain focus"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "Read Aloud",
-          "description": "Reading aloud helps comprehension and memory retention"
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "name": "Ask Questions",
-          "description": "Encourage students to ask teachers or parents when unsure"
-        }
-      ]
-    },
-    "breadcrumb": {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "item": {
-            "@id": "https://yourdomain.com/",
-            "name": "Home"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "item": {
-            "@id": "https://yourdomain.com/elementary.html",
-            "name": "Elementary"
-          }
-        }
-      ]
-    }
-  }
-  </script>
-
-  <!-- Critical CSS (inline for above-the-fold content) -->
-  <style>
-    /* Prevent FOUC */
-    html { visibility: visible; opacity: 1; }
-    
-    /* Critical loading styles */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-    
-    .sr-only-focusable:focus,
-    .sr-only-focusable:active {
-      position: static;
-      width: auto;
-      height: auto;
-      padding: inherit;
-      margin: inherit;
-      overflow: visible;
-      clip: auto;
-      white-space: inherit;
-    }
-  </style>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Elementary Study Tips — Study Buddy">
+  <meta property="og:description" content="Fun, bite-sized study techniques for grades 1-6">
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z' fill='%23ff6b6b'/%3E%3C/svg%3E">
 </head>
-
 <body>
-  <!-- Skip Links for Accessibility -->
-  <nav class="skip-links" aria-label="Skip navigation">
-    <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
-    <a href="#primary-nav" class="sr-only sr-only-focusable">Skip to navigation</a>
-    <a href="#site-footer" class="sr-only sr-only-focusable">Skip to footer</a>
-  </nav>
+  <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
 
-  <!-- Header -->
-  <header class="site-header" role="banner">
+  <header class="site-header">
     <div class="container header-inner">
-      <!-- Brand / Logo -->
-      <a href="index.html" class="brand" aria-label="Study Buddy - Go to homepage">
-        <div class="logo" aria-hidden="true">
-          <svg 
-            width="34" 
-            height="34" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-            role="img"
-            aria-hidden="true"
-          >
-            <path 
-              d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" 
-              fill="currentColor"
-            />
-          </svg>
-        </div>
-        <div class="brand-text">
+      <a href="index.html" class="brand">
+        <svg class="logo" width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="currentColor"/>
+        </svg>
+        <div>
           <span class="site-title">Study Buddy</span>
           <span class="site-sub">Elementary — Fun & easy study tips</span>
         </div>
       </a>
 
-      <!-- Primary Navigation -->
-      <nav id="primary-nav" class="main-nav" aria-label="Primary navigation">
+      <nav class="main-nav" aria-label="Main">
         <button 
           id="menu-toggle" 
           type="button"
-          class="menu-toggle"
-          aria-label="Open navigation menu"
+          aria-label="Menu"
           aria-expanded="false"
           aria-controls="menu"
-          aria-haspopup="true"
         >
-          <span class="hamburger" aria-hidden="true">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-          </span>
-          <span class="sr-only">Menu</span>
+          <span aria-hidden="true">☰</span>
         </button>
-
-        <ul id="menu" class="nav-menu" role="menubar">
-          <li role="none">
-            <a href="index.html" role="menuitem">
-              <span class="nav-icon" aria-hidden="true">🏠</span>
-              <span>Home</span>
-            </a>
-          </li>
-          <li role="none">
-            <a 
-              href="elementary.html" 
-              role="menuitem" 
-              class="active" 
-              aria-current="page"
-            >
-              <span class="nav-icon" aria-hidden="true">🎨</span>
-              <span>Elementary</span>
-            </a>
-          </li>
-          <li role="none">
-            <a href="highschool.html" role="menuitem">
-              <span class="nav-icon" aria-hidden="true">📚</span>
-              <span>High School</span>
-            </a>
-          </li>
-          <li role="none">
-            <a href="seniorhigh.html" role="menuitem">
-              <span class="nav-icon" aria-hidden="true">🎓</span>
-              <span>Senior High</span>
-            </a>
-          </li>
-          <li role="none">
-            <a href="university.html" role="menuitem">
-              <span class="nav-icon" aria-hidden="true">🏛️</span>
-              <span>University</span>
-            </a>
-          </li>
-          <li role="none">
-            <a href="credits.html" role="menuitem">
-              <span class="nav-icon" aria-hidden="true">📝</span>
-              <span>Credits</span>
-            </a>
-          </li>
-        </ul>
-
-        <!-- Theme Toggle -->
-        <button 
-          id="dark-toggle" 
-          type="button"
-          class="theme-toggle"
-          aria-label="Switch to dark mode"
-          aria-pressed="false"
-          title="Toggle color theme"
-        >
-          <span class="theme-icon theme-icon--light" aria-hidden="true">🌙</span>
-          <span class="theme-icon theme-icon--dark" aria-hidden="true">☀️</span>
-          <span class="sr-only">Toggle theme</span>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main id="main-content" tabindex="-1">
-    <!-- Breadcrumb Navigation -->
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <div class="container">
-        <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
-          <li 
-            class="breadcrumb-item" 
-            itemprop="itemListElement" 
-            itemscope 
-            itemtype="https://schema.org/ListItem"
-          >
-            <a href="index.html" itemprop="item">
-              <span itemprop="name">Home</span>
-            </a>
-            <meta itemprop="position" content="1">
-          </li>
-          <li 
-            class="breadcrumb-item breadcrumb-item--current" 
-            itemprop="itemListElement" 
-            itemscope 
-            itemtype="https://schema.org/ListItem"
-            aria-current="page"
-          >
-            <span itemprop="name">Elementary</span>
-            <meta itemprop="position" content="2">
-          </li>
-        </ol>
-      </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero hero--elementary" aria-labelledby="page-title">
-      <div class="container">
-        <header class="hero-content">
-          <h1 id="page-title" class="hero-title">
-            Elementary
-            <span class="hero-subtitle">Grades 1–6</span>
-          </h1>
-          <p class="hero-description">
-            Fun, bite-sized techniques that make learning enjoyable and effective for young students!
-            <span aria-hidden="true">🎨📚</span>
-          </p>
-        </header>
-
-        <!-- Quick Stats (optional enhancement) -->
-        <div class="hero-stats" aria-label="Page statistics">
-          <div class="stat">
-            <span class="stat-number" data-count="10">10</span>
-            <span class="stat-label">Study Tips</span>
-          </div>
-          <div class="stat">
-            <span class="stat-number">15-25</span>
-            <span class="stat-label">Min Sessions</span>
-          </div>
-          <div class="stat">
-            <span class="stat-number">Ages 6-12</span>
-            <span class="stat-label">Age Range</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Study Tips Section -->
-    <section class="tips-section" aria-labelledby="tips-heading">
-      <div class="container">
-        <header class="section-header">
-          <h2 id="tips-heading" class="section-title">Study Tips for Young Learners</h2>
-          <p class="section-description">
-            Discover proven techniques that help elementary students build strong study habits while having fun!
-          </p>
-        </header>
-
-        <!-- Tips Grid -->
-        <div class="card-grid" role="list" aria-label="Study tips for elementary students">
-          
-          <!-- Tip 1: Sing & Rhyme -->
-          <article class="card card--tip" role="listitem" data-category="memory">
-            <div class="card-icon" aria-hidden="true">🎵</div>
-            <div class="card-content">
-              <h3 class="card-title">Sing & Rhyme</h3>
-              <p class="card-description">
-                Turn lessons into songs to improve retention and make learning fun. Music helps your brain remember better!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Memory</span>
-              <span class="card-tag">Fun</span>
-            </footer>
-          </article>
-
-          <!-- Tip 2: Colorful Flashcards -->
-          <article class="card card--tip" role="listitem" data-category="visual">
-            <div class="card-icon" aria-hidden="true">🎨</div>
-            <div class="card-content">
-              <h3 class="card-title">Colorful Flashcards</h3>
-              <p class="card-description">
-                Use colors and images for vocabulary and facts to enhance memory. Draw pictures to remember words!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Visual</span>
-              <span class="card-tag">Creative</span>
-            </footer>
-          </article>
-
-          <!-- Tip 3: Short Sessions -->
-          <article class="card card--tip" role="listitem" data-category="focus">
-            <div class="card-icon" aria-hidden="true">⏰</div>
-            <div class="card-content">
-              <h3 class="card-title">Short Sessions</h3>
-              <p class="card-description">
-                Study for 15–25 minutes, then take a break to maintain focus. Play for 5 minutes, then get back to learning!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Focus</span>
-              <span class="card-tag">Time Management</span>
-            </footer>
-          </article>
-
-          <!-- Tip 4: Read Aloud -->
-          <article class="card card--tip" role="listitem" data-category="reading">
-            <div class="card-icon" aria-hidden="true">📖</div>
-            <div class="card-content">
-              <h3 class="card-title">Read Aloud</h3>
-              <p class="card-description">
-                Reading aloud helps comprehension and memory retention. Hear your own voice to learn better!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Reading</span>
-              <span class="card-tag">Comprehension</span>
-            </footer>
-          </article>
-
-          <!-- Tip 5: Ask Questions -->
-          <article class="card card--tip" role="listitem" data-category="communication">
-            <div class="card-icon" aria-hidden="true">❓</div>
-            <div class="card-content">
-              <h3 class="card-title">Ask Questions</h3>
-              <p class="card-description">
-                Encourage students to ask teachers or parents when unsure. There are no silly questions—asking is smart!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Communication</span>
-              <span class="card-tag">Curiosity</span>
-            </footer>
-          </article>
-
-          <!-- Tip 6: Handwriting Drills -->
-          <article class="card card--tip" role="listitem" data-category="practice">
-            <div class="card-icon" aria-hidden="true">✍️</div>
-            <div class="card-content">
-              <h3 class="card-title">Handwriting Drills</h3>
-              <p class="card-description">
-                Short daily practice improves writing skills and motor memory. Practice makes your handwriting neat!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Practice</span>
-              <span class="card-tag">Motor Skills</span>
-            </footer>
-          </article>
-
-          <!-- Tip 7: Quiz Games -->
-          <article class="card card--tip" role="listitem" data-category="review">
-            <div class="card-icon" aria-hidden="true">🎮</div>
-            <div class="card-content">
-              <h3 class="card-title">Quiz Games</h3>
-              <p class="card-description">
-                Use short games for review with friends and family. Turn studying into a fun competition!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Review</span>
-              <span class="card-tag">Games</span>
-            </footer>
-          </article>
-
-          <!-- Tip 8: Reward Charts -->
-          <article class="card card--tip" role="listitem" data-category="motivation">
-            <div class="card-icon" aria-hidden="true">⭐</div>
-            <div class="card-content">
-              <h3 class="card-title">Reward Charts</h3>
-              <p class="card-description">
-                Stickers and charts motivate consistent effort and progress. Earn stars for each study session completed!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Motivation</span>
-              <span class="card-tag">Progress</span>
-            </footer>
-          </article>
-
-          <!-- Tip 9: Tidy Study Space -->
-          <article class="card card--tip" role="listitem" data-category="environment">
-            <div class="card-icon" aria-hidden="true">🧹</div>
-            <div class="card-content">
-              <h3 class="card-title">Tidy Study Space</h3>
-              <p class="card-description">
-                A dedicated, well-lit desk reduces distractions. Keep your study corner clean and organized!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Environment</span>
-              <span class="card-tag">Organization</span>
-            </footer>
-          </article>
-
-          <!-- Tip 10: Sleep & Hydration -->
-          <article class="card card--tip" role="listitem" data-category="health">
-            <div class="card-icon" aria-hidden="true">💤</div>
-            <div class="card-content">
-              <h3 class="card-title">Sleep & Hydration</h3>
-              <p class="card-description">
-                Good sleep and water support attention and memory formation. Rest well and drink water to stay sharp!
-              </p>
-            </div>
-            <footer class="card-footer">
-              <span class="card-tag">Health</span>
-              <span class="card-tag">Wellness</span>
-            </footer>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- Quick Resources Section -->
-    <section class="resources-section" aria-labelledby="resources-heading">
-      <div class="container">
-        <header class="section-header">
-          <h2 id="resources-heading" class="section-title">Quick Resources</h2>
-          <p class="section-description">
-            Helpful tools and links for elementary students and parents.
-          </p>
-        </header>
-
-        <div class="resource-links">
-          <a href="#printable-flashcards" class="resource-link">
-            <span class="resource-icon" aria-hidden="true">🃏</span>
-            <span class="resource-text">Printable Flashcards</span>
-          </a>
-          <a href="#study-schedule" class="resource-link">
-            <span class="resource-icon" aria-hidden="true">📅</span>
-            <span class="resource-text">Study Schedule Template</span>
-          </a>
-          <a href="#parent-guide" class="resource-link">
-            <span class="resource-icon" aria-hidden="true">👨‍👩‍👧</span>
-            <span class="resource-text">Parent's Guide</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Navigation Section -->
-    <section class="page-navigation" aria-label="Page navigation">
-      <div class="container">
-        <div class="nav-buttons">
-          <a href="index.html" class="btn btn--secondary">
-            <span class="btn-icon" aria-hidden="true">←</span>
-            <span>Back to Home</span>
-          </a>
-          <a href="highschool.html" class="btn btn--primary">
-            <span>Next: High School</span>
-            <span class="btn-icon" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer id="site-footer" class="site-footer" role="contentinfo">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <div class="footer-logo" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="currentColor"/>
-          </svg>
-        </div>
-        <span class="footer-site-name">Study Buddy</span>
-      </div>
-
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <ul class="footer-links">
+        <ul id="menu" class="nav-menu">
           <li><a href="index.html">Home</a></li>
           <li><a href="elementary.html" aria-current="page">Elementary</a></li>
           <li><a href="highschool.html">High School</a></li>
@@ -570,39 +51,113 @@
           <li><a href="university.html">University</a></li>
           <li><a href="credits.html">Credits</a></li>
         </ul>
+        <button 
+          id="dark-toggle" 
+          type="button"
+          aria-label="Switch to dark mode"
+          aria-pressed="false"
+        >
+          <span aria-hidden="true">🌙</span>
+        </button>
       </nav>
+    </div>
+  </header>
 
-      <div class="footer-meta">
-        <p class="copyright">
-          © <time id="year" datetime="2025">2025</time> Study Buddy. 
-          Made with <span aria-label="love">❤️</span> for students everywhere.
+  <main id="main-content">
+    <section class="page active">
+      <div class="container">
+        <h1>Elementary <span class="subtitle">(Grades 1–6)</span></h1>
+        <p class="section-sub">
+          Fun, bite-sized techniques that make learning enjoyable and effective for young students! 
+          <span aria-hidden="true">🎨📚</span>
         </p>
-        <p class="footer-tagline">
-          Learn smarter, not harder.
-        </p>
+
+        <ul class="card-container" aria-label="Study tips for elementary students">
+          <li class="card">
+            <h2 class="label">Sing & Rhyme</h2>
+            <p class="mini">
+              Turn lessons into songs to improve retention and make learning fun. Music helps your brain remember better!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Colorful Flashcards</h2>
+            <p class="mini">
+              Use colors and images for vocabulary and facts to enhance memory. Draw pictures to remember words!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Short Sessions</h2>
+            <p class="mini">
+              Study for 15–25 minutes, then take a break to maintain focus. Play for 5 minutes, then get back to learning!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Read Aloud</h2>
+            <p class="mini">
+              Reading aloud helps comprehension and memory retention. Hear your own voice to learn better!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Ask Questions</h2>
+            <p class="mini">
+              Encourage students to ask teachers or parents when unsure. There are no silly questions—asking is smart!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Handwriting Drills</h2>
+            <p class="mini">
+              Short daily practice improves writing skills and motor memory. Practice makes your handwriting neat!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Quiz Games</h2>
+            <p class="mini">
+              Use short games for review with friends and family. Turn studying into a fun competition!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Reward Charts</h2>
+            <p class="mini">
+              Stickers and charts motivate consistent effort and progress. Earn stars for each study session completed!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Tidy Study Space</h2>
+            <p class="mini">
+              A dedicated, well-lit desk reduces distractions. Keep your study corner clean and organized!
+            </p>
+          </li>
+
+          <li class="card">
+            <h2 class="label">Sleep & Hydration</h2>
+            <p class="mini">
+              Good sleep and water support attention and memory formation. Rest well and drink water to stay sharp!
+            </p>
+          </li>
+        </ul>
+
+        <nav class="page-nav">
+          <a href="index.html" class="btn">Back to Home</a>
+        </nav>
       </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <time id="year">2025</time> Study Buddy</p>
+      <a href="credits.html">Credits & Sources</a>
     </div>
   </footer>
 
-  <!-- Back to Top Button (injected by JS, but included here as fallback) -->
-  <noscript>
-    <a href="#main-content" class="back-to-top-fallback">↑ Back to top</a>
-  </noscript>
-
-  <!-- Scripts -->
   <script src="script.js" defer></script>
-  
-  <!-- NoScript Fallback -->
-  <noscript>
-    <style>
-      /* Fallback styles when JS is disabled */
-      .nav-menu { display: flex !important; }
-      .menu-toggle { display: none !important; }
-      .theme-toggle { display: none !important; }
-      [data-theme="light"] .theme-icon--dark { display: none; }
-      [data-theme="dark"] .theme-icon--light { display: none; }
-    </style>
-  </noscript>
 </body>
 </html>
-
