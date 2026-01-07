@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,40 +11,214 @@
   <link rel="preload" href="elementary.css" as="style">
   <link rel="stylesheet" href="elementary.css">
   
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Elementary Study Tips — Study Buddy">
   <meta property="og:description" content="Fun, bite-sized study techniques for grades 1-6">
   
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z' fill='%23ff6b6b'/%3E%3C/svg%3E">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%23ff6b6b'/%3E%3C/svg%3E">
+
+  <style>
+    /* Enhanced styles for resource navigation */
+    .resource-nav {
+      margin: 4rem 0 3rem;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+      border-radius: 24px;
+      border: 3px solid var(--accent);
+    }
+    
+    .resource-nav-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 0.75rem;
+      text-shadow: 2px 2px 0px var(--accent);
+    }
+    
+    .resource-nav-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 2.5rem;
+      font-weight: 600;
+    }
+    
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .resource-card {
+      position: relative;
+      padding: 2.5rem;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 3px solid transparent;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .resource-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #ffd93d, #a78bfa);
+      background-size: 300% 100%;
+      animation: shimmer 4s linear infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    
+    .resource-card:hover {
+      transform: translateY(-12px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+      border-color: var(--primary);
+    }
+    
+    .resource-card:nth-child(1) { background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 100%); }
+    .resource-card:nth-child(2) { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
+    .resource-card:nth-child(3) { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); }
+    .resource-card:nth-child(4) { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+    
+    .resource-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+      animation: bounce 2s ease-in-out infinite;
+    }
+    
+    .resource-card:nth-child(2) .resource-icon {
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+    
+    .resource-card:nth-child(3) .resource-icon {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    }
+    
+    .resource-card:nth-child(4) .resource-icon {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+    
+    .resource-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      text-align: center;
+      text-shadow: 2px 2px 0px rgba(255, 215, 0, 0.3);
+    }
+    
+    .resource-description {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+    
+    .badge-new {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+      color: white;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .fun-fact {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+      border-radius: 20px;
+      border: 3px dashed var(--purple);
+      text-align: center;
+    }
+    
+    .fun-fact-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--purple);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .fun-fact-text {
+      font-size: 1.1rem;
+      color: var(--text);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
-  <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
 
-  <header class="site-header">
+  <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a href="index.html" class="brand">
-        <svg class="logo" width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="currentColor"/>
-        </svg>
-        <div>
-          <span class="site-title">Study Buddy</span>
-          <span class="site-sub">Elementary — Fun & easy study tips</span>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#fff"/>
+          </svg>
         </div>
-      </a>
+        <div>
+          <div class="site-title">Study Buddy</div>
+          <div class="site-sub">Elementary — Fun & easy study tips</div>
+        </div>
+      </div>
 
-      <nav class="main-nav" aria-label="Main">
+      <nav class="main-nav" role="navigation" aria-label="Main navigation">
         <button 
           id="menu-toggle" 
           type="button"
-          aria-label="Menu"
+          aria-label="Toggle navigation menu"
           aria-expanded="false"
           aria-controls="menu"
         >
-          <span aria-hidden="true">☰</span>
+          ☰
         </button>
-        <ul id="menu" class="nav-menu">
+        <ul id="menu">
           <li><a href="index.html">Home</a></li>
-          <li><a href="elementary.html" aria-current="page">Elementary</a></li>
+          <li><a href="elementary.html" class="active" aria-current="page">Elementary</a></li>
           <li><a href="highschool.html">High School</a></li>
           <li><a href="seniorhigh.html">Senior High</a></li>
           <li><a href="university.html">University</a></li>
@@ -54,10 +227,10 @@
         <button 
           id="dark-toggle" 
           type="button"
-          aria-label="Switch to dark mode"
-          aria-pressed="false"
+          aria-label="Toggle dark mode"
+          title="Toggle dark mode"
         >
-          <span aria-hidden="true">🌙</span>
+          🌙
         </button>
       </nav>
     </div>
@@ -66,98 +239,185 @@
   <main id="main-content">
     <section class="page active">
       <div class="container">
-        <h1>Elementary <span class="subtitle">(Grades 1–6)</span></h1>
+        <h1>Elementary (Grades 1–6)</h1>
         <p class="section-sub">
-          Fun, bite-sized techniques that make learning enjoyable and effective for young students! 
-          <span aria-hidden="true">🎨📚</span>
+          Fun, bite-sized techniques that make learning enjoyable and effective for young students! 🎨📚
         </p>
 
-        <ul class="card-container" aria-label="Study tips for elementary students">
-          <li class="card">
-            <h2 class="label">Sing & Rhyme</h2>
-            <p class="mini">
+        <div class="card-container" role="list" aria-label="Study tips for elementary students">
+          <article class="card" role="listitem">
+            <div class="label">Sing & Rhyme</div>
+            <div class="mini">
               Turn lessons into songs to improve retention and make learning fun. Music helps your brain remember better!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Colorful Flashcards</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Colorful Flashcards</div>
+            <div class="mini">
               Use colors and images for vocabulary and facts to enhance memory. Draw pictures to remember words!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Short Sessions</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Short Sessions</div>
+            <div class="mini">
               Study for 15–25 minutes, then take a break to maintain focus. Play for 5 minutes, then get back to learning!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Read Aloud</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Read Aloud</div>
+            <div class="mini">
               Reading aloud helps comprehension and memory retention. Hear your own voice to learn better!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Ask Questions</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Ask Questions</div>
+            <div class="mini">
               Encourage students to ask teachers or parents when unsure. There are no silly questions—asking is smart!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Handwriting Drills</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Handwriting Drills</div>
+            <div class="mini">
               Short daily practice improves writing skills and motor memory. Practice makes your handwriting neat!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Quiz Games</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Quiz Games</div>
+            <div class="mini">
               Use short games for review with friends and family. Turn studying into a fun competition!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Reward Charts</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Reward Charts</div>
+            <div class="mini">
               Stickers and charts motivate consistent effort and progress. Earn stars for each study session completed!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Tidy Study Space</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Tidy Study Space</div>
+            <div class="mini">
               A dedicated, well-lit desk reduces distractions. Keep your study corner clean and organized!
-            </p>
-          </li>
+            </div>
+          </article>
 
-          <li class="card">
-            <h2 class="label">Sleep & Hydration</h2>
-            <p class="mini">
+          <article class="card" role="listitem">
+            <div class="label">Sleep & Hydration</div>
+            <div class="mini">
               Good sleep and water support attention and memory formation. Rest well and drink water to stay sharp!
-            </p>
-          </li>
-        </ul>
+            </div>
+          </article>
+        </div>
 
-        <nav class="page-nav">
-          <a href="index.html" class="btn">Back to Home</a>
-        </nav>
+        <!-- NEW: Resource Navigation Section -->
+        <div class="resource-nav">
+          <h2 class="resource-nav-title">🎨 Explore More Resources! 📚</h2>
+          <p class="resource-nav-subtitle">
+            Click on any card below to access fun learning tools and activities!
+          </p>
+          
+          <div class="resource-grid">
+            <a href="elementary-notes.html" class="resource-card">
+              <div class="resource-icon">📝</div>
+              <div class="resource-title">Study Notes</div>
+              <div class="resource-description">
+                Colorful, easy-to-read notes with pictures and fun facts to help you learn better!
+              </div>
+            </a>
+
+            <a href="elementary-videos.html" class="resource-card">
+              <div class="resource-icon">🎬</div>
+              <div class="resource-title">Learning Videos</div>
+              <div class="resource-description">
+                Cool educational videos, cartoons, and animations that make learning super fun!
+              </div>
+            </a>
+
+            <a href="elementary-pomodoro.html" class="resource-card">
+              <div class="resource-icon">⏰</div>
+              <div class="resource-title">Study Timer</div>
+              <div class="resource-description">
+                Fun timer with games and rewards! Study for a bit, then play for a bit!
+              </div>
+            </a>
+
+            <a href="elementary-motivation.html" class="resource-card">
+              <div class="resource-icon">🌟</div>
+              <div class="resource-title">Motivation Zone</div>
+              <div class="resource-description">
+                Get inspired with happy quotes, fun challenges, and reward stickers!
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="fun-fact">
+          <div class="fun-fact-title">
+            <span>💡</span>
+            <span>Did You Know?</span>
+            <span>💡</span>
+          </div>
+          <p class="fun-fact-text">
+            Your brain is like a super muscle! The more you use it, the stronger it gets! 
+            That's why learning new things every day makes you smarter and smarter! 🧠✨
+          </p>
+        </div>
+
+        <div style="margin-top: 2rem; text-align: center;">
+          <a href="index.html" class="btn">
+            Back to Home
+          </a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer role="contentinfo">
     <div class="container footer-inner">
-      <p>© <time id="year">2025</time> Study Buddy</p>
-      <a href="credits.html">Credits & Sources</a>
+      <div>
+        © <span id="year">2025</span> Study Buddy
+      </div>
+      <div>
+        <a href="credits.html">Credits & Sources</a>
+      </div>
     </div>
   </footer>
 
-  <script src="script.js" defer></script>
+  <!-- External JavaScript file -->
+  <script src="script.js"></script>
+
+  <!-- Internal JavaScript -->
+  <script>
+    // Update copyright year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+
+    if (menuToggle && menu) {
+      menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('active');
+        const isExpanded = menu.classList.contains('active');
+        menuToggle.setAttribute('aria-expanded', isExpanded);
+      });
+    }
+
+    // Dark mode toggle (placeholder functionality)
+    const darkToggle = document.getElementById('dark-toggle');
+    if (darkToggle) {
+      darkToggle.addEventListener('click', () => {
+        // Future dark mode implementation
+        alert('Dark mode coming soon! 🌟');
+      });
+    }
+  </script>
 </body>
 </html>
