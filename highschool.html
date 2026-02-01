@@ -20,6 +20,8 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%236366f1'/%3E%3C/svg%3E" />
 </head>
 <body>
+  <a href="#main-content" class="sr-only">Skip to main content</a>
+
   <!-- header -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
@@ -70,10 +72,10 @@
   </header>
 
   <!-- main content -->
-  <main>
+  <main id="main-content">
     <section class="page active" aria-labelledby="hs-heading">
       <div class="container">
-        <h2 id="hs-heading">High School (Grades 7-10)</h2>
+        <h2 id="hs-heading">High School (Grades 7–10)</h2>
         <p class="section-sub">Proven study methods to boost performance and manage your workload effectively.</p>
 
         <div class="card-container" role="list">
@@ -150,6 +152,49 @@
           </article>
         </div>
 
+        <!-- NEW: High School Toolkit -->
+        <section class="hs-toolkit" aria-label="High school study toolkit">
+          <h2 class="toolkit-title">📚 High School Study Toolkit</h2>
+          <p class="toolkit-subtitle">
+            Shortcuts, templates, and tools to make your study routine more efficient.
+          </p>
+
+          <div class="toolkit-grid">
+            <article class="tool-card">
+              <div class="tool-icon">🧮</div>
+              <h3 class="tool-label">Grade Calculator</h3>
+              <p class="tool-text">
+                Estimate what score you need on your next quiz or exam to hit your target grade.
+              </p>
+              <button class="tool-btn" type="button" onclick="alert('Grade calculator mockup — connect to real calculator later.')">
+                Try quick estimate
+              </button>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-icon">🗂️</div>
+              <h3 class="tool-label">Note Style Picker</h3>
+              <p class="tool-text">
+                Choose between Cornell, outline, or mind-map style for your next topic.
+              </p>
+              <button class="tool-btn" type="button" onclick="alert('Note style guide – Coming Soon')">
+                View suggestions
+              </button>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-icon">⏱️</div>
+              <h3 class="tool-label">Mini Pomodoro</h3>
+              <p class="tool-text">
+                Try a quick 10-minute focus sprint followed by a 3-minute break for light tasks.
+              </p>
+              <button class="tool-btn" type="button" onclick="alert('Timer not implemented yet – this is a placeholder action.')">
+                Start trial session
+              </button>
+            </article>
+          </div>
+        </section>
+
         <div class="actions">
           <a href="index.html" class="btn">Back to Home</a>
         </div>
@@ -158,7 +203,7 @@
   </main>
 
   <!-- footer -->
-  <footer>
+  <footer role="contentinfo">
     <div class="container footer-inner">
       <div>© <span id="year">2025</span> Study Buddy</div>
       <div><a href="credits.html">Credits & Sources</a></div>
@@ -185,11 +230,22 @@
       });
     }
 
-    // Dark mode toggle (placeholder functionality)
+    // WORKING dark mode (same pattern as other pages)
     const darkToggle = document.getElementById('dark-toggle');
+    const html = document.documentElement;
+
     if (darkToggle) {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        html.classList.add('dark');
+        darkToggle.textContent = '☀️';
+      }
+
       darkToggle.addEventListener('click', () => {
-        alert('Dark mode coming soon! 🌟');
+        html.classList.toggle('dark');
+        const isDark = html.classList.contains('dark');
+        darkToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
       });
     }
 
@@ -201,7 +257,17 @@
         }
       });
     });
+
+    // Intersection observer for card reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.card, .tool-card').forEach(el => observer.observe(el));
   </script>
 </body>
-
 </html>
