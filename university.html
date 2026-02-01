@@ -66,7 +66,7 @@
   <main id="main-content">
     <section class="page active">
       <div class="container">
-        <h2>University</h2>
+        <h2>University Level</h2>
         <p class="section-sub">
           Advanced strategies for academic excellence and research mastery! 🌟🔬
         </p>
@@ -143,6 +143,60 @@
           </article>
         </div>
 
+        <!-- Academic Resources Section -->
+        <div class="resource-nav">
+          <h2 class="resource-nav-title">🎓 Academic Resources & Tools 📚</h2>
+          <p class="resource-nav-subtitle">
+            Access specialized resources to enhance your university experience
+          </p>
+          
+          <div class="resource-grid">
+            <a href="#" class="resource-card" onclick="alert('Research Database Access - Coming Soon'); return false;">
+              <div class="resource-icon">🔬</div>
+              <div class="resource-title">Research Databases</div>
+              <div class="resource-description">
+                Access academic journals, papers, and research materials from leading databases
+              </div>
+            </a>
+
+            <a href="#" class="resource-card" onclick="alert('Citation Tools - Coming Soon'); return false;">
+              <div class="resource-icon">📑</div>
+              <div class="resource-title">Citation Tools</div>
+              <div class="resource-description">
+                Generate proper citations in APA, MLA, Chicago, and other academic formats
+              </div>
+            </a>
+
+            <a href="#" class="resource-card" onclick="alert('Thesis Templates - Coming Soon'); return false;">
+              <div class="resource-icon">📊</div>
+              <div class="resource-title">Thesis Templates</div>
+              <div class="resource-description">
+                Professional templates for research papers, thesis proposals, and dissertations
+              </div>
+            </a>
+
+            <a href="#" class="resource-card" onclick="alert('Career Planning - Coming Soon'); return false;">
+              <div class="resource-icon">💼</div>
+              <div class="resource-title">Career Planning</div>
+              <div class="resource-description">
+                CV builders, interview prep, and graduate school application resources
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Academic Insight -->
+        <div class="academic-insight">
+          <div class="insight-icon">💡</div>
+          <div class="insight-content">
+            <h3 class="insight-title">Academic Excellence Tip</h3>
+            <p class="insight-text">
+              Successful university students don't just study harder—they study smarter. Use evidence-based learning techniques, 
+              maintain consistent habits, and actively engage with your field. Remember: Your education is an investment in your future self.
+            </p>
+          </div>
+        </div>
+
         <div style="margin-top: 52px; text-align: center;">
           <button class="btn" onclick="window.location.href='index.html'">
             Back to Home
@@ -189,16 +243,16 @@
       });
     }
 
-    // Dark mode toggle
+    // WORKING DARK MODE
     const darkToggle = document.getElementById('dark-toggle');
     const html = document.documentElement;
 
     if (darkToggle) {
       // Check for saved preference
       const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        html.classList.toggle('dark', savedTheme === 'dark');
-        darkToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+      if (savedTheme === 'dark') {
+        html.classList.add('dark');
+        darkToggle.textContent = '☀️';
       }
 
       darkToggle.addEventListener('click', () => {
@@ -220,6 +274,28 @@
       }
     });
 
+    // Enhanced scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.card, .resource-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(card);
+    });
+
     // Subtle parallax effect on scroll
     let ticking = false;
     let lastScrollY = 0;
@@ -231,8 +307,8 @@
         window.requestAnimationFrame(() => {
           const cards = document.querySelectorAll('.card');
           cards.forEach((card, index) => {
-            const speed = 0.3 + (index % 4) * 0.08;
-            const yPos = -(lastScrollY * speed * 0.015);
+            const speed = 0.2 + (index % 4) * 0.05;
+            const yPos = -(lastScrollY * speed * 0.01);
             card.style.transform = `translateY(${yPos}px)`;
           });
           ticking = false;
@@ -241,7 +317,7 @@
       }
     });
 
-    // Add hover sound effect simulation (visual feedback)
+    // Enhanced hover effects
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => {
       card.addEventListener('mouseenter', function() {
