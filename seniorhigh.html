@@ -96,7 +96,7 @@
           <article class="card" role="listitem">
             <h3 class="label">Mock Interviews</h3>
             <p class="mini">
-              Practice responses with peers for confidence. Prepare for college admissions and job applications through realistic simulations. Practice makes perfect—and less nervous! (Career Center)
+              Practice responses with peers for confidence. Prepare for college admissions and job applications through realistic simulations. Practice makes progress—and less nervous! (Career Center)
             </p>
           </article>
 
@@ -142,6 +142,60 @@
             </p>
           </article>
         </div>
+
+        <!-- NEW: Senior High Resource Hub -->
+        <section class="resource-nav" aria-label="Senior high planning resources">
+          <h2 class="resource-nav-title">📌 Senior High Planning Hub</h2>
+          <p class="resource-nav-subtitle">
+            Explore tools that help you bridge the gap between high school and your next step.
+          </p>
+
+          <div class="resource-grid">
+            <a href="#" class="resource-card" onclick="alert('Course Planner - Coming Soon'); return false;">
+              <div class="resource-icon">📚</div>
+              <div class="resource-title">Strand & Course Planner</div>
+              <div class="resource-description">
+                Map out your current strand, elective choices, and possible college courses or training programs.
+              </div>
+            </a>
+
+            <a href="#" class="resource-card" onclick="alert('College Checklist - Coming Soon'); return false;">
+              <div class="resource-icon">🎓</div>
+              <div class="resource-title">College / Training Checklist</div>
+              <div class="resource-description">
+                Track entrance exam dates, application requirements, recommendation letters, and deadlines.
+              </div>
+            </a>
+
+            <a href="#" class="resource-card" onclick="alert('Resume Builder - Coming Soon'); return false;">
+              <div class="resource-icon">📄</div>
+              <div class="resource-title">First Resume Builder</div>
+              <div class="resource-description">
+                Turn your school projects, OJT, and extracurriculars into a clean, professional resume.
+              </div>
+            </a>
+
+            <a href="#" class="resource-card" onclick="alert('Scholarship Finder - Coming Soon'); return false;">
+              <div class="resource-icon">💰</div>
+              <div class="resource-title">Scholarship & Grant Tracker</div>
+              <div class="resource-description">
+                Organize scholarship options, eligibility, and requirements in one clear overview.
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- NEW: Quick Insight -->
+        <section class="insight-card" aria-label="Senior high insight">
+          <div class="insight-icon">💡</div>
+          <div>
+            <h3 class="insight-title">Senior High Mindset</h3>
+            <p class="insight-text">
+              Grades matter—but so do skills, habits, and character. Treat every project, OJT task, and group work
+              as practice for the workplace or college. Show up as the kind of person you want future you to be proud of.
+            </p>
+          </div>
+        </section>
 
         <div style="margin-top: 48px; text-align: center;">
           <button class="btn" onclick="window.location.href='index.html'">
@@ -189,16 +243,15 @@
       });
     }
 
-    // Dark mode toggle
+    // WORKING DARK MODE (shared behavior with other pages)
     const darkToggle = document.getElementById('dark-toggle');
     const html = document.documentElement;
 
     if (darkToggle) {
-      // Check for saved preference
       const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        html.classList.toggle('dark', savedTheme === 'dark');
-        darkToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+      if (savedTheme === 'dark') {
+        html.classList.add('dark');
+        darkToggle.textContent = '☀️';
       }
 
       darkToggle.addEventListener('click', () => {
@@ -209,7 +262,7 @@
       });
     }
 
-    // Keyboard navigation
+    // Keyboard navigation (Escape closes menu)
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu && menu.classList.contains('active')) {
         menu.classList.remove('active');
@@ -220,7 +273,20 @@
       }
     });
 
-    // Add parallax effect on scroll (optional enhancement)
+    // Intersection-based reveal animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.card, .resource-card, .insight-card').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Subtle scroll parallax for cards
     let ticking = false;
     window.addEventListener('scroll', () => {
       if (!ticking) {
@@ -228,8 +294,8 @@
           const scrolled = window.pageYOffset;
           const cards = document.querySelectorAll('.card');
           cards.forEach((card, index) => {
-            const speed = 0.5 + (index % 3) * 0.1;
-            card.style.transform = `translateY(${scrolled * speed * 0.02}px)`;
+            const speed = 0.4 + (index % 3) * 0.08;
+            card.style.transform = `translateY(${scrolled * speed * 0.01}px)`;
           });
           ticking = false;
         });
@@ -238,6 +304,4 @@
     });
   </script>
 </body>
-
 </html>
-
