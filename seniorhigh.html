@@ -66,7 +66,7 @@
   <main id="main-content">
     <section class="page active">
       <div class="container">
-        <h2>Senior High (Grades 11–12)</h2>
+        <h2>Senior High School (Grades 11–12)</h2>
         <p class="section-sub">
           Master these strategies to excel academically and prepare for your dream career! 💼✨
         </p>
@@ -96,7 +96,7 @@
           <article class="card" role="listitem">
             <h3 class="label">Mock Interviews</h3>
             <p class="mini">
-              Practice responses with peers for confidence. Prepare for college admissions and job applications through realistic simulations. Practice makes progress—and less nervous! (Career Center)
+              Practice responses with peers for confidence. Prepare for college admissions and job applications through realistic simulations. Practice makes perfect—and less nervous! (Career Center)
             </p>
           </article>
 
@@ -143,59 +143,60 @@
           </article>
         </div>
 
-        <!-- NEW: Senior High Resource Hub -->
-        <section class="resource-nav" aria-label="Senior high planning resources">
-          <h2 class="resource-nav-title">📌 Senior High Planning Hub</h2>
+        <!-- Career Preparation Resources Section -->
+        <div class="resource-nav">
+          <h2 class="resource-nav-title">🎯 Career Preparation Hub 💼</h2>
           <p class="resource-nav-subtitle">
-            Explore tools that help you bridge the gap between high school and your next step.
+            Essential tools to help you prepare for college and your future career
           </p>
-
+          
           <div class="resource-grid">
-            <a href="#" class="resource-card" onclick="alert('Course Planner - Coming Soon'); return false;">
-              <div class="resource-icon">📚</div>
-              <div class="resource-title">Strand & Course Planner</div>
+            <a href="#" class="resource-card" onclick="alert('College Application Tools - Coming Soon!'); return false;">
+              <div class="resource-icon">📝</div>
+              <div class="resource-title">College Prep</div>
               <div class="resource-description">
-                Map out your current strand, elective choices, and possible college courses or training programs.
+                Application guides, essay templates, and admission tips for your dream university
               </div>
             </a>
 
-            <a href="#" class="resource-card" onclick="alert('College Checklist - Coming Soon'); return false;">
-              <div class="resource-icon">🎓</div>
-              <div class="resource-title">College / Training Checklist</div>
+            <a href="#" class="resource-card" onclick="alert('Career Assessment Tools - Coming Soon!'); return false;">
+              <div class="resource-icon">🧭</div>
+              <div class="resource-title">Career Assessment</div>
               <div class="resource-description">
-                Track entrance exam dates, application requirements, recommendation letters, and deadlines.
+                Discover your strengths, interests, and ideal career paths with interactive tests
               </div>
             </a>
 
-            <a href="#" class="resource-card" onclick="alert('Resume Builder - Coming Soon'); return false;">
+            <a href="#" class="resource-card" onclick="alert('Resume Builder - Coming Soon!'); return false;">
               <div class="resource-icon">📄</div>
-              <div class="resource-title">First Resume Builder</div>
+              <div class="resource-title">Resume Builder</div>
               <div class="resource-description">
-                Turn your school projects, OJT, and extracurriculars into a clean, professional resume.
+                Create professional resumes and portfolios that stand out to employers
               </div>
             </a>
 
-            <a href="#" class="resource-card" onclick="alert('Scholarship Finder - Coming Soon'); return false;">
-              <div class="resource-icon">💰</div>
-              <div class="resource-title">Scholarship & Grant Tracker</div>
+            <a href="#" class="resource-card" onclick="alert('Interview Prep - Coming Soon!'); return false;">
+              <div class="resource-icon">🎤</div>
+              <div class="resource-title">Interview Practice</div>
               <div class="resource-description">
-                Organize scholarship options, eligibility, and requirements in one clear overview.
+                Mock interviews, common questions, and tips to ace your college and job interviews
               </div>
             </a>
           </div>
-        </section>
+        </div>
 
-        <!-- NEW: Quick Insight -->
-        <section class="insight-card" aria-label="Senior high insight">
-          <div class="insight-icon">💡</div>
-          <div>
-            <h3 class="insight-title">Senior High Mindset</h3>
-            <p class="insight-text">
-              Grades matter—but so do skills, habits, and character. Treat every project, OJT task, and group work
-              as practice for the workplace or college. Show up as the kind of person you want future you to be proud of.
+        <!-- Success Tip Box -->
+        <div class="success-tip">
+          <div class="tip-badge">💡 PRO TIP</div>
+          <div class="tip-content">
+            <h3 class="tip-title">Your Senior High Success Formula</h3>
+            <p class="tip-text">
+              Balance is everything! Focus 60% on academics, 20% on building skills (leadership, tech, communication), 
+              10% on career exploration, and 10% on self-care. Start building your professional network now—
+              the connections you make today could open doors tomorrow!
             </p>
           </div>
-        </section>
+        </div>
 
         <div style="margin-top: 48px; text-align: center;">
           <button class="btn" onclick="window.location.href='index.html'">
@@ -243,11 +244,12 @@
       });
     }
 
-    // WORKING DARK MODE (shared behavior with other pages)
+    // WORKING DARK MODE
     const darkToggle = document.getElementById('dark-toggle');
     const html = document.documentElement;
 
     if (darkToggle) {
+      // Check for saved preference
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
         html.classList.add('dark');
@@ -262,7 +264,7 @@
       });
     }
 
-    // Keyboard navigation (Escape closes menu)
+    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu && menu.classList.contains('active')) {
         menu.classList.remove('active');
@@ -273,20 +275,29 @@
       }
     });
 
-    // Intersection-based reveal animation
+    // Enhanced scroll-based animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
         }
       });
-    }, { threshold: 0.15 });
+    }, observerOptions);
 
-    document.querySelectorAll('.card, .resource-card, .insight-card').forEach(el => {
-      observer.observe(el);
+    document.querySelectorAll('.card, .resource-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(card);
     });
 
-    // Subtle scroll parallax for cards
+    // Smooth parallax effect on scroll
     let ticking = false;
     window.addEventListener('scroll', () => {
       if (!ticking) {
@@ -294,13 +305,25 @@
           const scrolled = window.pageYOffset;
           const cards = document.querySelectorAll('.card');
           cards.forEach((card, index) => {
-            const speed = 0.4 + (index % 3) * 0.08;
-            card.style.transform = `translateY(${scrolled * speed * 0.01}px)`;
+            const speed = 0.3 + (index % 3) * 0.1;
+            card.style.transform = `translateY(${scrolled * speed * 0.015}px)`;
           });
           ticking = false;
         });
         ticking = true;
       }
+    });
+
+    // Enhanced hover effects
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transition = 'all 0.3s ease';
+      });
     });
   </script>
 </body>
