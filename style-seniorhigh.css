@@ -72,18 +72,12 @@ body {
   z-index: 100;
   border-bottom: 4px solid var(--accent-2);
   animation: slideDown 0.6s ease;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 @keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .header-inner {
@@ -109,44 +103,15 @@ body {
   justify-content: center;
   box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
   animation: float 3s ease-in-out infinite;
-  position: relative;
-  overflow: hidden;
-}
-
-.logo::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: shine 3s infinite;
-}
-
-@keyframes shine {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 @keyframes float {
-  0%, 100% { 
-    transform: translateY(0px) rotate(0deg); 
-    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
-  }
-  50% { 
-    transform: translateY(-8px) rotate(5deg);
-    box-shadow: 0 10px 20px rgba(124, 58, 237, 0.5);
-  }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(5deg); }
 }
 
 .logo svg {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-  transition: transform 0.3s ease;
-}
-
-.logo:hover svg {
-  transform: scale(1.1) rotate(-5deg);
 }
 
 .site-title {
@@ -226,22 +191,6 @@ body {
   left: 100%;
 }
 
-.menu-list a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-  transform: translateX(-50%);
-  transition: width 0.3s ease;
-}
-
-.menu-list a:hover::after {
-  width: 80%;
-}
-
 .menu-list a:hover,
 .menu-list a:focus {
   background: rgba(124, 58, 237, 0.1);
@@ -263,18 +212,12 @@ main {
 }
 
 .page {
-  animation: slideUp 0.7s ease;
+  animation: slideUp 0.6s ease;
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 h2 {
@@ -288,7 +231,6 @@ h2 {
   text-align: center;
   position: relative;
   animation: titlePulse 2s ease-in-out infinite;
-  letter-spacing: -0.5px;
 }
 
 @keyframes titlePulse {
@@ -321,7 +263,8 @@ h2 {
   border: 2px solid transparent;
   position: relative;
   overflow: hidden;
-  animation: cardFadeIn 0.6s ease backwards;
+  transform: translateY(20px);
+  opacity: 0;
 }
 
 .card::before {
@@ -341,15 +284,13 @@ h2 {
   100% { background-position: 300% 0; }
 }
 
+.card.in-view {
+  animation: cardFadeIn 0.6s ease forwards;
+}
+
 @keyframes cardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .card:nth-child(1) { animation-delay: 0.05s; background: var(--card-1); }
@@ -369,25 +310,6 @@ h2 {
   border-color: var(--accent-1);
 }
 
-.card::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.1), transparent);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
-  pointer-events: none;
-}
-
-.card:hover::after {
-  width: 500px;
-  height: 500px;
-}
-
 .label {
   font-weight: 700;
   font-size: 1.3rem;
@@ -399,21 +321,19 @@ h2 {
   display: flex;
   align-items: center;
   gap: 8px;
-  position: relative;
-  z-index: 1;
 }
 
 .label::before {
+  content: '🎯';
   font-size: 1.5rem;
-  animation: iconPulse 2s ease-in-out infinite;
+  animation: rotateIcon 3s linear infinite;
 }
 
-@keyframes iconPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+@keyframes rotateIcon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.card:nth-child(1) .label::before { content: '🎯'; }
 .card:nth-child(2) .label::before { content: '⏱️'; }
 .card:nth-child(3) .label::before { content: '📝'; }
 .card:nth-child(4) .label::before { content: '🎤'; }
@@ -429,34 +349,21 @@ h2 {
   font-size: 0.95rem;
   line-height: 1.6;
   font-weight: 500;
-  position: relative;
-  z-index: 1;
 }
 
-/* RESOURCE NAVIGATION SECTION */
+/* RESOURCE HUB (inspired by elementary but more mature) */
 .resource-nav {
   margin: 4rem 0 3rem;
   padding: 3rem 2rem;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(18px);
   border-radius: 24px;
   border: 3px solid var(--accent-2);
-  animation: fadeInUp 0.8s ease 0.5s backwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  box-shadow: 0 18px 40px rgba(124, 58, 237, 0.25);
 }
 
 .resource-nav-title {
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
   -webkit-background-clip: text;
@@ -464,16 +371,10 @@ h2 {
   background-clip: text;
   text-align: center;
   margin-bottom: 0.75rem;
-  animation: titleWave 2s ease-in-out infinite;
-}
-
-@keyframes titleWave {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
 }
 
 .resource-nav-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: var(--muted);
   text-align: center;
   margin-bottom: 2.5rem;
@@ -482,135 +383,114 @@ h2 {
 
 .resource-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
 }
 
 .resource-card {
   position: relative;
-  padding: 2.5rem;
+  padding: 2.25rem;
   background: white;
   border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 3px solid transparent;
-  overflow: hidden;
-  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+  border: 2px solid transparent;
   text-decoration: none;
-  display: block;
+  color: inherit;
+  overflow: hidden;
+  transition: all 0.35s ease;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.resource-card.in-view {
+  animation: cardFadeIn 0.6s ease forwards;
 }
 
 .resource-card::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
-  background-size: 300% 100%;
-  animation: shimmer 4s linear infinite;
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-3), var(--accent-2));
+  background-size: 200% 100%;
+  animation: gradientSlide 5s linear infinite;
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+.resource-card:nth-child(1) { background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); }
+.resource-card:nth-child(2) { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); }
+.resource-card:nth-child(3) { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); }
+.resource-card:nth-child(4) { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); }
 
 .resource-card:hover {
-  transform: translateY(-12px) scale(1.03);
+  transform: translateY(-10px) scale(1.02);
   box-shadow: 0 20px 40px rgba(124, 58, 237, 0.3);
   border-color: var(--accent-1);
 }
 
-.resource-card:nth-child(1) { background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); }
-.resource-card:nth-child(2) { background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); }
-.resource-card:nth-child(3) { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); }
-.resource-card:nth-child(4) { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); }
-
 .resource-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 1.5rem;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  border-radius: 20px;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
-  box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
-  animation: iconFloat 3s ease-in-out infinite;
-}
-
-@keyframes iconFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(5deg); }
+  font-size: 2.2rem;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
 }
 
 .resource-title {
-  font-size: 1.75rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: var(--text);
   margin-bottom: 0.75rem;
-  text-align: center;
 }
 
 .resource-description {
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   color: var(--muted);
-  text-align: center;
-  line-height: 1.6;
+  line-height: 1.7;
   font-weight: 500;
 }
 
-/* SUCCESS TIP BOX */
-.success-tip {
-  margin-top: 3rem;
-  padding: 2.5rem;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(236, 72, 153, 0.05));
+/* INSIGHT CARD */
+.insight-card {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), rgba(6, 182, 212, 0.06));
   border-radius: 20px;
-  border: 3px solid var(--accent-1);
-  position: relative;
-  animation: fadeInUp 0.8s ease 0.7s backwards;
+  border: 2px solid rgba(124, 58, 237, 0.3);
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  transform: translateY(20px);
+  opacity: 0;
 }
 
-.tip-badge {
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.5rem 1.5rem;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  color: white;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
-  animation: badgePulse 2s ease-in-out infinite;
+.insight-card.in-view {
+  animation: cardFadeIn 0.6s ease forwards;
 }
 
-@keyframes badgePulse {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.05); }
+.insight-icon {
+  font-size: 2.5rem;
 }
 
-.tip-title {
-  font-size: 1.5rem;
+.insight-title {
+  font-size: 1.4rem;
   font-weight: 800;
   color: var(--accent-1);
-  margin-bottom: 0.75rem;
-  text-align: center;
-  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.tip-text {
-  font-size: 1.05rem;
-  color: var(--text);
-  font-weight: 500;
+.insight-text {
+  font-size: 1rem;
+  color: var(--muted);
   line-height: 1.7;
-  text-align: center;
+  font-weight: 500;
 }
 
 /* BUTTON */
@@ -636,12 +516,6 @@ h2 {
 .btn::before {
   content: '🏠';
   font-size: 1.2rem;
-  animation: arrowBounce 2s ease-in-out infinite;
-}
-
-@keyframes arrowBounce {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(-5px); }
 }
 
 .btn::after {
@@ -681,7 +555,6 @@ footer {
   padding: 28px 0;
   border-top: 4px solid var(--accent-2);
   box-shadow: 0 -10px 30px rgba(124, 58, 237, 0.1);
-  transition: background 0.3s ease;
 }
 
 .footer-inner {
@@ -726,12 +599,12 @@ footer {
 
 .dark .site-header {
   background: rgba(30, 30, 46, 0.95);
-  border-bottom-color: var(--accent-1);
+  border-bottom-color: var(--accent-3);
 }
 
 .dark footer {
   background: rgba(30, 30, 46, 0.95);
-  border-top-color: var(--accent-1);
+  border-top-color: var(--accent-3);
 }
 
 .dark .card {
@@ -743,22 +616,17 @@ footer {
 }
 
 .dark .resource-nav {
-  background: rgba(30, 30, 46, 0.6);
-  border-color: var(--accent-1);
+  background: rgba(15, 23, 42, 0.9);
+  border-color: var(--accent-3);
 }
 
 .dark .resource-card {
-  background: #1e1e2e;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
 }
 
-.dark .resource-card:nth-child(1) { background: linear-gradient(135deg, #2a1f3d 0%, #3b2667 100%); }
-.dark .resource-card:nth-child(2) { background: linear-gradient(135deg, #164e63 0%, #155e75 100%); }
-.dark .resource-card:nth-child(3) { background: linear-gradient(135deg, #4c1d44 0%, #701a55 100%); }
-.dark .resource-card:nth-child(4) { background: linear-gradient(135deg, #78350f 0%, #92400e 100%); }
-
-.dark .success-tip {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(236, 72, 153, 0.2));
-  border-color: var(--accent-1);
+.dark .insight-card {
+  background: linear-gradient(135deg, rgba(76, 81, 191, 0.4), rgba(6, 148, 162, 0.4));
+  border-color: rgba(148, 163, 184, 0.5);
 }
 
 /* RESPONSIVE */
@@ -784,7 +652,12 @@ footer {
 
   .menu-list.active {
     display: flex;
-    animation: slideDown 0.3s ease;
+    animation: slideDownMenu 0.3s ease;
+  }
+
+  @keyframes slideDownMenu {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .menu-list a {
@@ -815,7 +688,11 @@ footer {
 
   .resource-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+  }
+
+  .insight-card {
+    flex-direction: column;
+    text-align: left;
   }
 
   .btn {
