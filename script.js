@@ -1,6 +1,5 @@
-
 // script.js – Enhanced Study Buddy Core JavaScript
-// Version 2.0 - Optimized & Bug-Fixed
+// Version 3.0 - With Working Dark Mode & Enhanced Features
 
 // ============================================
 // Configuration
@@ -116,10 +115,103 @@ const Helpers = {
 };
 
 // ============================================
+// Dark Mode Controller - FULLY WORKING
+// ============================================
+const DarkMode = {
+  theme: 'light',
+  storageKey: 'studyBuddy_theme',
+
+  init() {
+    this.loadTheme();
+    this.applyTheme();
+    this.setupToggle();
+    this.setupSystemThemeListener();
+  },
+
+  loadTheme() {
+    // Check localStorage first
+    const savedTheme = localStorage.getItem(this.storageKey);
+    if (savedTheme) {
+      this.theme = savedTheme;
+    } else {
+      // Check system preference
+      this.theme = this.getSystemTheme();
+    }
+  },
+
+  getSystemTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  },
+
+  applyTheme() {
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (this.theme === 'dark') {
+      html.classList.add('dark');
+      body.classList.add('dark-mode');
+    } else {
+      html.classList.remove('dark');
+      body.classList.remove('dark-mode');
+    }
+
+    this.updateToggleButton();
+  },
+
+  setupToggle() {
+    const darkToggle = Helpers.$('#dark-toggle');
+    if (!darkToggle) return;
+
+    darkToggle.addEventListener('click', () => {
+      this.toggleTheme();
+    });
+  },
+
+  toggleTheme() {
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
+    this.applyTheme();
+    this.saveTheme();
+    Helpers.announce(`Switched to ${this.theme} mode`);
+  },
+
+  saveTheme() {
+    try {
+      localStorage.setItem(this.storageKey, this.theme);
+    } catch (e) {
+      console.warn('Could not save theme preference:', e);
+    }
+  },
+
+  updateToggleButton() {
+    const darkToggle = Helpers.$('#dark-toggle');
+    if (!darkToggle) return;
+
+    darkToggle.textContent = this.theme === 'dark' ? '☀️' : '🌙';
+    darkToggle.setAttribute('aria-label', `Switch to ${this.theme === 'dark' ? 'light' : 'dark'} mode`);
+    darkToggle.setAttribute('aria-pressed', this.theme === 'dark');
+  },
+
+  setupSystemThemeListener() {
+    if (!window.matchMedia) return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', (e) => {
+      // Only auto-switch if user hasn't manually set a preference
+      if (!localStorage.getItem(this.storageKey)) {
+        this.theme = e.matches ? 'dark' : 'light';
+        this.applyTheme();
+      }
+    });
+  }
+};
+
+// ============================================
 // State Management
 // ============================================
 const AppState = {
-  theme: 'light',
   menuOpen: false,
   isScrolled: false,
   preferences: {},
@@ -127,15 +219,12 @@ const AppState = {
 
   init() {
     this.loadPreferences();
-    this.applyTheme();
-    this.setupSystemThemeListener();
   },
 
   loadPreferences() {
     try {
       const saved = localStorage.getItem(Config.STORAGE_KEY);
       this.preferences = saved ? JSON.parse(saved) : {};
-      this.theme = this.preferences.theme || this.getSystemTheme();
     } catch (e) {
       console.warn('Could not load preferences:', e.message);
       this.preferences = {};
@@ -144,48 +233,9 @@ const AppState = {
 
   savePreferences() {
     try {
-      this.preferences.theme = this.theme;
       localStorage.setItem(Config.STORAGE_KEY, JSON.stringify(this.preferences));
     } catch (e) {
       console.warn('Could not save preferences:', e.message);
-    }
-  },
-
-  getSystemTheme() {
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  },
-
-  setupSystemThemeListener() {
-    const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
-    if (mediaQuery && !this.preferences.theme) {
-      mediaQuery.addEventListener('change', (e) => {
-        if (!this.preferences.theme) {
-          this.theme = e.matches ? 'dark' : 'light';
-          this.applyTheme();
-        }
-      });
-    }
-  },
-
-  applyTheme() {
-    document.documentElement.setAttribute('data-theme', this.theme);
-    document.body.classList.toggle('dark-mode', this.theme === 'dark');
-    this.updateThemeIcon();
-  },
-
-  toggleTheme() {
-    this.theme = this.theme === 'light' ? 'dark' : 'light';
-    this.applyTheme();
-    this.savePreferences();
-    Helpers.announce(`Switched to ${this.theme} mode`);
-  },
-
-  updateThemeIcon() {
-    const toggle = Helpers.$('#dark-toggle');
-    if (toggle) {
-      toggle.textContent = this.theme === 'dark' ? '☀️' : '🌙';
-      toggle.setAttribute('aria-label', `Switch to ${this.theme === 'dark' ? 'light' : 'dark'} mode`);
-      toggle.setAttribute('aria-pressed', this.theme === 'dark');
     }
   }
 };
@@ -237,39 +287,17 @@ const Navigation = {
       }
     }, { signal });
 
-    // Close menu when navigating and trap focus
+    // Close menu when navigating
     Helpers.$$('a', menu).forEach(link => {
       link.addEventListener('click', () => this.closeMenu(), { signal });
     });
-
-    // Trap focus within menu when open
-    menu.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab' && AppState.menuOpen) {
-        this.handleFocusTrap(e);
-      }
-    }, { signal });
-  },
-
-  handleFocusTrap(e) {
-    const { menu, menuToggle } = this.elements;
-    const focusableElements = Helpers.$$('a, button', menu);
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    if (e.shiftKey && document.activeElement === firstElement) {
-      e.preventDefault();
-      menuToggle.focus();
-    } else if (!e.shiftKey && document.activeElement === lastElement) {
-      e.preventDefault();
-      menuToggle.focus();
-    }
   },
 
   toggleMenu() {
     AppState.menuOpen = !AppState.menuOpen;
     const { menu, menuToggle } = this.elements;
 
-    menu.classList.toggle('show', AppState.menuOpen);
+    menu.classList.toggle('active', AppState.menuOpen);
     menuToggle.setAttribute('aria-expanded', String(AppState.menuOpen));
     document.body.style.overflow = AppState.menuOpen ? 'hidden' : '';
 
@@ -285,7 +313,7 @@ const Navigation = {
     AppState.menuOpen = false;
     const { menu, menuToggle } = this.elements;
 
-    menu.classList.remove('show');
+    menu.classList.remove('active');
     menuToggle.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   },
@@ -311,7 +339,7 @@ const Navigation = {
       header.classList.toggle('scrolled', shouldHaveShadow);
     }
 
-    // Auto-hide header on scroll down
+    // Auto-hide header on scroll down (optional)
     const shouldHide = currentScrollY > this.lastScrollY && currentScrollY > Config.HEADER_HIDE_THRESHOLD;
     header.classList.toggle('hidden', shouldHide);
 
@@ -322,7 +350,7 @@ const Navigation = {
     Helpers.$$('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
-        if (href === '#') return;
+        if (href === '#' || href === '#main-content') return;
 
         const target = Helpers.$(href);
         if (target) {
@@ -343,9 +371,9 @@ const Navigation = {
   highlightActiveNav() {
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    Helpers.$$('.nav-menu a').forEach(link => {
+    Helpers.$$('.menu-list a, .nav-menu a').forEach(link => {
       const href = link.getAttribute('href');
-      const isActive = href === currentPage || (currentPage === 'index.html' && href === '/');
+      const isActive = href === currentPage || (currentPage === '' && href === 'index.html');
 
       link.classList.toggle('active', isActive);
       if (isActive) {
@@ -362,7 +390,7 @@ const Navigation = {
 };
 
 // ============================================
-// Animation Controller
+// Animation Controller - ENHANCED
 // ============================================
 const Animations = {
   observers: [],
@@ -375,10 +403,11 @@ const Animations = {
     this.setupIntersectionObserver();
     this.setupCardAnimations();
     this.setupCounterAnimations();
+    this.setupParallaxEffects();
   },
 
   prefersReducedMotion() {
-    return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    return window.matchMedia?.('(prefers-color-scheme: reduce)').matches;
   },
 
   setupIntersectionObserver() {
@@ -391,7 +420,8 @@ const Animations = {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('fade-in-up');
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
           observer.unobserve(entry.target);
         }
       });
@@ -399,20 +429,41 @@ const Animations = {
 
     this.observers.push(observer);
 
-    Helpers.$$('.card, .feature-card, section[data-animate]').forEach(el => {
+    // Observe cards and sections
+    Helpers.$$('.card, .resource-card, section[data-animate]').forEach((el, index) => {
       el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = `opacity 0.6s ease ${index * 0.05}s, transform 0.6s ease ${index * 0.05}s`;
       observer.observe(el);
     });
   },
 
   setupCardAnimations() {
-    Helpers.$$('.card, .feature-card').forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-8px)';
+    Helpers.$$('.card, .resource-card').forEach(card => {
+      // Enhanced hover effect
+      card.addEventListener('mouseenter', function() {
+        this.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
       });
 
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
+      card.addEventListener('mouseleave', function() {
+        this.style.transition = 'all 0.3s ease';
+      });
+
+      // Add ripple effect on click
+      card.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple-effect';
+        
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
       });
     });
   },
@@ -457,6 +508,28 @@ const Animations = {
     };
 
     requestAnimationFrame(updateCounter);
+  },
+
+  setupParallaxEffects() {
+    let ticking = false;
+    let lastScrollY = 0;
+
+    window.addEventListener('scroll', () => {
+      lastScrollY = window.pageYOffset;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const cards = Helpers.$$('.card');
+          cards.forEach((card, index) => {
+            const speed = 0.2 + (index % 4) * 0.05;
+            const yPos = -(lastScrollY * speed * 0.01);
+            card.style.transform = `translateY(${yPos}px)`;
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
   },
 
   destroy() {
@@ -1042,93 +1115,33 @@ const Performance = {
 // Styles (Injected)
 // ============================================
 const injectStyles = () => {
+  // Check if styles already exist
+  if (Helpers.$('#study-buddy-dynamic-styles')) return;
+
   const style = document.createElement('style');
-  style.id = 'study-buddy-styles';
+  style.id = 'study-buddy-dynamic-styles';
   style.textContent = `
-    /* Theme Variables */
-    :root {
-      --color-bg: #ffffff;
-      --color-text: #1a1a2e;
-      --color-primary: #2563eb;
-      --color-primary-hover: #1d4ed8;
-      --color-card-bg: #ffffff;
-      --color-border: #e5e7eb;
-      --color-error: #ef4444;
-      --color-success: #10b981;
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-      --transition-fast: 150ms ease;
-      --transition-normal: 300ms ease;
+    /* Ripple Effect */
+    .ripple-effect {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: translate(-50%, -50%);
+      animation: ripple 0.6s ease-out;
+      pointer-events: none;
     }
 
-    [data-theme="dark"],
-    body.dark-mode {
-      --color-bg: #0d1117;
-      --color-text: #e6edf3;
-      --color-primary: #58a6ff;
-      --color-primary-hover: #79b8ff;
-      --color-card-bg: #161b22;
-      --color-border: #30363d;
+    @keyframes ripple {
+      to {
+        width: 200px;
+        height: 200px;
+        opacity: 0;
+      }
     }
 
-    /* Base Transitions */
-    body {
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      transition: background-color var(--transition-normal), color var(--transition-normal);
-    }
-
-    /* Header States */
-    .site-header {
-      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-    }
-
-    .site-header.scrolled {
-      box-shadow: var(--shadow-md);
-    }
-
-    .site-header.hidden {
-      transform: translateY(-100%);
-    }
-
-    /* Cards */
-    .card,
-    .feature-card {
-      background: var(--color-card-bg);
-      border: 1px solid var(--color-border);
-      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-    }
-
-    .card:hover,
-    .feature-card:hover {
-      box-shadow: var(--shadow-lg);
-    }
-
-    /* Form States */
-    .error-message {
-      color: var(--color-error);
-      font-size: 0.875rem;
-      margin-top: 0.25rem;
-      display: block;
-    }
-
-    input.invalid,
-    textarea.invalid {
-      border-color: var(--color-error);
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-    }
-
-    input.valid,
-    textarea.valid {
-      border-color: var(--color-success);
-    }
-
-    /* Animations */
-    .fade-in-up {
-      animation: fadeInUp 0.6s ease forwards;
-    }
-
+    /* Enhanced Animations */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -1155,39 +1168,23 @@ const injectStyles = () => {
       to { transform: rotate(360deg); }
     }
 
-    /* Tooltips */
-    .tooltip {
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%) translateY(4px);
-      background: var(--color-text);
-      color: var(--color-bg);
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.375rem;
+    /* Form States */
+    .error-message {
+      color: var(--color-error, #ef4444);
       font-size: 0.875rem;
-      white-space: nowrap;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity var(--transition-fast), transform var(--transition-fast);
-      pointer-events: none;
-      z-index: 1000;
+      margin-top: 0.25rem;
+      display: block;
     }
 
-    .tooltip::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: var(--color-text);
+    input.invalid,
+    textarea.invalid {
+      border-color: var(--color-error, #ef4444);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
     }
 
-    .tooltip.visible {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
+    input.valid,
+    textarea.valid {
+      border-color: var(--color-success, #10b981);
     }
 
     /* Back to Top */
@@ -1198,7 +1195,7 @@ const injectStyles = () => {
       width: 3rem;
       height: 3rem;
       border-radius: 50%;
-      background: var(--color-primary);
+      background: var(--accent-1, #2563eb);
       color: white;
       border: none;
       font-size: 1.25rem;
@@ -1206,9 +1203,8 @@ const injectStyles = () => {
       opacity: 0;
       visibility: hidden;
       transform: translateY(10px);
-      transition: opacity var(--transition-normal), visibility var(--transition-normal), 
-                  transform var(--transition-normal), background-color var(--transition-fast);
-      box-shadow: var(--shadow-lg);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       z-index: 1000;
     }
 
@@ -1219,13 +1215,8 @@ const injectStyles = () => {
     }
 
     .back-to-top:hover {
-      background: var(--color-primary-hover);
       transform: translateY(-3px);
-    }
-
-    .back-to-top:focus {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 2px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     }
 
     /* Search Results */
@@ -1234,11 +1225,11 @@ const injectStyles = () => {
       top: 100%;
       left: 0;
       right: 0;
-      background: var(--color-card-bg);
-      border: 1px solid var(--color-border);
+      background: var(--card, white);
+      border: 1px solid var(--border, #e5e7eb);
       border-radius: 0.5rem;
       margin-top: 0.5rem;
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       max-height: 400px;
       overflow-y: auto;
       z-index: 100;
@@ -1246,9 +1237,8 @@ const injectStyles = () => {
 
     .search-results-header {
       padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--border, #e5e7eb);
       font-size: 0.875rem;
-      color: var(--color-text);
       opacity: 0.7;
     }
 
@@ -1256,9 +1246,9 @@ const injectStyles = () => {
       display: block;
       padding: 0.75rem 1rem;
       text-decoration: none;
-      color: var(--color-text);
-      border-bottom: 1px solid var(--color-border);
-      transition: background-color var(--transition-fast);
+      color: var(--text, #1a1a2e);
+      border-bottom: 1px solid var(--border, #e5e7eb);
+      transition: background-color 0.15s ease;
       animation: slideIn 0.3s ease forwards;
       opacity: 0;
     }
@@ -1274,13 +1264,9 @@ const injectStyles = () => {
       }
     }
 
-    .search-result-item:last-child {
-      border-bottom: none;
-    }
-
     .search-result-item:hover,
     .search-result-item:focus {
-      background: var(--color-border);
+      background: var(--hover-bg, #f3f4f6);
       outline: none;
     }
 
@@ -1288,7 +1274,7 @@ const injectStyles = () => {
       display: inline-block;
       font-size: 0.75rem;
       padding: 0.125rem 0.5rem;
-      background: var(--color-primary);
+      background: var(--accent-1, #2563eb);
       color: white;
       border-radius: 9999px;
       margin-bottom: 0.25rem;
@@ -1328,17 +1314,52 @@ const injectStyles = () => {
 
     .search-suggestions a {
       padding: 0.5rem 1rem;
-      background: var(--color-border);
+      background: var(--border, #e5e7eb);
       border-radius: 9999px;
       text-decoration: none;
-      color: var(--color-text);
+      color: var(--text, #1a1a2e);
       font-size: 0.875rem;
-      transition: background-color var(--transition-fast);
+      transition: background-color 0.15s ease;
     }
 
     .search-suggestions a:hover {
-      background: var(--color-primary);
+      background: var(--accent-1, #2563eb);
       color: white;
+    }
+
+    /* Tooltips */
+    .tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: var(--text, #1a1a2e);
+      color: var(--bg, white);
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--text, #1a1a2e);
+    }
+
+    .tooltip.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
     }
 
     /* Screen Reader Only */
@@ -1368,7 +1389,7 @@ const injectStyles = () => {
 
     /* Focus Visible */
     :focus-visible {
-      outline: 2px solid var(--color-primary);
+      outline: 2px solid var(--accent-2, #f59e0b);
       outline-offset: 2px;
     }
 
@@ -1389,9 +1410,12 @@ const App = {
   init() {
     if (this.initialized) return;
 
+    // Inject dynamic styles
     injectStyles();
 
+    // Initialize all modules
     AppState.init();
+    DarkMode.init(); // DARK MODE INITIALIZATION
     Navigation.init();
     Animations.init();
     FormHandler.init();
@@ -1399,12 +1423,8 @@ const App = {
     Utils.init();
     Performance.init();
 
-    // Setup theme toggle
-    const darkToggle = Helpers.$('#dark-toggle');
-    darkToggle?.addEventListener('click', () => AppState.toggleTheme());
-
     this.initialized = true;
-    console.log('Study Buddy initialized ✨');
+    console.log('✨ Study Buddy initialized with dark mode support!');
   },
 
   destroy() {
@@ -1425,5 +1445,5 @@ if (document.readyState === 'loading') {
 
 // Export for module usage
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { App, AppState, Navigation, SearchHandler, Helpers };
+  module.exports = { App, DarkMode, AppState, Navigation, SearchHandler, Helpers };
 }
