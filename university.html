@@ -12,8 +12,816 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style-university.css" />
   
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z' fill='%231e3a8a'/%3E%3C/svg%3E">
+  
+  <style>
+    .progress-tracker {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.05), rgba(14, 165, 233, 0.05));
+      border-radius: 20px;
+      padding: 2rem;
+      margin: 3rem 0;
+      border: 2px solid var(--accent-3);
+    }
+    
+    .progress-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .progress-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .progress-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .progress-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(30, 58, 138, 0.15);
+    }
+    
+    .progress-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      cursor: pointer;
+    }
+
+    .progress-number:hover {
+      opacity: 0.7;
+    }
+
+    .editable-input {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      border: 2px solid var(--accent-3);
+      border-radius: 8px;
+      padding: 0.25rem 0.5rem;
+      text-align: center;
+      width: 100%;
+      max-width: 150px;
+    }
+    
+    .progress-label {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+
+    .edit-hint {
+      font-size: 0.75rem;
+      color: var(--accent-3);
+      margin-top: 0.25rem;
+      font-style: italic;
+    }
+    
+    .study-timer {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+      border: 2px solid var(--accent-4);
+      text-align: center;
+    }
+    
+    .timer-display {
+      font-size: 4rem;
+      font-weight: 800;
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-4));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 1.5rem 0;
+      letter-spacing: 0.1em;
+    }
+    
+    .timer-controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    
+    .timer-btn {
+      padding: 0.875rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .timer-btn.start {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+    
+    .timer-btn.pause {
+      background: linear-gradient(135deg, var(--accent-2), #ea580c);
+      color: white;
+    }
+    
+    .timer-btn.reset {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+      color: white;
+    }
+    
+    .timer-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .timer-presets {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .preset-btn {
+      padding: 0.5rem 1.25rem;
+      background: white;
+      border: 2px solid var(--accent-3);
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .preset-btn:hover {
+      background: var(--accent-3);
+      color: white;
+      transform: scale(1.05);
+    }
+    
+    .gpa-calculator {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(249, 115, 22, 0.05));
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+      border: 2px solid var(--accent-2);
+    }
+    
+    .calculator-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .calculator-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-2), #ea580c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .course-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .course-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .course-input {
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border, #e5e7eb);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    
+    .course-input:focus {
+      outline: none;
+      border-color: var(--accent-2);
+    }
+    
+    .remove-course {
+      padding: 0.5rem 1rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .remove-course:hover {
+      background: #dc2626;
+      transform: scale(1.05);
+    }
+    
+    .calculator-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    
+    .calc-btn {
+      padding: 0.875rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .calc-btn.add {
+      background: linear-gradient(135deg, var(--accent-3), #0891b2);
+      color: white;
+    }
+    
+    .calc-btn.calculate {
+      background: linear-gradient(135deg, var(--accent-2), #ea580c);
+      color: white;
+    }
+    
+    .calc-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .gpa-result {
+      margin-top: 2rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    .gpa-value {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .gpa-scale {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .quotes-carousel {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(168, 85, 247, 0.05));
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      margin: 3rem 0;
+      border: 2px solid var(--accent-4);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .quote-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .quote-text {
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.8;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+    
+    .quote-author {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-4);
+    }
+    
+    .quote-controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .quote-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-4), var(--accent-2));
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .quote-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+    }
+    
+    .research-tracker {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(8, 145, 178, 0.05));
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+      border: 2px solid var(--accent-3);
+    }
+    
+    .tracker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .tracker-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-3), #0891b2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .add-paper-btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--accent-3), #0891b2);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .add-paper-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+    }
+    
+    .papers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .paper-item {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+    
+    .paper-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.15);
+    }
+
+    .paper-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .paper-info h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    
+    .paper-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    .paper-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .expand-paper {
+      padding: 0.5rem 1rem;
+      background: var(--accent-3);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .expand-paper:hover {
+      background: #0891b2;
+    }
+
+    .remove-paper {
+      padding: 0.5rem 1rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .remove-paper:hover {
+      background: #dc2626;
+    }
+
+    .paper-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .paper-details.expanded {
+      max-height: 500px;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--accent-3);
+    }
+
+    .paper-detail-row {
+      margin-bottom: 0.75rem;
+    }
+
+    .paper-detail-label {
+      font-weight: 700;
+      color: var(--accent-3);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .paper-detail-input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px solid var(--border, #e5e7eb);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .paper-detail-input:focus {
+      outline: none;
+      border-color: var(--accent-3);
+    }
+    
+    .paper-status {
+      padding: 0.375rem 0.875rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    
+    .status-planning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .status-writing {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .status-reviewing {
+      background: #fce7f3;
+      color: #9f1239;
+    }
+    
+    .status-completed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--muted);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .tool-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s ease;
+      border: 2px solid transparent;
+      text-align: center;
+    }
+    
+    .tool-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15);
+      border-color: var(--accent-1);
+    }
+    
+    .tool-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: toolFloat 3s ease-in-out infinite;
+    }
+    
+    @keyframes toolFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+    
+    .tool-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    
+    .tool-description {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .tool-btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .tool-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(30, 58, 138, 0.3);
+    }
+    
+    .stats-dashboard {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.05), rgba(14, 165, 233, 0.05));
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+      border: 2px solid var(--accent-1);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(30, 58, 138, 0.15);
+    }
+    
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      cursor: pointer;
+    }
+
+    .stat-value:hover {
+      opacity: 0.7;
+    }
+
+    .stat-input {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      border: 2px solid var(--accent-3);
+      border-radius: 8px;
+      padding: 0.25rem 0.5rem;
+      text-align: center;
+      width: 100%;
+      max-width: 150px;
+    }
+    
+    .stat-label {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+    
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .aesthetics-notice {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 3px solid #f59e0b;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .aesthetics-notice-text {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #92400e;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .aesthetics-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .quick-link {
+      padding: 1rem;
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.05), rgba(14, 165, 233, 0.05));
+      border: 2px solid var(--accent-3);
+      border-radius: 12px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    
+    .quick-link:hover {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.1), rgba(14, 165, 233, 0.1));
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(30, 58, 138, 0.2);
+    }
+    
+    .note-templates {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(168, 85, 247, 0.05));
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 3rem 0;
+      border: 2px solid var(--accent-4);
+    }
+    
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .template-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+    
+    .template-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+    }
+    
+    .template-preview {
+      background: #f8fafc;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      border-left: 4px solid var(--accent-4);
+    }
+    
+    .download-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: linear-gradient(135deg, var(--accent-4), var(--accent-2));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .download-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+      .course-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .timer-display {
+        font-size: 3rem;
+      }
+      
+      .quote-text {
+        font-size: 1.2rem;
+      }
+      
+      .progress-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .paper-header {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
@@ -66,10 +874,53 @@
   <main id="main-content">
     <section class="page active">
       <div class="container">
-        <h2>University Level</h2>
+        <h2>University Level Excellence</h2>
         <p class="section-sub">
           Advanced strategies for academic excellence and research mastery! 🌟🔬
         </p>
+
+        <div class="progress-tracker">
+          <div class="progress-header">
+            <h3 class="progress-title">📊 Your Academic Progress</h3>
+            <p style="color: var(--muted); font-weight: 600;">Track your university journey in real-time</p>
+            <p class="edit-hint">Click on any number to edit</p>
+          </div>
+          <div class="progress-grid">
+            <div class="progress-item" onclick="editProgress('courses-completed')">
+              <div class="progress-number" id="courses-completed">0</div>
+              <div class="progress-label">Courses Completed</div>
+            </div>
+            <div class="progress-item" onclick="editProgress('papers-written')">
+              <div class="progress-number" id="papers-written">0</div>
+              <div class="progress-label">Research Papers</div>
+            </div>
+            <div class="progress-item" onclick="editProgress('study-hours')">
+              <div class="progress-number" id="study-hours">0</div>
+              <div class="progress-label">Study Hours</div>
+            </div>
+            <div class="progress-item" onclick="editProgress('current-gpa')">
+              <div class="progress-number" id="current-gpa">0.0</div>
+              <div class="progress-label">Current GPA</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="study-timer">
+          <h3 style="font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-1), var(--accent-4)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem;">⏱️ Focus Timer</h3>
+          <p style="color: var(--muted); font-weight: 600; margin-bottom: 1rem;">Stay productive with the Pomodoro technique</p>
+          <div class="timer-display" id="timer-display">25:00</div>
+          <div class="timer-controls">
+            <button class="timer-btn start" id="start-timer">Start</button>
+            <button class="timer-btn pause" id="pause-timer">Pause</button>
+            <button class="timer-btn reset" id="reset-timer">Reset</button>
+          </div>
+          <div class="timer-presets">
+            <button class="preset-btn" data-minutes="25">25 min</button>
+            <button class="preset-btn" data-minutes="50">50 min</button>
+            <button class="preset-btn" data-minutes="5">5 min break</button>
+            <button class="preset-btn" data-minutes="15">15 min break</button>
+          </div>
+        </div>
 
         <div class="card-container" role="list" aria-label="Study strategies for university students">
           <article class="card" role="listitem">
@@ -143,7 +994,149 @@
           </article>
         </div>
 
-        <!-- Academic Resources Section -->
+        <div class="gpa-calculator">
+          <div class="calculator-header">
+            <h3 class="calculator-title">🎯 GPA Calculator</h3>
+            <p style="color: var(--muted); font-weight: 600;">Calculate your semester or cumulative GPA</p>
+          </div>
+          <div class="course-inputs" id="course-inputs">
+            <div class="course-row">
+              <input type="text" class="course-input" placeholder="Course Name" />
+              <input type="number" class="course-input" placeholder="Credits" min="1" max="6" />
+              <select class="course-input">
+                <option value="4.0">A (4.0)</option>
+                <option value="3.7">A- (3.7)</option>
+                <option value="3.3">B+ (3.3)</option>
+                <option value="3.0">B (3.0)</option>
+                <option value="2.7">B- (2.7)</option>
+                <option value="2.3">C+ (2.3)</option>
+                <option value="2.0">C (2.0)</option>
+                <option value="1.7">C- (1.7)</option>
+                <option value="1.3">D+ (1.3)</option>
+                <option value="1.0">D (1.0)</option>
+                <option value="0.0">F (0.0)</option>
+              </select>
+              <button class="remove-course" onclick="this.parentElement.remove()">✕</button>
+            </div>
+          </div>
+          <div class="calculator-actions">
+            <button class="calc-btn add" id="add-course">+ Add Course</button>
+            <button class="calc-btn calculate" id="calculate-gpa">Calculate GPA</button>
+          </div>
+          <div class="gpa-result" id="gpa-result" style="display: none;">
+            <div class="gpa-value" id="gpa-value">0.00</div>
+            <div class="gpa-scale">out of 4.0</div>
+          </div>
+        </div>
+
+        <div class="research-tracker">
+          <div class="tracker-header">
+            <h3 class="tracker-title">📄 Research Paper Tracker</h3>
+            <button class="add-paper-btn" id="add-paper">+ Add Paper</button>
+          </div>
+          <div class="papers-list" id="papers-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">📄</div>
+              <p>No research papers yet. Click "+ Add Paper" to start tracking!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="quotes-carousel">
+          <div class="quote-content">
+            <p class="quote-text" id="quote-text">"Education is the most powerful weapon which you can use to change the world."</p>
+            <p class="quote-author" id="quote-author">— Nelson Mandela</p>
+          </div>
+          <div class="quote-controls">
+            <button class="quote-btn" id="prev-quote">←</button>
+            <button class="quote-btn" id="next-quote">→</button>
+          </div>
+        </div>
+
+        <div class="stats-dashboard">
+          <h3 style="font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-1), var(--accent-3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 0.5rem;">📈 Academic Analytics</h3>
+          <p class="edit-hint" style="text-align: center; margin-bottom: 1rem;">Click on any value to edit your stats</p>
+          <div class="stats-grid">
+            <div class="stat-card" onclick="editStat('books-read')">
+              <div class="stat-icon">📚</div>
+              <div class="stat-value" id="books-read">0</div>
+              <div class="stat-label">Books Read</div>
+            </div>
+            <div class="stat-card" onclick="editStat('notes-pages')">
+              <div class="stat-icon">✍️</div>
+              <div class="stat-value" id="notes-pages">0</div>
+              <div class="stat-label">Notes Pages</div>
+            </div>
+            <div class="stat-card" onclick="editStat('goals-achieved')">
+              <div class="stat-icon">🎯</div>
+              <div class="stat-value" id="goals-achieved">0</div>
+              <div class="stat-label">Goals Achieved</div>
+            </div>
+            <div class="stat-card" onclick="editStat('achievements')">
+              <div class="stat-icon">🏆</div>
+              <div class="stat-value" id="achievements">0</div>
+              <div class="stat-label">Achievements</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note-templates">
+          <h3 style="font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-4), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 1rem;">📝 Note-Taking Templates</h3>
+          <p style="text-align: center; color: var(--muted); font-weight: 600; margin-bottom: 2rem;">Professional templates for different study needs</p>
+          <div class="templates-grid">
+            <div class="template-card">
+              <h4 class="tool-title">Cornell Notes</h4>
+              <div class="template-preview">
+                Cues | Notes<br>
+                ─────┼──────<br>
+                Q:   | Main ideas<br>
+                Key  | Details<br>
+                ─────┴──────<br>
+                Summary:
+              </div>
+              <button class="download-btn" onclick="downloadTemplate('cornell')">Download Template</button>
+            </div>
+            <div class="template-card">
+              <h4 class="tool-title">Mind Map</h4>
+              <div class="template-preview">
+                    Topic<br>
+                   /  |  \<br>
+                  A   B   C<br>
+                 / \ / \ / \<br>
+                1 2 3 4 5 6
+              </div>
+              <button class="download-btn" onclick="downloadTemplate('mindmap')">Download Template</button>
+            </div>
+            <div class="template-card">
+              <h4 class="tool-title">Research Notes</h4>
+              <div class="template-preview">
+                Source:<br>
+                Author:<br>
+                Date:<br>
+                Key Points:<br>
+                - Point 1<br>
+                - Point 2<br>
+                Citations:
+              </div>
+              <button class="download-btn" onclick="downloadTemplate('research')">Download Template</button>
+            </div>
+            <div class="template-card">
+              <h4 class="tool-title">Lecture Notes</h4>
+              <div class="template-preview">
+                Course:<br>
+                Date:<br>
+                Topic:<br>
+                <br>
+                Main Ideas:<br>
+                1.<br>
+                2.<br>
+                Questions:
+              </div>
+              <button class="download-btn" onclick="downloadTemplate('lecture')">Download Template</button>
+            </div>
+          </div>
+        </div>
+
         <div class="resource-nav">
           <h2 class="resource-nav-title">🎓 Academic Resources & Tools 📚</h2>
           <p class="resource-nav-subtitle">
@@ -185,7 +1178,51 @@
           </div>
         </div>
 
-        <!-- Academic Insight -->
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon">📖</div>
+            <h4 class="tool-title">Reading List Manager</h4>
+            <p class="tool-description">Organize your academic reading materials and track progress</p>
+            <button class="tool-btn" onclick="alert('Reading List Manager - Coming Soon!')">Launch Tool</button>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">🗓️</div>
+            <h4 class="tool-title">Assignment Tracker</h4>
+            <p class="tool-description">Never miss a deadline with our comprehensive assignment planner</p>
+            <button class="tool-btn" onclick="alert('Assignment Tracker - Coming Soon!')">Launch Tool</button>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">💰</div>
+            <h4 class="tool-title">Budget Planner</h4>
+            <p class="tool-description">Manage student finances and track expenses effectively</p>
+            <button class="tool-btn" onclick="alert('Budget Planner - Coming Soon!')">Launch Tool</button>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">🎯</div>
+            <h4 class="tool-title">Goal Setter</h4>
+            <p class="tool-description">Set and track your academic and personal goals</p>
+            <button class="tool-btn" onclick="alert('Goal Setter - Coming Soon!')">Launch Tool</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 3rem;">
+          <h3 style="font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-1), var(--accent-3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 2rem;">🔗 Quick Access Links</h3>
+          
+          <div class="aesthetics-notice">
+            <div class="aesthetics-icon">⚠️</div>
+            <p class="aesthetics-notice-text">📌 These links are for visual design purposes only 📌</p>
+          </div>
+
+          <div class="quick-links">
+            <div class="quick-link">📚 Library Portal</div>
+            <div class="quick-link">📧 Email</div>
+            <div class="quick-link">📅 Academic Calendar</div>
+            <div class="quick-link">💻 LMS Portal</div>
+            <div class="quick-link">🎓 Grades</div>
+            <div class="quick-link">📋 Course Registration</div>
+          </div>
+        </div>
+
         <div class="academic-insight">
           <div class="insight-icon">💡</div>
           <div class="insight-content">
@@ -215,15 +1252,11 @@
     </div>
   </footer>
 
-  <!-- External JavaScript file -->
   <script src="script.js"></script>
 
-  <!-- Internal JavaScript -->
   <script>
-    // Set current year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile menu toggle
     const menuToggle = document.getElementById('menu-toggle');
     const menu = document.getElementById('menu');
 
@@ -234,7 +1267,6 @@
         menuToggle.setAttribute('aria-expanded', isExpanded);
       });
 
-      // Close menu when clicking outside
       document.addEventListener('click', (e) => {
         if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
           menu.classList.remove('active');
@@ -243,12 +1275,10 @@
       });
     }
 
-    // WORKING DARK MODE
     const darkToggle = document.getElementById('dark-toggle');
     const html = document.documentElement;
 
     if (darkToggle) {
-      // Check for saved preference
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
         html.classList.add('dark');
@@ -263,7 +1293,6 @@
       });
     }
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu && menu.classList.contains('active')) {
         menu.classList.remove('active');
@@ -274,7 +1303,6 @@
       }
     });
 
-    // Enhanced scroll animations
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
@@ -289,14 +1317,13 @@
       });
     }, observerOptions);
 
-    document.querySelectorAll('.card, .resource-card').forEach(card => {
+    document.querySelectorAll('.card, .resource-card, .tool-card, .stat-card').forEach(card => {
       card.style.opacity = '0';
       card.style.transform = 'translateY(30px)';
       card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       observer.observe(card);
     });
 
-    // Subtle parallax effect on scroll
     let ticking = false;
     let lastScrollY = 0;
 
@@ -317,7 +1344,6 @@
       }
     });
 
-    // Enhanced hover effects
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => {
       card.addEventListener('mouseenter', function() {
@@ -328,6 +1354,512 @@
         this.style.transition = 'all 0.3s ease';
       });
     });
+
+    function editProgress(id) {
+      const element = document.getElementById(id);
+      const currentValue = element.textContent;
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.className = 'editable-input';
+      input.value = currentValue;
+      input.min = '0';
+      input.step = id === 'current-gpa' ? '0.1' : '1';
+      
+      element.replaceWith(input);
+      input.focus();
+      input.select();
+      
+      function saveValue() {
+        const newValue = input.value || '0';
+        const newElement = document.createElement('div');
+        newElement.className = 'progress-number';
+        newElement.id = id;
+        newElement.textContent = newValue;
+        input.replaceWith(newElement);
+        localStorage.setItem(id, newValue);
+      }
+      
+      input.addEventListener('blur', saveValue);
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') saveValue();
+      });
+    }
+
+    function editStat(id) {
+      const element = document.getElementById(id);
+      const currentValue = element.textContent;
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.className = 'stat-input';
+      input.value = currentValue;
+      input.min = '0';
+      
+      element.replaceWith(input);
+      input.focus();
+      input.select();
+      
+      function saveValue() {
+        const newValue = input.value || '0';
+        const newElement = document.createElement('div');
+        newElement.className = 'stat-value';
+        newElement.id = id;
+        newElement.textContent = newValue;
+        input.replaceWith(newElement);
+        localStorage.setItem(id, newValue);
+      }
+      
+      input.addEventListener('blur', saveValue);
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') saveValue();
+      });
+    }
+
+    window.addEventListener('load', () => {
+      ['courses-completed', 'papers-written', 'study-hours', 'current-gpa'].forEach(id => {
+        const saved = localStorage.getItem(id);
+        if (saved) document.getElementById(id).textContent = saved;
+      });
+      
+      ['books-read', 'notes-pages', 'goals-achieved', 'achievements'].forEach(id => {
+        const saved = localStorage.getItem(id);
+        if (saved) document.getElementById(id).textContent = saved;
+      });
+
+      loadPapers();
+    });
+
+    let timerInterval;
+    let timeLeft = 25 * 60;
+    let isRunning = false;
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      document.getElementById('timer-display').textContent = 
+        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    document.getElementById('start-timer').addEventListener('click', () => {
+      if (!isRunning) {
+        isRunning = true;
+        timerInterval = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            isRunning = false;
+            alert('Time\'s up! Great job staying focused! 🎉');
+          }
+        }, 1000);
+      }
+    });
+
+    document.getElementById('pause-timer').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      isRunning = false;
+    });
+
+    document.getElementById('reset-timer').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      isRunning = false;
+      timeLeft = 25 * 60;
+      updateTimerDisplay();
+    });
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        clearInterval(timerInterval);
+        isRunning = false;
+        timeLeft = parseInt(btn.dataset.minutes) * 60;
+        updateTimerDisplay();
+      });
+    });
+
+    document.getElementById('add-course').addEventListener('click', () => {
+      const courseInputs = document.getElementById('course-inputs');
+      const newRow = document.createElement('div');
+      newRow.className = 'course-row';
+      newRow.innerHTML = `
+        <input type="text" class="course-input" placeholder="Course Name" />
+        <input type="number" class="course-input" placeholder="Credits" min="1" max="6" />
+        <select class="course-input">
+          <option value="4.0">A (4.0)</option>
+          <option value="3.7">A- (3.7)</option>
+          <option value="3.3">B+ (3.3)</option>
+          <option value="3.0">B (3.0)</option>
+          <option value="2.7">B- (2.7)</option>
+          <option value="2.3">C+ (2.3)</option>
+          <option value="2.0">C (2.0)</option>
+          <option value="1.7">C- (1.7)</option>
+          <option value="1.3">D+ (1.3)</option>
+          <option value="1.0">D (1.0)</option>
+          <option value="0.0">F (0.0)</option>
+        </select>
+        <button class="remove-course" onclick="this.parentElement.remove()">✕</button>
+      `;
+      courseInputs.appendChild(newRow);
+    });
+
+    document.getElementById('calculate-gpa').addEventListener('click', () => {
+      const rows = document.querySelectorAll('.course-row');
+      let totalPoints = 0;
+      let totalCredits = 0;
+
+      rows.forEach(row => {
+        const credits = parseFloat(row.children[1].value) || 0;
+        const grade = parseFloat(row.children[2].value) || 0;
+        totalPoints += credits * grade;
+        totalCredits += credits;
+      });
+
+      const gpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
+      document.getElementById('gpa-value').textContent = gpa;
+      document.getElementById('gpa-result').style.display = 'block';
+    });
+
+    const quotes = [
+      { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
+      { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
+      { text: "Education is not preparation for life; education is life itself.", author: "John Dewey" },
+      { text: "The more that you read, the more things you will know. The more that you learn, the more places you'll go.", author: "Dr. Seuss" },
+      { text: "Live as if you were to die tomorrow. Learn as if you were to live forever.", author: "Mahatma Gandhi" },
+      { text: "The expert in anything was once a beginner.", author: "Helen Hayes" },
+      { text: "Success is no accident. It is hard work, perseverance, learning, studying, sacrifice.", author: "Pelé" }
+    ];
+
+    let currentQuote = 0;
+
+    function updateQuote() {
+      document.getElementById('quote-text').textContent = quotes[currentQuote].text;
+      document.getElementById('quote-author').textContent = `— ${quotes[currentQuote].author}`;
+    }
+
+    document.getElementById('next-quote').addEventListener('click', () => {
+      currentQuote = (currentQuote + 1) % quotes.length;
+      updateQuote();
+    });
+
+    document.getElementById('prev-quote').addEventListener('click', () => {
+      currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+      updateQuote();
+    });
+
+    let paperCounter = 0;
+
+    function loadPapers() {
+      const savedPapers = localStorage.getItem('researchPapers');
+      if (savedPapers) {
+        const papers = JSON.parse(savedPapers);
+        const papersList = document.getElementById('papers-list');
+        papersList.innerHTML = '';
+        
+        if (papers.length === 0) {
+          papersList.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📄</div>
+              <p>No research papers yet. Click "+ Add Paper" to start tracking!</p>
+            </div>
+          `;
+        } else {
+          papers.forEach(paper => {
+            papersList.appendChild(createPaperElement(paper));
+          });
+          paperCounter = Math.max(...papers.map(p => p.id)) + 1;
+        }
+      }
+    }
+
+    function savePapers() {
+      const papersList = document.getElementById('papers-list');
+      const papers = [];
+      
+      papersList.querySelectorAll('.paper-item').forEach(item => {
+        const id = parseInt(item.dataset.id);
+        const title = item.querySelector('h4').textContent;
+        const due = item.querySelector('.paper-detail-input[placeholder="Due Date"]')?.value || 'TBD';
+        const progress = item.querySelector('.paper-detail-input[placeholder="Progress %"]')?.value || '0';
+        const status = item.querySelector('.paper-status').textContent;
+        const notes = item.querySelector('.paper-detail-input[placeholder="Notes"]')?.value || '';
+        
+        papers.push({ id, title, due, progress, status, notes });
+      });
+      
+      localStorage.setItem('researchPapers', JSON.stringify(papers));
+    }
+
+    function createPaperElement(paper) {
+      const paperItem = document.createElement('div');
+      paperItem.className = 'paper-item';
+      paperItem.dataset.id = paper.id;
+      
+      paperItem.innerHTML = `
+        <div class="paper-header">
+          <div class="paper-info">
+            <h4 contenteditable="true" spellcheck="false">${paper.title}</h4>
+            <div class="paper-meta">
+              <span>📅 Due: ${paper.due}</span>
+              <span>📊 Progress: ${paper.progress}%</span>
+            </div>
+          </div>
+          <div class="paper-actions">
+            <button class="expand-paper">Details</button>
+            <select class="paper-status" onchange="savePapers()">
+              <option value="Planning" ${paper.status === 'Planning' ? 'selected' : ''}>Planning</option>
+              <option value="Writing" ${paper.status === 'Writing' ? 'selected' : ''}>Writing</option>
+              <option value="Reviewing" ${paper.status === 'Reviewing' ? 'selected' : ''}>Reviewing</option>
+              <option value="Completed" ${paper.status === 'Completed' ? 'selected' : ''}>Completed</option>
+            </select>
+            <button class="remove-paper">✕</button>
+          </div>
+        </div>
+        <div class="paper-details">
+          <div class="paper-detail-row">
+            <label class="paper-detail-label">Due Date:</label>
+            <input type="date" class="paper-detail-input" placeholder="Due Date" value="${paper.due !== 'TBD' ? paper.due : ''}" onchange="savePapers()">
+          </div>
+          <div class="paper-detail-row">
+            <label class="paper-detail-label">Progress (%):</label>
+            <input type="number" class="paper-detail-input" placeholder="Progress %" min="0" max="100" value="${paper.progress}" onchange="savePapers()">
+          </div>
+          <div class="paper-detail-row">
+            <label class="paper-detail-label">Notes:</label>
+            <textarea class="paper-detail-input" placeholder="Notes" rows="3" onchange="savePapers()">${paper.notes}</textarea>
+          </div>
+        </div>
+      `;
+      
+      const expandBtn = paperItem.querySelector('.expand-paper');
+      const details = paperItem.querySelector('.paper-details');
+      
+      expandBtn.addEventListener('click', () => {
+        details.classList.toggle('expanded');
+        expandBtn.textContent = details.classList.contains('expanded') ? 'Hide' : 'Details';
+      });
+      
+      const removeBtn = paperItem.querySelector('.remove-paper');
+      removeBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to remove this paper?')) {
+          paperItem.remove();
+          savePapers();
+          
+          if (document.querySelectorAll('.paper-item').length === 0) {
+            document.getElementById('papers-list').innerHTML = `
+              <div class="empty-state">
+                <div class="empty-state-icon">📄</div>
+                <p>No research papers yet. Click "+ Add Paper" to start tracking!</p>
+              </div>
+            `;
+          }
+        }
+      });
+      
+      const titleEl = paperItem.querySelector('h4');
+      titleEl.addEventListener('blur', savePapers);
+      
+      return paperItem;
+    }
+
+    document.getElementById('add-paper').addEventListener('click', () => {
+      const papersList = document.getElementById('papers-list');
+      const emptyState = papersList.querySelector('.empty-state');
+      if (emptyState) {
+        emptyState.remove();
+      }
+      
+      const newPaper = {
+        id: paperCounter++,
+        title: 'New Research Paper',
+        due: 'TBD',
+        progress: '0',
+        status: 'Planning',
+        notes: ''
+      };
+      
+      papersList.appendChild(createPaperElement(newPaper));
+      savePapers();
+    });
+
+    function downloadTemplate(type) {
+      const templates = {
+        cornell: `CORNELL NOTES TEMPLATE
+==================
+
+Course: _____________________
+Date: _______________________
+Topic: ______________________
+
+┌─────────────────────────────────────────┐
+│ CUES/QUESTIONS    │    NOTES            │
+│                   │                     │
+│ Key terms         │  Main ideas and     │
+│ Questions         │  detailed notes     │
+│ Prompts           │  from lecture or    │
+│                   │  reading material   │
+│                   │                     │
+├───────────────────┴─────────────────────┤
+│ SUMMARY:                                │
+│                                         │
+│ Brief summary of main points            │
+│                                         │
+└─────────────────────────────────────────┘
+
+© Study Buddy University`,
+
+        mindmap: `MIND MAP TEMPLATE
+===============
+
+         ┌──────────────┐
+         │ MAIN TOPIC   │
+         └──────┬───────┘
+                │
+        ┌───────┴───────┐
+        │               │
+   ┌────┴────┐     ┌────┴────┐
+   │ BRANCH 1│     │ BRANCH 2│
+   └────┬────┘     └────┬────┘
+        │               │
+    ┌───┴───┐       ┌───┴───┐
+    │Sub-1A │       │Sub-2A │
+    └───────┘       └───────┘
+    ┌───────┐       ┌───────┐
+    │Sub-1B │       │Sub-2B │
+    └───────┘       └───────┘
+
+Instructions:
+1. Write main topic in center
+2. Add major branches (themes)
+3. Add sub-branches (details)
+4. Use colors for different themes
+5. Add images/symbols
+
+© Study Buddy University`,
+
+        research: `RESEARCH NOTES TEMPLATE
+====================
+
+Source Information:
+-------------------
+Title: _________________________________
+Author(s): _____________________________
+Date: __________________________________
+Source Type: ___________________________
+URL/Location: __________________________
+
+Key Arguments:
+--------------
+1. ____________________________________
+2. ____________________________________
+3. ____________________________________
+
+Evidence/Data:
+--------------
+• ____________________________________
+• ____________________________________
+• ____________________________________
+
+Quotations (with page numbers):
+--------------------------------
+"_____________________________________" (p. ___)
+
+"_____________________________________" (p. ___)
+
+Critical Analysis:
+------------------
+Strengths:
+_________________________________________
+
+Weaknesses:
+_________________________________________
+
+Relevance to Research:
+_________________________________________
+
+Citation (APA):
+---------------
+_________________________________________
+
+Notes/Reflections:
+------------------
+_________________________________________
+
+© Study Buddy University`,
+
+        lecture: `LECTURE NOTES TEMPLATE
+====================
+
+Course: ____________________________
+Date: ______________________________
+Lecture #: _________________________
+Instructor: ________________________
+Topic: _____________________________
+
+Main Learning Objectives:
+-------------------------
+1. ____________________________________
+2. ____________________________________
+3. ____________________________________
+
+Key Concepts:
+-------------
+
+Concept 1: _____________________________
+Definition: ____________________________
+Example: _______________________________
+
+Concept 2: _____________________________
+Definition: ____________________________
+Example: _______________________________
+
+Concept 3: _____________________________
+Definition: ____________________________
+Example: _______________________________
+
+Important Details:
+------------------
+• ____________________________________
+• ____________________________________
+• ____________________________________
+• ____________________________________
+
+Diagrams/Visuals:
+-----------------
+[Space for drawings]
+
+
+Questions to Follow Up:
+-----------------------
+1. ____________________________________
+2. ____________________________________
+3. ____________________________________
+
+Action Items:
+-------------
+□ ____________________________________
+□ ____________________________________
+□ ____________________________________
+
+Summary:
+--------
+_________________________________________
+_________________________________________
+
+© Study Buddy University`
+      };
+
+      const content = templates[type];
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${type}-notes-template.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      alert(`✅ ${type.charAt(0).toUpperCase() + type.slice(1)} Notes template downloaded!`);
+    }
   </script>
 </body>
 </html>
