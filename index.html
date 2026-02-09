@@ -1,56 +1,464 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Study Buddy provides practical, research-backed study tips and downloadable resources tailored from elementary to university level. Study smarter, not harder.">
-  <meta name="theme-color" content="#0b84ff">
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Study Buddy provides practical, research-backed study tips and downloadable resources tailored from elementary to university level." />
+  <meta name="theme-color" content="#0b84ff" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Study Buddy – Study Smarter, Not Harder" />
+  <meta property="og:description" content="Research-backed study tips from elementary to university" />
   <title>Study Buddy – Study Smarter, Not Harder</title>
-  
-  <!-- Preload critical assets -->
-  <link rel="preload" href="style.css" as="style">
-  
-  <link rel="stylesheet" href="style.css">
-  
-  <!-- Open Graph / Social Media -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Study Buddy – Study Smarter">
-  <meta property="og:description" content="Research-backed study tips from elementary to university">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%230b84ff'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="style.css" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3EStudy Buddy%3C/title%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%230b84ff'/%3E%3C/svg%3E" />
+
+  <style>
+    :root {
+      --primary: #0b84ff;
+      --primary-dark: #0066cc;
+      --secondary: #06b6d4;
+      --accent: #ffd166;
+      --purple: #8b5cf6;
+      --green: #10b981;
+      --orange: #f59e0b;
+      --pink: #ec4899;
+      --red: #ef4444;
+      --text: #1f2937;
+      --text-secondary: #6b7280;
+      --bg: #ffffff;
+      --bg-secondary: #f9fafb;
+      --border: #e5e7eb;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: var(--bg); }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--primary, #0b84ff);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html:not(.light) {
+        --text: #f3f4f6; --text-secondary: #9ca3af;
+        --bg: #111827; --bg-secondary: #1f2937; --border: #374151;
+      }
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Toast system */
+    .toast-container {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000;
+      display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none;
+    }
+    .toast {
+      padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15); transform: translateX(120%);
+      transition: transform 0.3s ease; pointer-events: auto;
+      display: flex; align-items: center; gap: 0.75rem; max-width: 380px; cursor: pointer;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast-success { background: #d1fae5; color: #065f46; border: 2px solid #10b981; }
+    .toast-info { background: #dbeafe; color: #1e40af; border: 2px solid #3b82f6; }
+    .toast-warning { background: #fef3c7; color: #92400e; border: 2px solid #f59e0b; }
+
+    /* =================== HERO =================== */
+    .hero {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #0b84ff 0%, #06b6d4 50%, #8b5cf6 100%);
+      color: white; padding: 5rem 0 4rem;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+      position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 1rem; background: rgba(255,255,255,0.15);
+      border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem;
+      backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
+    }
+    .hero h2 {
+      font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin: 0 0 1.5rem;
+      letter-spacing: -0.02em;
+    }
+    .hero .lead {
+      font-size: 1.25rem; opacity: 0.9; line-height: 1.7; margin-bottom: 2rem; max-width: 540px;
+    }
+
+    /* Search */
+    .search-wrapper { margin-bottom: 2rem; max-width: 500px; position: relative; }
+    .search-box {
+      display: flex; align-items: center; background: rgba(255,255,255,0.15);
+      border-radius: 16px; padding: 0 1rem; backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.2); transition: all 0.3s ease;
+    }
+    .search-box:focus-within {
+      background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.4);
+    }
+    .search-icon { color: rgba(255,255,255,0.7); flex-shrink: 0; }
+    .search-box input {
+      flex: 1; padding: 0.875rem 0.75rem; background: transparent; border: none;
+      color: white; font-size: 1rem; font-family: inherit;
+    }
+    .search-box input::placeholder { color: rgba(255,255,255,0.6); }
+    .search-box input:focus { outline: none; }
+    #search-clear {
+      background: none; border: none; color: rgba(255,255,255,0.6);
+      cursor: pointer; font-size: 1.1rem; padding: 0.5rem; display: none;
+    }
+    #search-clear.visible { display: block; }
+    .search-results {
+      position: absolute; top: 100%; left: 0; right: 0; margin-top: 0.5rem;
+      background: white; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      max-height: 360px; overflow-y: auto; z-index: 100; display: none;
+    }
+    .search-results.active { display: block; }
+    .search-result-item {
+      padding: 1rem 1.25rem; border-bottom: 1px solid var(--border, #e5e7eb);
+      cursor: pointer; transition: background 0.2s ease; display: block;
+      text-decoration: none; color: var(--text, #1f2937);
+    }
+    .search-result-item:hover, .search-result-item:focus { background: #f0f7ff; }
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .search-result-level {
+      font-size: 0.75rem; font-weight: 600; padding: 0.15rem 0.5rem;
+      border-radius: 50px; display: inline-block; margin-bottom: 0.25rem;
+    }
+    .search-result-desc { font-size: 0.85rem; color: var(--text-secondary, #6b7280); }
+    .search-no-results {
+      padding: 2rem; text-align: center; color: var(--text-secondary, #6b7280); font-weight: 600;
+    }
+    .level-elementary .search-result-level { background: #fee2e2; color: #991b1b; }
+    .level-highschool .search-result-level { background: #e0e7ff; color: #3730a3; }
+    .level-seniorhigh .search-result-level { background: #ede9fe; color: #5b21b6; }
+    .level-university .search-result-level { background: #dbeafe; color: #1e40af; }
+
+    /* Hero Actions */
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.875rem 1.75rem; border-radius: 12px; font-weight: 700;
+      font-size: 0.95rem; text-decoration: none; transition: all 0.3s ease;
+      border: none; cursor: pointer; font-family: inherit;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn svg { flex-shrink: 0; }
+    .btn-primary {
+      background: white; color: var(--primary, #0b84ff);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.15); color: white;
+      border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.25); }
+    .btn-outline {
+      background: transparent; color: white;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+    /* Hero Stats */
+    .hero-stats { display: flex; gap: 3rem; }
+    .stat { text-align: center; }
+    .stat-number { font-size: 2rem; font-weight: 800; }
+    .stat-label { font-size: 0.85rem; opacity: 0.8; font-weight: 600; }
+
+    /* Hero Illustration */
+    .hero-ill { position: relative; min-height: 300px; }
+    .floating-card {
+      position: absolute; background: white; border-radius: 16px; padding: 1rem 1.25rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 0.75rem;
+      font-weight: 600; font-size: 0.9rem; color: var(--text, #1f2937);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .floating-card { animation: float 6s ease-in-out infinite; }
+      .card-1 { animation-delay: 0s; }
+      .card-2 { animation-delay: 2s; }
+      .card-3 { animation-delay: 4s; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .card-1 { top: 10%; right: 10%; }
+    .card-2 { top: 45%; left: 5%; }
+    .card-3 { bottom: 15%; right: 15%; }
+    .hero-main-graphic { display: flex; justify-content: center; align-items: center; padding-top: 2rem; }
+
+    /* =================== LEVEL NAVIGATOR =================== */
+    .levels-section {
+      padding: 5rem 0;
+      background: var(--bg-secondary, #f9fafb);
+    }
+    .section-header {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-header h2 {
+      font-size: 2rem; font-weight: 800; margin: 0 0 0.75rem;
+      color: var(--text, #1f2937);
+    }
+    .section-subtitle {
+      color: var(--text-secondary, #6b7280); font-size: 1.1rem; font-weight: 500;
+    }
+    .levels-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+    }
+    .level-card {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 2.5rem 1.5rem; background: white; border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.4s ease;
+      border: 2px solid transparent; text-decoration: none; color: inherit;
+    }
+    .level-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+    }
+    .level-card:hover .level-icon { transform: scale(1.1); }
+    .level-icon {
+      width: 72px; height: 72px; border-radius: 20px; display: flex;
+      align-items: center; justify-content: center; font-size: 2.5rem;
+      margin-bottom: 1.25rem; transition: transform 0.3s ease;
+    }
+    .level-card[data-level="elementary"] .level-icon { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+    .level-card[data-level="elementary"]:hover { border-color: #ff6b6b; }
+    .level-card[data-level="highschool"] .level-icon { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }
+    .level-card[data-level="highschool"]:hover { border-color: #6366f1; }
+    .level-card[data-level="seniorhigh"] .level-icon { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+    .level-card[data-level="seniorhigh"]:hover { border-color: #8b5cf6; }
+    .level-card[data-level="university"] .level-icon { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+    .level-card[data-level="university"]:hover { border-color: #0b84ff; }
+    .level-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text, #1f2937); }
+    .level-grades { font-size: 0.85rem; color: var(--text-secondary, #6b7280); margin-bottom: 0.75rem; font-weight: 600; }
+    .level-desc { font-size: 0.9rem; color: var(--text-secondary, #6b7280); line-height: 1.5; }
+    .level-arrow {
+      margin-top: 1rem; color: var(--primary, #0b84ff); font-weight: 700; font-size: 0.9rem;
+      display: flex; align-items: center; gap: 0.25rem; transition: gap 0.3s ease;
+    }
+    .level-card:hover .level-arrow { gap: 0.75rem; }
+
+    /* =================== FEATURED TIP =================== */
+    .featured-section { padding: 5rem 0; }
+    .featured-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .badge {
+      padding: 0.375rem 0.875rem; background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4));
+      color: white; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .featured-card {
+      display: grid; grid-template-columns: auto 1fr; gap: 2rem; padding: 2.5rem;
+      background: white; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      border: 2px solid var(--border, #e5e7eb); transition: all 0.3s ease;
+    }
+    .featured-card:hover {
+      border-color: var(--primary, #0b84ff);
+      box-shadow: 0 16px 32px rgba(11,132,255,0.1);
+    }
+    .featured-icon {
+      width: 64px; height: 64px; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(11,132,255,0.1), rgba(6,182,212,0.1));
+      display: flex; align-items: center; justify-content: center; color: var(--primary, #0b84ff);
+    }
+    .featured-icon svg { width: 32px; height: 32px; }
+    .featured-content h3 {
+      font-size: 1.35rem; font-weight: 700; margin: 0 0 0.75rem; color: var(--text, #1f2937);
+    }
+    .featured-content p {
+      color: var(--text-secondary, #6b7280); line-height: 1.7; margin: 0 0 1.25rem;
+    }
+    .featured-meta {
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .source { font-size: 0.85rem; color: var(--text-secondary, #6b7280); font-weight: 600; }
+    .featured-nav {
+      display: flex; gap: 0.5rem; margin-top: 1.5rem;
+    }
+    .featured-nav-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border, #e5e7eb);
+      background: white; cursor: pointer; font-size: 1rem; transition: all 0.3s ease;
+      display: flex; align-items: center; justify-content: center; color: var(--text, #1f2937);
+    }
+    .featured-nav-btn:hover {
+      border-color: var(--primary, #0b84ff); color: var(--primary, #0b84ff);
+      background: rgba(11,132,255,0.05);
+    }
+
+    /* =================== BENEFITS =================== */
+    .benefits-section { padding: 5rem 0; background: var(--bg-secondary, #f9fafb); }
+    .benefits-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+    }
+    .benefit-card {
+      padding: 2.5rem; background: white; border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.3s ease;
+      border: 2px solid transparent; text-align: center;
+    }
+    .benefit-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+      border-color: var(--primary, #0b84ff);
+    }
+    .benefit-icon {
+      width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, rgba(11,132,255,0.1), rgba(6,182,212,0.1));
+      display: flex; align-items: center; justify-content: center; color: var(--primary, #0b84ff);
+    }
+    .benefit-icon svg { width: 28px; height: 28px; }
+    .benefit-card h3 {
+      font-size: 1.2rem; font-weight: 700; margin: 0 0 0.75rem; color: var(--text, #1f2937);
+    }
+    .benefit-card p { color: var(--text-secondary, #6b7280); line-height: 1.6; margin: 0; }
+
+    /* =================== QUOTES =================== */
+    .quotes-section {
+      padding: 5rem 0; text-align: center;
+      background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4));
+      color: white;
+    }
+    .quote-text {
+      font-size: 1.5rem; font-weight: 600; line-height: 1.8; font-style: italic;
+      max-width: 700px; margin: 1.5rem auto;
+    }
+    .quote-author { font-weight: 700; opacity: 0.9; }
+    .quote-controls { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
+    .quote-btn {
+      width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1); color: white; font-size: 1.2rem; cursor: pointer;
+      transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+    .quote-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.5); }
+
+    /* =================== CTA =================== */
+    .cta-section {
+      padding: 5rem 0; text-align: center;
+    }
+    .cta-card {
+      padding: 4rem 3rem; border-radius: 24px;
+      background: linear-gradient(135deg, rgba(11,132,255,0.05), rgba(6,182,212,0.05));
+      border: 2px solid var(--border, #e5e7eb);
+    }
+    .cta-card h2 {
+      font-size: 2rem; font-weight: 800; margin: 0 0 1rem; color: var(--text, #1f2937);
+    }
+    .cta-card p {
+      color: var(--text-secondary, #6b7280); font-size: 1.1rem; margin-bottom: 2rem;
+      max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6;
+    }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-filled {
+      background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4));
+      color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 700;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: all 0.3s ease; border: none; font-size: 1rem; cursor: pointer;
+    }
+    .btn-filled:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(11,132,255,0.3); }
+    .btn-ghost {
+      background: transparent; color: var(--text, #1f2937); padding: 1rem 2rem;
+      border: 2px solid var(--border, #e5e7eb); border-radius: 12px; font-weight: 700;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: all 0.3s ease; font-size: 1rem;
+    }
+    .btn-ghost:hover { border-color: var(--primary, #0b84ff); color: var(--primary, #0b84ff); }
+
+    /* =================== FOOTER =================== */
+    footer {
+      padding: 2rem 0; background: var(--bg-secondary, #f9fafb);
+      border-top: 1px solid var(--border, #e5e7eb);
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 0.75rem; }
+    .footer-title { font-weight: 700; color: var(--text, #1f2937); }
+    .footer-tagline { font-size: 0.85rem; color: var(--text-secondary, #6b7280); }
+    .footer-links {
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+      font-size: 0.9rem; color: var(--text-secondary, #6b7280);
+    }
+    .footer-links a { color: var(--text-secondary, #6b7280); text-decoration: none; font-weight: 600; }
+    .footer-links a:hover { color: var(--primary, #0b84ff); }
+
+    /* Animate reveals */
+    .animate-ready { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .in-view { opacity: 1; transform: translateY(0); }
+
+    /* =================== RESPONSIVE =================== */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero .lead { margin: 0 auto 2rem; }
+      .search-wrapper { margin: 0 auto 2rem; }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-ill { display: none; }
+      .levels-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .hero h2 { font-size: 2.25rem; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .hero-stats { flex-direction: column; gap: 1.5rem; }
+      .levels-grid { grid-template-columns: 1fr; }
+      .benefits-grid { grid-template-columns: 1fr; }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-header { flex-direction: column; align-items: flex-start; }
+      .quote-text { font-size: 1.2rem; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Skip to main content link for accessibility -->
   <a href="#main-content" class="sr-only">Skip to main content</a>
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <title>Study Buddy Logo</title>
             <rect x="2" y="3" width="20" height="14" rx="2" fill="#fff" opacity="0.12"/>
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#fff"/>
           </svg>
         </div>
         <div>
-          <div class="site-title">Study Buddy</div>
-          <div class="site-sub">Study smarter – from Elementary to University</div>
+          <h1 class="site-title">Study Buddy</h1>
+          <span class="site-sub">Study smarter – from Elementary to University</span>
         </div>
       </div>
 
-      <nav class="main-nav" role="navigation" aria-label="Main navigation">
-        <button 
-          id="menu-toggle" 
-          type="button"
-          aria-label="Toggle navigation menu"
-          aria-expanded="false"
-          aria-controls="menu"
-        >
-          ☰
-        </button>
-        <ul id="menu">
+      <nav class="main-nav" aria-label="Primary navigation">
+        <button id="menu-toggle" class="menu-btn" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu">☰</button>
+        <ul id="menu" class="menu-list">
           <li><a href="index.html" class="active" aria-current="page">Home</a></li>
           <li><a href="elementary.html">Elementary</a></li>
           <li><a href="highschool.html">High School</a></li>
@@ -58,30 +466,23 @@
           <li><a href="university.html">University</a></li>
           <li><a href="credits.html">Credits</a></li>
         </ul>
-        <button 
-          id="dark-toggle" 
-          type="button"
-          aria-label="Toggle dark mode"
-          title="Toggle dark mode"
-        >
-          🌙
-        </button>
+        <button id="dark-toggle" class="menu-btn" type="button" aria-label="Toggle dark mode">🌙</button>
       </nav>
     </div>
   </header>
 
   <main id="main-content">
+    <!-- =================== HERO =================== -->
     <section class="hero" aria-labelledby="hero-heading">
-      <div class="hero-background"></div>
       <div class="container hero-inner">
         <div class="hero-left">
           <div class="hero-badge">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
             </svg>
             Research-backed learning
           </div>
-          <h1 id="hero-heading">Study smarter, not harder.</h1>
+          <h2 id="hero-heading">Study smarter, not harder.</h2>
           <p class="lead">
             Discover proven study techniques and downloadable resources tailored for every stage of your educational journey.
           </p>
@@ -89,61 +490,33 @@
           <div class="search-wrapper">
             <label for="searchBar" class="sr-only">Search study tips</label>
             <div class="search-box">
-              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
                 <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
-              <input 
-                id="searchBar" 
-                type="search" 
-                placeholder="Search tips (e.g., 'flashcards', 'Pomodoro')"
-                aria-label="Search study tips"
-                autocomplete="off"
-              >
-              <button 
-                id="search-clear" 
-                type="button"
-                title="Clear search"
-                aria-label="Clear search"
-              >
-                ✕
-              </button>
+              <input id="searchBar" type="search" placeholder="Search tips (e.g., 'flashcards', 'Pomodoro')" autocomplete="off" />
+              <button id="search-clear" type="button" aria-label="Clear search">✕</button>
             </div>
+            <div class="search-results" id="search-results" role="listbox" aria-label="Search results"></div>
           </div>
 
           <div class="hero-actions">
-            <a href="elementary.html" class="btn btn-primary" data-target="elementary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Explore Elementary
+            <a href="elementary.html" class="btn btn-primary">
+              <span aria-hidden="true">📚</span> Explore Elementary
             </a>
-            <a href="university.html" class="btn btn-secondary" data-target="university">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Go to University
-            </a>
-            <a href="assets/planner.pdf" class="btn btn-outline" download aria-label="Download planner PDF">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Download Planner
+            <a href="university.html" class="btn btn-secondary">
+              <span aria-hidden="true">🎓</span> Go to University
             </a>
           </div>
 
-          <div class="hero-stats">
-						<div class="stat">
-              <div class="stat-number">10K+</div>
-              <div class="stat-label">Students helped</div>
-            </div>
+          <div class="hero-stats" aria-label="Site statistics">
             <div class="stat">
-              <d class="stat">
               <div class="stat-number">50+</div>
               <div class="stat-label">Study techniques</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">4</div>
+              <div class="stat-label">Education levels</div>
             </div>
             <div class="stat">
               <div class="stat-number">100%</div>
@@ -165,7 +538,7 @@
               <circle cx="12" cy="12" r="9" stroke="#06b6d4" stroke-width="2"/>
               <path d="M12 6v6l4 2" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/>
             </svg>
-           <span>25 min Focus</span>
+            <span>25 min Focus</span>
           </div>
           <div class="floating-card card-3">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
@@ -192,105 +565,425 @@
       </div>
     </section>
 
-    <section class="featured container" aria-labelledby="featured-heading">
-      <div class="section-header">
-        <div>
-          <h2 id="featured-heading">Featured tip of the week</h2>
-          <p class="section-subtitle">Science-backed strategies for better learning</p>
+    <!-- =================== LEVEL NAVIGATOR =================== -->
+    <section class="levels-section" aria-labelledby="levels-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="levels-heading">Choose Your Level</h2>
+          <p class="section-subtitle">Tailored study strategies for every stage of your journey</p>
         </div>
-        <span class="badge">Weekly Update</span>
+        <div class="levels-grid">
+          <a href="elementary.html" class="level-card" data-level="elementary">
+            <div class="level-icon" aria-hidden="true">🎨</div>
+            <div class="level-name">Elementary</div>
+            <div class="level-grades">Grades 1–6</div>
+            <div class="level-desc">Fun, bite-sized techniques with star rewards and reading adventures!</div>
+            <div class="level-arrow">Explore →</div>
+          </a>
+          <a href="highschool.html" class="level-card" data-level="highschool">
+            <div class="level-icon" aria-hidden="true">📝</div>
+            <div class="level-name">High School</div>
+            <div class="level-grades">Grades 7–10</div>
+            <div class="level-desc">Cornell notes, mind maps, Pomodoro technique, and exam strategies.</div>
+            <div class="level-arrow">Explore →</div>
+          </a>
+          <a href="seniorhigh.html" class="level-card" data-level="seniorhigh">
+            <div class="level-icon" aria-hidden="true">🚀</div>
+            <div class="level-name">Senior High</div>
+            <div class="level-grades">Grades 11–12</div>
+            <div class="level-desc">Career mapping, college prep, skills matrix, and interview practice.</div>
+            <div class="level-arrow">Explore →</div>
+          </a>
+          <a href="university.html" class="level-card" data-level="university">
+            <div class="level-icon" aria-hidden="true">🎓</div>
+            <div class="level-name">University</div>
+            <div class="level-grades">College &amp; Beyond</div>
+            <div class="level-desc">Research tools, GPA calculator, paper tracker, and academic analytics.</div>
+            <div class="level-arrow">Explore →</div>
+          </a>
+        </div>
       </div>
-      <div id="featured-card" class="featured-card" role="article">
-        <div class="featured-icon">
-          <svg viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-            <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+    </section>
+
+    <!-- =================== FEATURED TIP =================== -->
+    <section class="featured-section" aria-labelledby="featured-heading">
+      <div class="container">
+        <div class="featured-header">
+          <div>
+            <h2 id="featured-heading">Featured Tip of the Week</h2>
+            <p class="section-subtitle">Science-backed strategies for better learning</p>
+          </div>
+          <span class="badge">Weekly Update</span>
         </div>
-        <div class="featured-content">
-          <h3>Use spaced practice – avoid cramming</h3>
-          <p>
-            Short study sessions spread over days or weeks build stronger long-term memory 
-            than one long cram session. Research shows this technique can improve retention by up to 200%.
-          </p>
-          <div class="featured-meta">
-            <span class="source">Source: UNC Learning Center</span>
-            <a href="#" class="learn-more">
-              Learn more
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
+        <div class="featured-card" id="featured-card">
+          <div class="featured-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="featured-content">
+            <h3 id="featured-title">Use spaced practice – avoid cramming</h3>
+            <p id="featured-desc">
+              Short study sessions spread over days or weeks build stronger long-term memory
+              than one long cram session. Research shows this technique can improve retention by up to 200%.
+            </p>
+            <div class="featured-meta">
+              <span class="source" id="featured-source">Source: UNC Learning Center</span>
+            </div>
+            <div class="featured-nav">
+              <button class="featured-nav-btn" type="button" id="prev-tip" aria-label="Previous tip">←</button>
+              <button class="featured-nav-btn" type="button" id="next-tip" aria-label="Next tip">→</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="benefits container">
-      <div class="section-header centered">
-        <h2>Why Study Buddy works</h2>
-        <p class="section-subtitle">Built on cognitive science and proven educational research</p>
+    <!-- =================== BENEFITS =================== -->
+    <section class="benefits-section" aria-labelledby="benefits-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="benefits-heading">Why Study Buddy Works</h2>
+          <p class="section-subtitle">Built on cognitive science and proven educational research</p>
+        </div>
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Research-Backed</h3>
+            <p>Every technique is grounded in peer-reviewed cognitive science and educational research.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>All Levels</h3>
+            <p>Tailored resources for elementary through university students and lifelong learners.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Free Resources</h3>
+            <p>Download planners, templates, and guides completely free. No hidden costs ever.</p>
+          </div>
+        </div>
       </div>
-      <div class="benefits-grid">
-        <div class="benefit-card">
-          <div class="benefit-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-              <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3>Research-Backed</h3>
-          <p>Every technique is grounded in peer-reviewed cognitive science and educational research.</p>
+    </section>
+
+    <!-- =================== QUOTES =================== -->
+    <section class="quotes-section" aria-label="Inspirational quotes">
+      <div class="container">
+        <h2 style="font-size:1.1rem; font-weight:700; opacity:0.8; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">Words of Wisdom</h2>
+        <div aria-live="polite" aria-atomic="true">
+          <p class="quote-text" id="home-quote-text">"The beautiful thing about learning is that no one can take it away from you."</p>
+          <p class="quote-author" id="home-quote-author">— B.B. King</p>
         </div>
-        <div class="benefit-card">
-          <div class="benefit-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3>All Levels</h3>
-          <p>Tailored resources for elementary through university students and lifelong learners.</p>
+        <div class="quote-controls">
+          <button class="quote-btn" id="home-prev-quote" type="button" aria-label="Previous quote">←</button>
+          <button class="quote-btn" id="home-next-quote" type="button" aria-label="Next quote">→</button>
         </div>
-        <div class="benefit-card">
-          <div class="benefit-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+      </div>
+    </section>
+
+    <!-- =================== CTA =================== -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="container">
+        <div class="cta-card">
+          <h2 id="cta-heading">Ready to study smarter?</h2>
+          <p>Pick your education level and discover proven techniques that will transform your study habits.</p>
+          <div class="cta-actions">
+            <a href="elementary.html" class="btn-filled">Get Started</a>
+            <a href="credits.html" class="btn-ghost">View Sources</a>
           </div>
-          <h3>Free Resources</h3>
-          <p>Download planners, templates, and guides completely free. No hidden costs.</p>
         </div>
       </div>
     </section>
   </main>
 
-  <footer role="contentinfo">
+  <footer>
     <div class="container footer-inner">
       <div class="footer-brand">
-        <div class="footer-logo">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <rect x="2" y="3" width="20" height="14" rx="2" fill="#fff" opacity="0.2"/>
-            <path d="M3 7.5C3 6.119 4.119 5 5.5 5h13c1.381 0 2.5 1.119 2.5 2.5V19a1 1 0 01-1 1h-17a1 1 0 01-1-1V7.5z" fill="#fff"/>
-          </svg>
-        </div>
-        <div>
-          <div class="footer-title">Study Buddy</div>
-          <div class="footer-tagline">Study smarter, achieve more</div>
-        </div>
+        <div class="footer-title">Study Buddy</div>
+        <div class="footer-tagline">Study smarter, achieve more</div>
       </div>
       <div class="footer-links">
-        <a href="credits.html">Credits & Sources</a>
-        <span class="separator">•</span>
-        <a href="#privacy">Privacy</a>
-        <span class="separator">•</span>
-        <span>© <span id="year">2024</span> Study Buddy</span>
+        <a href="credits.html">Credits &amp; Sources</a>
+        <span>&copy; <span id="year">2026</span> Study Buddy</span>
       </div>
     </div>
   </footer>
 
-  <script src="script.js" defer></script>
+  <script>
+  (function() {
+    'use strict';
+
+    // ===================== UTILITIES =====================
+
+    var storage = {
+      get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
+      set: function(k,v) { try { localStorage.setItem(k,v); } catch(e) {} }
+    };
+
+    function showToast(msg, type) {
+      type = type || 'info';
+      var c = document.getElementById('toast-container'); if (!c) return;
+      var t = document.createElement('div');
+      t.className = 'toast toast-' + type;
+      t.textContent = msg;
+      c.appendChild(t);
+      requestAnimationFrame(function() { requestAnimationFrame(function() { t.classList.add('show'); }); });
+      var to = setTimeout(function() { t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 4000);
+      t.addEventListener('click', function() { clearTimeout(to); t.remove(); });
+    }
+
+    // ===================== SETUP =====================
+
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Menu
+    var menuToggle = document.getElementById('menu-toggle');
+    var menu = document.getElementById('menu');
+    if (menuToggle && menu) {
+      menuToggle.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        menuToggle.setAttribute('aria-expanded', String(menu.classList.contains('active')));
+      });
+      document.addEventListener('click', function(e) {
+        if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
+          menu.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && menu.classList.contains('active')) {
+          menu.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.focus();
+        }
+      });
+    }
+
+    // Dark mode
+    var darkToggle = document.getElementById('dark-toggle');
+    var html = document.documentElement;
+    if (darkToggle) {
+      var saved = storage.get('theme');
+      if (saved === 'dark') { html.classList.add('dark'); darkToggle.textContent = '☀️'; }
+      else if (saved === 'light') { html.classList.add('light'); }
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        html.classList.add('dark'); darkToggle.textContent = '☀️';
+      }
+      darkToggle.addEventListener('click', function() {
+        html.classList.toggle('dark');
+        var isDark = html.classList.contains('dark');
+        darkToggle.textContent = isDark ? '☀️' : '🌙';
+        darkToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        storage.set('theme', isDark ? 'dark' : 'light');
+        if (isDark) html.classList.remove('light'); else html.classList.add('light');
+      });
+    }
+
+    // Intersection observer
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion && ('IntersectionObserver' in window)) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(en) {
+          if (en.isIntersecting) { en.target.classList.add('in-view'); observer.unobserve(en.target); }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.level-card, .benefit-card, .featured-card, .cta-card').forEach(function(el) {
+        el.classList.add('animate-ready'); observer.observe(el);
+      });
+    }
+
+    // ===================== SEARCH =====================
+
+    var searchTips = [
+      { title: 'Sing & Rhyme', desc: 'Turn lessons into songs to improve retention', level: 'Elementary', levelClass: 'level-elementary', url: 'elementary.html' },
+      { title: 'Colorful Flashcards', desc: 'Use colors and images for vocabulary and facts', level: 'Elementary', levelClass: 'level-elementary', url: 'elementary.html' },
+      { title: 'Short Sessions', desc: 'Study 15-25 minutes, then take a break', level: 'Elementary', levelClass: 'level-elementary', url: 'elementary.html' },
+      { title: 'Read Aloud', desc: 'Reading aloud helps comprehension and memory', level: 'Elementary', levelClass: 'level-elementary', url: 'elementary.html' },
+      { title: 'Quiz Games', desc: 'Use short games for review with friends', level: 'Elementary', levelClass: 'level-elementary', url: 'elementary.html' },
+      { title: 'Reward Charts', desc: 'Stickers and charts motivate consistent effort', level: 'Elementary', levelClass: 'level-elementary', url: 'elementary.html' },
+      { title: 'Cornell Notes', desc: 'Organize lectures into cues, notes, and summaries', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Mnemonics', desc: 'Use memory devices for sequences like PEMDAS', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Mind Maps', desc: 'Connect ideas visually to improve understanding', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Pomodoro Technique', desc: '25-minute focus sessions with 5-minute breaks', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Flashcard Apps', desc: 'Anki or Quizlet for spaced repetition', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Past Papers', desc: 'Practice with old exam formats under timed conditions', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Career Mapping', desc: 'Identify pathways using interest inventories', level: 'Senior High', levelClass: 'level-seniorhigh', url: 'seniorhigh.html' },
+      { title: 'Time Blocking', desc: 'Plan fixed hours for subjects and rest', level: 'Senior High', levelClass: 'level-seniorhigh', url: 'seniorhigh.html' },
+      { title: 'Mock Interviews', desc: 'Practice responses with peers for confidence', level: 'Senior High', levelClass: 'level-seniorhigh', url: 'seniorhigh.html' },
+      { title: 'Portfolio Building', desc: 'Compile best works, certificates, and achievements', level: 'Senior High', levelClass: 'level-seniorhigh', url: 'seniorhigh.html' },
+      { title: 'Research Databases', desc: 'Master JSTOR, Google Scholar, and library access', level: 'University', levelClass: 'level-university', url: 'university.html' },
+      { title: 'Citation Managers', desc: 'Organize references with Zotero or Mendeley', level: 'University', levelClass: 'level-university', url: 'university.html' },
+      { title: 'Critical Reading', desc: 'Evaluate sources, analyze argument structures', level: 'University', levelClass: 'level-university', url: 'university.html' },
+      { title: 'Thesis Planning', desc: 'Outline research chapters and set realistic timelines', level: 'University', levelClass: 'level-university', url: 'university.html' },
+      { title: 'Spaced Repetition', desc: 'Review material at increasing intervals for lasting memory', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Active Recall', desc: 'Test yourself instead of re-reading notes', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Study Groups', desc: 'Explain concepts to peers to deepen comprehension', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'GPA Calculator', desc: 'Calculate your semester or cumulative GPA', level: 'University', levelClass: 'level-university', url: 'university.html' },
+      { title: 'Focus Timer', desc: 'Pomodoro timer for productive study sessions', level: 'University', levelClass: 'level-university', url: 'university.html' }
+    ];
+
+    var searchInput = document.getElementById('searchBar');
+    var searchClear = document.getElementById('search-clear');
+    var searchResults = document.getElementById('search-results');
+
+    function performSearch(query) {
+      query = query.toLowerCase().trim();
+      searchResults.innerHTML = '';
+
+      if (!query) {
+        searchResults.classList.remove('active');
+        searchClear.classList.remove('visible');
+        return;
+      }
+
+      searchClear.classList.add('visible');
+      var matches = searchTips.filter(function(tip) {
+        return tip.title.toLowerCase().indexOf(query) !== -1 ||
+               tip.desc.toLowerCase().indexOf(query) !== -1 ||
+               tip.level.toLowerCase().indexOf(query) !== -1;
+      });
+
+      if (matches.length === 0) {
+        var noRes = document.createElement('div');
+        noRes.className = 'search-no-results';
+        noRes.textContent = 'No tips found for "' + query + '". Try a different keyword!';
+        searchResults.appendChild(noRes);
+      } else {
+        matches.slice(0, 8).forEach(function(tip) {
+          var item = document.createElement('a');
+          item.className = 'search-result-item ' + tip.levelClass;
+          item.href = tip.url;
+          item.setAttribute('role', 'option');
+
+          var level = document.createElement('span');
+          level.className = 'search-result-level';
+          level.textContent = tip.level;
+
+          var title = document.createElement('div');
+          title.className = 'search-result-title';
+          title.textContent = tip.title;
+
+          var desc = document.createElement('div');
+          desc.className = 'search-result-desc';
+          desc.textContent = tip.desc;
+
+          item.appendChild(level);
+          item.appendChild(title);
+          item.appendChild(desc);
+          searchResults.appendChild(item);
+        });
+      }
+      searchResults.classList.add('active');
+    }
+
+    if (searchInput) {
+      var searchTimeout;
+      searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() { performSearch(searchInput.value); }, 200);
+      });
+
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          searchInput.value = '';
+          searchResults.classList.remove('active');
+          searchClear.classList.remove('visible');
+        }
+      });
+    }
+
+    if (searchClear) {
+      searchClear.addEventListener('click', function() {
+        searchInput.value = '';
+        searchResults.classList.remove('active');
+        searchClear.classList.remove('visible');
+        searchInput.focus();
+      });
+    }
+
+    // Close search on outside click
+    document.addEventListener('click', function(e) {
+      if (searchResults && !searchResults.contains(e.target) &&
+          e.target !== searchInput && e.target !== searchClear) {
+        searchResults.classList.remove('active');
+      }
+    });
+
+    // ===================== FEATURED TIPS ROTATION =====================
+
+    var featuredTips = [
+      { title: 'Use spaced practice – avoid cramming', desc: 'Short study sessions spread over days or weeks build stronger long-term memory than one long cram session. Research shows this technique can improve retention by up to 200%.', source: 'Source: UNC Learning Center' },
+      { title: 'Test yourself with active recall', desc: 'Instead of re-reading notes, close your book and try to recall what you learned. Self-testing strengthens neural pathways and reveals knowledge gaps early.', source: 'Source: Cognitive Psychology Research' },
+      { title: 'Teach what you learn', desc: 'Explaining a concept to someone else is one of the most powerful learning strategies. If you can teach it simply, you truly understand it.', source: 'Source: The Feynman Technique' },
+      { title: 'Take handwritten notes', desc: 'Writing by hand forces your brain to process and summarize information, leading to deeper understanding compared to typing.', source: 'Source: Psychological Science Journal' },
+      { title: 'Use the Pomodoro Technique', desc: 'Study for 25 minutes, take a 5-minute break. After 4 cycles, take a longer 15-30 minute break. This maintains high focus and prevents burnout.', source: 'Source: Francesco Cirillo' },
+      { title: 'Sleep on it — literally', desc: 'Your brain consolidates memories during sleep. Reviewing material before bed and getting a full night\'s rest significantly improves recall the next day.', source: 'Source: Harvard Medical School' }
+    ];
+
+    var currentTip = 0;
+
+    function updateFeaturedTip() {
+      var tip = featuredTips[currentTip];
+      document.getElementById('featured-title').textContent = tip.title;
+      document.getElementById('featured-desc').textContent = tip.desc;
+      document.getElementById('featured-source').textContent = tip.source;
+    }
+
+    document.getElementById('next-tip').addEventListener('click', function() {
+      currentTip = (currentTip + 1) % featuredTips.length;
+      updateFeaturedTip();
+    });
+
+    document.getElementById('prev-tip').addEventListener('click', function() {
+      currentTip = (currentTip - 1 + featuredTips.length) % featuredTips.length;
+      updateFeaturedTip();
+    });
+
+    // ===================== QUOTES CAROUSEL =====================
+
+    var quotes = [
+      { text: '"The beautiful thing about learning is that no one can take it away from you."', author: 'B.B. King' },
+      { text: '"Education is the most powerful weapon which you can use to change the world."', author: 'Nelson Mandela' },
+      { text: '"The more that you read, the more things you will know."', author: 'Dr. Seuss' },
+      { text: '"Live as if you were to die tomorrow. Learn as if you were to live forever."', author: 'Mahatma Gandhi' },
+      { text: '"The expert in anything was once a beginner."', author: 'Helen Hayes' },
+      { text: '"Success is no accident. It is hard work, perseverance, learning, studying, sacrifice."', author: 'Pelé' }
+    ];
+    var currentQuote = 0;
+
+    function updateHomeQuote() {
+      document.getElementById('home-quote-text').textContent = quotes[currentQuote].text;
+      document.getElementById('home-quote-author').textContent = '— ' + quotes[currentQuote].author;
+    }
+
+    document.getElementById('home-next-quote').addEventListener('click', function() {
+      currentQuote = (currentQuote + 1) % quotes.length;
+      updateHomeQuote();
+    });
+
+    document.getElementById('home-prev-quote').addEventListener('click', function() {
+      currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+      updateHomeQuote();
+    });
+
+  })();
+  </script>
 </body>
-
 </html>
-
-
