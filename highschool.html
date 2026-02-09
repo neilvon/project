@@ -1,55 +1,225 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Proven study strategies for high school students in grades 7-10. Master effective techniques like Cornell notes, mind maps, and the Pomodoro technique." />
   <meta name="theme-color" content="#6366f1" />
-  
-  <title>High School Study Tips — Study Buddy</title>
-  
-  <link rel="preload" href="style-highschool.css" as="style" />
-  <link rel="stylesheet" href="style-highschool.css" />
-  
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="High School Study Tips — Study Buddy" />
   <meta property="og:description" content="Smart strategies for high school success" />
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%236366f1'/%3E%3C/svg%3E" />
+  <title>High School Study Tips — Study Buddy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="preload" href="style-highschool.css" as="style" />
+  <link rel="stylesheet" href="style-highschool.css" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3EStudy Buddy%3C/title%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%236366f1'/%3E%3C/svg%3E" />
+
+  <style>
+    /* Fallback CSS variables */
+    :root {
+      --accent-1: #6366f1;
+      --accent-2: #8b5cf6;
+      --accent-3: #06b6d4;
+      --accent-4: #f59e0b;
+      --muted: #6b7280;
+      --text: #1f2937;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--accent-1, #6366f1);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html:not(.light) {
+        --text: #e5e7eb; --muted: #9ca3af; --bg: #111827; --border: #374151;
+      }
+    }
+
+    /* Card list reset */
+    .card-list { list-style: none; padding: 0; margin: 0; }
+
+    /* Reveal animation */
+    .animate-ready {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .in-view { opacity: 1; transform: translateY(0); }
+
+    /* Utility */
+    .section-subtitle {
+      color: var(--muted, #6b7280); font-weight: 600; text-align: center;
+    }
+    .back-nav { margin-top: 3rem; text-align: center; }
+
+    /* Gradient headings */
+    .gradient-heading {
+      font-size: 1.75rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-2, #8b5cf6));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-1, #6366f1);
+    }
+
+    /* Toast notification system */
+    .toast-container {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000;
+      display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none;
+    }
+    .toast {
+      padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15); transform: translateX(120%);
+      transition: transform 0.3s ease; pointer-events: auto;
+      display: flex; align-items: center; gap: 0.75rem; max-width: 380px; cursor: pointer;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast-success { background: #d1fae5; color: #065f46; border: 2px solid #10b981; }
+    .toast-info { background: #dbeafe; color: #1e40af; border: 2px solid #3b82f6; }
+    .toast-warning { background: #fef3c7; color: #92400e; border: 2px solid #f59e0b; }
+
+    /* Toolkit section */
+    .hs-toolkit {
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.05));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent-1, #6366f1);
+    }
+    .toolkit-title {
+      font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-3, #06b6d4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-1, #6366f1);
+    }
+    .toolkit-subtitle {
+      text-align: center; color: var(--muted, #6b7280); font-weight: 600; margin-bottom: 2rem;
+    }
+    .toolkit-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .tool-card {
+      background: white; padding: 2rem; border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      border: 2px solid transparent; text-align: center;
+    }
+    .tool-card:hover {
+      transform: translateY(-8px); border-color: var(--accent-1, #6366f1);
+      box-shadow: 0 16px 32px rgba(99,102,241,0.15);
+    }
+    .tool-icon { font-size: 3rem; margin-bottom: 1rem; display: inline-block; }
+    @media (prefers-reduced-motion: no-preference) {
+      .tool-icon {
+        animation: toolFloat 3s ease-in-out infinite;
+      }
+    }
+    @keyframes toolFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .tool-label {
+      font-size: 1.15rem; font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.75rem;
+    }
+    .tool-text {
+      font-size: 0.95rem; color: var(--muted, #6b7280); line-height: 1.6; margin-bottom: 1.5rem;
+    }
+    .tool-btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-2, #8b5cf6));
+      color: white; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .tool-btn:hover:not(:disabled) {
+      transform: scale(1.05); box-shadow: 0 6px 20px rgba(99,102,241,0.3);
+    }
+    .tool-btn:disabled {
+      opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none;
+    }
+    .coming-soon-badge {
+      display: inline-block; margin-top: 0.5rem; padding: 0.25rem 0.75rem;
+      background: var(--accent-4, #f59e0b); color: white; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    /* Insight card */
+    .insight-card-wrapper {
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(6,182,212,0.05));
+      border-radius: 20px; padding: 2rem; margin: 3rem 0;
+      border: 2px solid var(--accent-1, #6366f1);
+      display: flex; gap: 1.5rem; align-items: flex-start;
+    }
+    .insight-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .insight-title {
+      font-size: 1.25rem; font-weight: 800; color: var(--text, #1f2937); margin-bottom: 0.5rem;
+    }
+    .insight-text {
+      font-size: 0.95rem; color: var(--muted, #6b7280); line-height: 1.7;
+    }
+
+    /* Resource cards (disabled/coming soon) */
+    .resource-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .resource-btn-card {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      background: white; border: 2px solid var(--border, #e5e7eb); border-radius: 16px;
+      padding: 2rem; width: 100%; font-family: inherit; font-size: inherit;
+      transition: all 0.3s ease;
+    }
+    .resource-btn-card:disabled { opacity: 0.65; cursor: not-allowed; }
+    .resource-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .resource-title { font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
+    .resource-description { font-size: 0.9rem; color: var(--muted, #6b7280); line-height: 1.5; }
+
+    @media (max-width: 768px) {
+      .toolkit-grid { grid-template-columns: 1fr; }
+      .resource-grid { grid-template-columns: 1fr; }
+      .insight-card-wrapper { flex-direction: column; text-align: center; }
+    }
+  </style>
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- header -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <!-- book icon (SVG) -->
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <title>Study Buddy Logo</title>
             <rect x="2" y="3" width="20" height="14" rx="2" fill="#ffffff" opacity="0.12"/>
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#fff"/>
           </svg>
         </div>
         <div>
-          <div class="site-title">Study Buddy</div>
-          <div class="site-sub">High School — Smart strategies for success</div>
+          <h1 class="site-title">Study Buddy</h1>
+          <span class="site-sub">High School — Smart strategies for success</span>
         </div>
       </div>
 
-      <nav class="main-nav" role="navigation" aria-label="Primary navigation">
-        <button 
-          id="menu-toggle" 
-          class="menu-btn" 
-          aria-label="Toggle menu" 
-          aria-expanded="false"
-          aria-controls="menu"
-        >
-          ☰
-        </button>
-
+      <nav class="main-nav" aria-label="Primary navigation">
+        <button id="menu-toggle" class="menu-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu" type="button">☰</button>
         <ul id="menu" class="menu-list">
           <li><a href="index.html">Home</a></li>
           <li><a href="elementary.html">Elementary</a></li>
@@ -58,216 +228,286 @@
           <li><a href="university.html">University</a></li>
           <li><a href="credits.html">Credits</a></li>
         </ul>
-
-        <button 
-          id="dark-toggle" 
-          class="menu-btn" 
-          aria-label="Toggle dark mode"
-          title="Toggle dark mode"
-        >
-          🌙
-        </button>
+        <button id="dark-toggle" class="menu-btn" aria-label="Toggle dark mode" type="button">🌙</button>
       </nav>
     </div>
   </header>
 
-  <!-- main content -->
   <main id="main-content">
     <section class="page active" aria-labelledby="hs-heading">
       <div class="container">
         <h2 id="hs-heading">High School (Grades 7–10)</h2>
         <p class="section-sub">Proven study methods to boost performance and manage your workload effectively.</p>
 
-        <div class="card-container" role="list">
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">📝</div>
-            <div class="label">Cornell Notes</div>
-            <div class="mini">Organize lectures into cues, notes, and summaries for effective review. <em>(UNC)</em></div>
-          </article>
+        <!-- Proper <ul>/<li>, no article/role="listitem" conflict, no tabindex on non-interactive cards -->
+        <ul class="card-container card-list" aria-label="Study strategies for high school students">
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">📝</div>
+            <h3 class="card-label">Cornell Notes</h3>
+            <p class="mini">Organize lectures into cues, notes, and summaries for effective review.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🧠</div>
+            <h3 class="card-label">Mnemonics</h3>
+            <p class="mini">Use memory devices for sequences (e.g., PEMDAS for math order of operations).</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🗺️</div>
+            <h3 class="card-label">Mind Maps</h3>
+            <p class="mini">Connect ideas visually to improve understanding and make revisions easier.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🎵</div>
+            <h3 class="card-label">Study Playlist</h3>
+            <p class="mini">Instrumental music can help you focus; avoid distracting lyrics.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">📅</div>
+            <h3 class="card-label">Use a Planner</h3>
+            <p class="mini">Schedule study time and balance it with hobbies and relaxation.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🃏</div>
+            <h3 class="card-label">Flashcard Apps</h3>
+            <p class="mini">Use Anki or Quizlet for spaced repetition and better retention.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">👥</div>
+            <h3 class="card-label">Study Groups</h3>
+            <p class="mini">Explain concepts to peers to deepen your own comprehension.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">📄</div>
+            <h3 class="card-label">Past Papers</h3>
+            <p class="mini">Practice with old exam formats under timed conditions to prepare.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🚫</div>
+            <h3 class="card-label">Avoid Cramming</h3>
+            <p class="mini">Regular review sessions are far more effective than last-minute studying.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🎯</div>
+            <h3 class="card-label">One Subject Focus</h3>
+            <p class="mini">Reduce context switching by focusing on one subject at a time for deeper concentration.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">⏰</div>
+            <h3 class="card-label">Pomodoro Technique</h3>
+            <p class="mini">Study for 25 minutes, then take a 5-minute break for sustained focus.</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">✏️</div>
+            <h3 class="card-label">Write Summaries</h3>
+            <p class="mini">Summarize content in your own words — it's better than just highlighting.</p>
+          </li>
+        </ul>
 
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">🧠</div>
-            <div class="label">Mnemonics</div>
-            <div class="mini">Use memory devices for sequences (e.g., PEMDAS for math order of operations). <em>(Study Tips)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">🗺️</div>
-            <div class="label">Mind Maps</div>
-            <div class="mini">Connect ideas visually to improve understanding and make revisions easier. <em>(StudySmarter)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">🎵</div>
-            <div class="label">Study Playlist</div>
-            <div class="mini">Instrumental music can help you focus; avoid distracting lyrics. <em>(Student Advice)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">📅</div>
-            <div class="label">Use a Planner</div>
-            <div class="mini">Schedule study time and balance it with hobbies and relaxation. <em>(Husson)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">🃏</div>
-            <div class="label">Flashcard Apps</div>
-            <div class="mini">Use Anki or Quizlet for spaced repetition and better retention. <em>(USAHS)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">👥</div>
-            <div class="label">Study Groups</div>
-            <div class="mini">Explain concepts to peers to deepen your own comprehension. <em>(HBS/UNC)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">📄</div>
-            <div class="label">Past Papers</div>
-            <div class="mini">Practice with old exam formats under timed conditions to prepare. <em>(Advice)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">🚫</div>
-            <div class="label">Avoid Cramming</div>
-            <div class="mini">Regular review sessions are far more effective than last-minute studying. <em>(UNC)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">🎯</div>
-            <div class="label">One Subject Focus</div>
-            <div class="mini">Reduce context switching by focusing on one subject at a time for deeper concentration. <em>(Productivity Tips)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">⏰</div>
-            <div class="label">Pomodoro Technique</div>
-            <div class="mini">Study for 25 minutes, then take a 5-minute break for sustained focus. <em>(Study Methods)</em></div>
-          </article>
-
-          <article class="card" role="listitem" tabindex="0">
-            <div class="card-icon">✏️</div>
-            <div class="label">Write Summaries</div>
-            <div class="mini">Summarize content in your own words — it's better than just highlighting. <em>(Learning Center)</em></div>
-          </article>
-        </div>
-
-        <!-- NEW: High School Toolkit -->
+        <!-- Toolkit — heading demoted to h3, no inline onclick, disabled buttons -->
         <section class="hs-toolkit" aria-label="High school study toolkit">
-          <h2 class="toolkit-title">📚 High School Study Toolkit</h2>
-          <p class="toolkit-subtitle">
-            Shortcuts, templates, and tools to make your study routine more efficient.
-          </p>
-
+          <h3 class="toolkit-title"><span aria-hidden="true">📚 </span>High School Study Toolkit</h3>
+          <p class="toolkit-subtitle">Shortcuts, templates, and tools to make your study routine more efficient.</p>
           <div class="toolkit-grid">
-            <article class="tool-card">
-              <div class="tool-icon">🧮</div>
-              <h3 class="tool-label">Grade Calculator</h3>
-              <p class="tool-text">
-                Estimate what score you need on your next quiz or exam to hit your target grade.
-              </p>
-              <button class="tool-btn" type="button" onclick="alert('Grade calculator mockup — connect to real calculator later.')">
-                Try quick estimate
-              </button>
-            </article>
-
-            <article class="tool-card">
-              <div class="tool-icon">🗂️</div>
-              <h3 class="tool-label">Note Style Picker</h3>
-              <p class="tool-text">
-                Choose between Cornell, outline, or mind-map style for your next topic.
-              </p>
-              <button class="tool-btn" type="button" onclick="alert('Note style guide – Coming Soon')">
-                View suggestions
-              </button>
-            </article>
-
-            <article class="tool-card">
-              <div class="tool-icon">⏱️</div>
-              <h3 class="tool-label">Mini Pomodoro</h3>
-              <p class="tool-text">
-                Try a quick 10-minute focus sprint followed by a 3-minute break for light tasks.
-              </p>
-              <button class="tool-btn" type="button" onclick="alert('Timer not implemented yet – this is a placeholder action.')">
-                Start trial session
-              </button>
-            </article>
+            <div class="tool-card">
+              <div class="tool-icon" aria-hidden="true">🧮</div>
+              <h4 class="tool-label">Grade Calculator</h4>
+              <p class="tool-text">Estimate what score you need on your next quiz or exam to hit your target grade.</p>
+              <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="tool-card">
+              <div class="tool-icon" aria-hidden="true">🗂️</div>
+              <h4 class="tool-label">Note Style Picker</h4>
+              <p class="tool-text">Choose between Cornell, outline, or mind-map style for your next topic.</p>
+              <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="tool-card">
+              <div class="tool-icon" aria-hidden="true">⏱️</div>
+              <h4 class="tool-label">Mini Pomodoro</h4>
+              <p class="tool-text">Try a quick 10-minute focus sprint followed by a 3-minute break for light tasks.</p>
+              <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
           </div>
         </section>
 
-        <div class="actions">
+        <!-- Resource hub — matching Senior High/University pattern -->
+        <section class="resource-nav" aria-label="High school resources">
+          <h3 class="gradient-heading" style="text-align:center; margin-bottom:0.5rem;">
+            <span aria-hidden="true">🔗 </span>Study Resources
+          </h3>
+          <p class="section-subtitle" style="margin-bottom:2rem;">Helpful tools for high school students</p>
+          <div class="resource-grid">
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon" aria-hidden="true">📖</div>
+              <div class="resource-title">Textbook Guides</div>
+              <div class="resource-description">Chapter summaries and key concept breakdowns for core subjects.</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon" aria-hidden="true">🧪</div>
+              <div class="resource-title">Science Lab Notes</div>
+              <div class="resource-description">Templates for lab reports, experiment tracking, and data analysis.</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon" aria-hidden="true">📊</div>
+              <div class="resource-title">Math Practice Sets</div>
+              <div class="resource-description">Problem sets organized by topic with step-by-step solutions.</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon" aria-hidden="true">📝</div>
+              <div class="resource-title">Essay Writing Guide</div>
+              <div class="resource-description">Structure templates and tips for persuasive, narrative, and expository essays.</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Insight card — matching other pages -->
+        <div class="insight-card-wrapper" aria-label="Study tip insight">
+          <div class="insight-icon" aria-hidden="true">💡</div>
+          <div>
+            <h3 class="insight-title">High School Success Tip</h3>
+            <p class="insight-text">
+              The best students aren't always the smartest — they're the most consistent.
+              Build a routine that works for you, review a little every day, and don't be afraid to ask for help.
+              Small daily habits lead to big results over time.
+            </p>
+          </div>
+        </div>
+
+        <div class="back-nav">
           <a href="index.html" class="btn">Back to Home</a>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- footer -->
-  <footer role="contentinfo">
+  <footer>
     <div class="container footer-inner">
-      <div>© <span id="year">2025</span> Study Buddy</div>
-      <div><a href="credits.html">Credits & Sources</a></div>
+      <div>&copy; <span id="year">2026</span> Study Buddy. All rights reserved.</div>
+      <div><a href="credits.html">Credits &amp; Sources</a></div>
     </div>
   </footer>
 
-  <!-- External JavaScript file -->
-  <script src="script.js"></script>
-
-  <!-- Internal JavaScript -->
   <script>
-    // Update copyright year
-    document.getElementById('year').textContent = new Date().getFullYear();
+  (function() {
+    'use strict';
 
-    // Mobile menu toggle
-    const menuToggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('menu');
+    // ===================== UTILITIES =====================
+
+    // Safe localStorage
+    var storage = {
+      get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
+      set: function(k,v) { try { localStorage.setItem(k,v); } catch(e) {} }
+    };
+
+    // Toast system
+    function showToast(msg, type) {
+      type = type || 'info';
+      var c = document.getElementById('toast-container');
+      if (!c) return;
+      var t = document.createElement('div');
+      t.className = 'toast toast-' + type;
+      t.textContent = msg;
+      c.appendChild(t);
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() { t.classList.add('show'); });
+      });
+      var to = setTimeout(function() {
+        t.classList.remove('show');
+        setTimeout(function() { t.remove(); }, 300);
+      }, 4000);
+      t.addEventListener('click', function() {
+        clearTimeout(to); t.classList.remove('show');
+        setTimeout(function() { t.remove(); }, 300);
+      });
+    }
+
+    // ===================== SETUP =====================
+
+    // Footer year
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Menu
+    var menuToggle = document.getElementById('menu-toggle');
+    var menu = document.getElementById('menu');
 
     if (menuToggle && menu) {
-      menuToggle.addEventListener('click', () => {
+      menuToggle.addEventListener('click', function() {
         menu.classList.toggle('active');
-        const isExpanded = menu.classList.contains('active');
-        menuToggle.setAttribute('aria-expanded', isExpanded);
+        menuToggle.setAttribute('aria-expanded', String(menu.classList.contains('active')));
+      });
+
+      // Close on outside click
+      document.addEventListener('click', function(e) {
+        if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
+          menu.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && menu.classList.contains('active')) {
+          menu.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.focus();
+        }
       });
     }
 
-    // WORKING dark mode (same pattern as other pages)
-    const darkToggle = document.getElementById('dark-toggle');
-    const html = document.documentElement;
+    // Dark mode with system preference detection
+    var darkToggle = document.getElementById('dark-toggle');
+    var html = document.documentElement;
 
     if (darkToggle) {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        html.classList.add('dark');
-        darkToggle.textContent = '☀️';
+      var saved = storage.get('theme');
+      if (saved === 'dark') {
+        html.classList.add('dark'); darkToggle.textContent = '☀️';
+      } else if (saved === 'light') {
+        html.classList.add('light');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        html.classList.add('dark'); darkToggle.textContent = '☀️';
       }
 
-      darkToggle.addEventListener('click', () => {
+      darkToggle.addEventListener('click', function() {
         html.classList.toggle('dark');
-        const isDark = html.classList.contains('dark');
+        var isDark = html.classList.contains('dark');
         darkToggle.textContent = isDark ? '☀️' : '🌙';
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        darkToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        storage.set('theme', isDark ? 'dark' : 'light');
+        if (isDark) html.classList.remove('light'); else html.classList.add('light');
       });
     }
 
-    // Keyboard navigation for cards
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          card.click();
-        }
-      });
-    });
+    // Intersection observer — feature detection, reduced-motion check, unobserve
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Intersection observer for card reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-        }
-      });
-    }, { threshold: 0.1 });
+    if (!reducedMotion && ('IntersectionObserver' in window)) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
 
-    document.querySelectorAll('.card, .tool-card').forEach(el => observer.observe(el));
+      document.querySelectorAll('.card, .tool-card, .resource-btn-card, .insight-card-wrapper').forEach(function(el) {
+        el.classList.add('animate-ready');
+        observer.observe(el);
+      });
+    }
+
+    // No scroll parallax (removed — conflicts with observer, causes motion issues)
+    // No keypress handlers on non-interactive cards (removed — cards are informational only)
+
+  })();
   </script>
 </body>
 </html>
