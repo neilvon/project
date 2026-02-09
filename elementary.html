@@ -1,222 +1,493 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Fun and engaging study tips for elementary students in grades 1-6. Make learning enjoyable with colorful flashcards, songs, and bite-sized study sessions.">
-  <meta name="theme-color" content="#ff6b6b">
-  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Fun and engaging study tips for elementary students in grades 1-6. Earn stars, track reading, and make learning an adventure!" />
+  <meta name="theme-color" content="#ff6b6b" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Elementary Study Tips — Study Buddy" />
+  <meta property="og:description" content="Fun, bite-sized study techniques for grades 1-6" />
   <title>Elementary Study Tips — Study Buddy</title>
-  
-  <link rel="preload" href="elementary.css" as="style">
-  <link rel="stylesheet" href="elementary.css">
-  
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Elementary Study Tips — Study Buddy">
-  <meta property="og:description" content="Fun, bite-sized study techniques for grades 1-6">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%23ff6b6b'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="preload" href="elementary.css" as="style" />
+  <link rel="stylesheet" href="elementary.css" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3EStudy Buddy%3C/title%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%23ff6b6b'/%3E%3C/svg%3E" />
 
   <style>
-    /* Enhanced styles for resource navigation */
-    .resource-nav {
-      margin: 4rem 0 3rem;
-      padding: 3rem 2rem;
-      background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
-      border-radius: 24px;
-      border: 3px solid var(--accent);
-    }
-    
-    .resource-nav-title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--primary);
-      text-align: center;
-      margin-bottom: 0.75rem;
-      text-shadow: 2px 2px 0px var(--accent);
-    }
-    
-    .resource-nav-subtitle {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      text-align: center;
-      margin-bottom: 2.5rem;
-      font-weight: 600;
-    }
-    
-    .resource-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-    
-    .resource-card {
-      position: relative;
-      padding: 2.5rem;
-      background: white;
-      border-radius: 24px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 3px solid transparent;
-      overflow: hidden;
-      cursor: pointer;
-      text-decoration: none;
-      display: block;
-    }
-    
-    .resource-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 8px;
-      background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #ffd93d, #a78bfa);
-      background-size: 300% 100%;
-      animation: shimmer 4s linear infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    
-    .resource-card:hover {
-      transform: translateY(-12px) scale(1.03);
-      box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
-      border-color: var(--primary);
-    }
-    
-    .resource-card:nth-child(1) { background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 100%); }
-    .resource-card:nth-child(2) { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
-    .resource-card:nth-child(3) { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); }
-    .resource-card:nth-child(4) { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
-    
-    .resource-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 1.5rem;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
-      animation: bounce 2s ease-in-out infinite;
-    }
-    
-    .resource-card:nth-child(2) .resource-icon {
-      background: linear-gradient(135deg, #3b82f6, #06b6d4);
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
-    
-    .resource-card:nth-child(3) .resource-icon {
-      background: linear-gradient(135deg, #f59e0b, #fbbf24);
-      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
-    }
-    
-    .resource-card:nth-child(4) .resource-icon {
-      background: linear-gradient(135deg, #10b981, #34d399);
-      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-    }
-    
-    .resource-title {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 0.75rem;
-      text-align: center;
-      text-shadow: 2px 2px 0px rgba(255, 215, 0, 0.3);
-    }
-    
-    .resource-description {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      text-align: center;
-      line-height: 1.6;
-      font-weight: 600;
-    }
-    
-    .badge-new {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 0.5rem 1rem;
-      background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-      color: white;
-      border-radius: 50px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+    :root {
+      --primary: #ff6b6b;
+      --primary-dark: #ee5a52;
+      --secondary: #4ecdc4;
+      --accent: #ffd93d;
+      --purple: #a78bfa;
+      --blue: #60a5fa;
+      --green: #34d399;
+      --orange: #fb923c;
+      --pink: #f472b6;
+      --text: #1f2937;
+      --text-secondary: #6b7280;
+      --bg: #ffffff;
+      --border: #e5e7eb;
+      --card-shadow: 0 8px 24px rgba(0,0,0,0.1);
     }
 
+    *, *::before, *::after { box-sizing: border-box; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--primary, #ff6b6b);
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html:not(.light) {
+        --text: #f3f4f6; --text-secondary: #9ca3af; --bg: #111827; --border: #374151;
+      }
+    }
+
+    .card-list { list-style: none; padding: 0; margin: 0; }
+
+    /* Reveal animation */
+    .animate-ready {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .in-view { opacity: 1; transform: translateY(0); }
+
+    /* Toast system */
+    .toast-container {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000;
+      display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none;
+    }
+    .toast {
+      padding: 1rem 1.5rem; border-radius: 16px; font-weight: 700; font-size: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15); transform: translateX(120%);
+      transition: transform 0.3s ease; pointer-events: auto;
+      display: flex; align-items: center; gap: 0.75rem; max-width: 380px; cursor: pointer;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast-success { background: #d1fae5; color: #065f46; border: 3px solid #34d399; }
+    .toast-info { background: #dbeafe; color: #1e40af; border: 3px solid #60a5fa; }
+    .toast-warning { background: #fef3c7; color: #92400e; border: 3px solid #fbbf24; }
+    .toast-star { background: #fef3c7; color: #92400e; border: 3px solid #ffd93d; }
+    .toast-action {
+      padding: 0.375rem 0.875rem; border: 2px solid currentColor; border-radius: 50px;
+      background: transparent; color: inherit; font-weight: 700; cursor: pointer; font-size: 0.85rem;
+    }
+
+    /* =================== FUN GRADIENT HEADINGS =================== */
+    .gradient-heading-fun {
+      font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary, #ff6b6b), var(--secondary, #4ecdc4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--primary, #ff6b6b);
+    }
+    .gradient-heading-warm {
+      font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--orange, #fb923c), var(--primary, #ff6b6b));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--orange, #fb923c);
+    }
+    .gradient-heading-cool {
+      font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--blue, #60a5fa), var(--secondary, #4ecdc4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--blue, #60a5fa);
+    }
+    .gradient-heading-purple {
+      font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--purple, #a78bfa), var(--pink, #f472b6));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--purple, #a78bfa);
+    }
+    .section-subtitle {
+      color: var(--text-secondary, #6b7280); font-weight: 600; text-align: center; margin-bottom: 1.5rem;
+    }
+    .edit-hint {
+      font-size: 0.8rem; color: var(--secondary, #4ecdc4); text-align: center; font-style: italic;
+    }
+
+    /* =================== STAR REWARD TRACKER =================== */
+    .star-tracker {
+      background: linear-gradient(135deg, rgba(255,217,61,0.1), rgba(251,191,36,0.1));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent, #ffd93d); text-align: center;
+    }
+    .star-display {
+      display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; flex-wrap: wrap;
+    }
+    .star {
+      font-size: 2.5rem; transition: all 0.3s ease; cursor: default;
+    }
+    .star.earned { filter: drop-shadow(0 0 8px rgba(255,217,61,0.8)); }
+    .star.empty { opacity: 0.3; filter: grayscale(1); }
+    .star-count {
+      font-size: 3rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent, #ffd93d), var(--orange, #fb923c));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent, #ffd93d);
+    }
+    .star-label {
+      font-size: 1rem; color: var(--text-secondary, #6b7280); font-weight: 600; margin-top: 0.25rem;
+    }
+    .star-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+    .star-btn {
+      padding: 0.875rem 2rem; border: none; border-radius: 50px; font-weight: 800;
+      font-size: 1rem; cursor: pointer; transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .star-btn.earn {
+      background: linear-gradient(135deg, var(--accent, #ffd93d), var(--orange, #fb923c)); color: #92400e;
+    }
+    .star-btn.reset {
+      background: linear-gradient(135deg, #9ca3af, #6b7280); color: white;
+    }
+    .star-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+    /* =================== STUDY TIMER =================== */
+    .study-timer {
+      background: linear-gradient(135deg, rgba(255,107,107,0.08), rgba(78,205,196,0.08));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--primary, #ff6b6b); text-align: center;
+    }
+    .timer-display {
+      font-size: 4.5rem; font-weight: 800; font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, var(--primary, #ff6b6b), var(--purple, #a78bfa));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--primary, #ff6b6b); margin: 1.5rem 0; letter-spacing: 0.1em;
+    }
+    .timer-message {
+      font-size: 1.1rem; font-weight: 700; color: var(--text-secondary, #6b7280);
+      margin-bottom: 1rem; min-height: 1.5em;
+    }
+    .timer-controls {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;
+    }
+    .timer-btn {
+      padding: 0.875rem 2rem; border: none; border-radius: 50px; font-weight: 800;
+      font-size: 1rem; cursor: pointer; transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .timer-btn.start { background: linear-gradient(135deg, #34d399, #059669); color: white; }
+    .timer-btn.pause { background: linear-gradient(135deg, var(--orange, #fb923c), #ea580c); color: white; }
+    .timer-btn.reset { background: linear-gradient(135deg, #9ca3af, #6b7280); color: white; }
+    .timer-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .timer-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .timer-presets {
+      display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;
+    }
+    .preset-btn {
+      padding: 0.5rem 1.25rem; background: white; border: 3px solid var(--secondary, #4ecdc4);
+      border-radius: 50px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+      color: var(--text, #1f2937);
+    }
+    .preset-btn:hover {
+      background: var(--secondary, #4ecdc4); color: white; transform: scale(1.05);
+    }
+
+    /* =================== READING LOG =================== */
+    .reading-log {
+      background: linear-gradient(135deg, rgba(96,165,250,0.08), rgba(78,205,196,0.08));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--blue, #60a5fa);
+    }
+    .reading-header {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .add-book-btn {
+      padding: 0.75rem 1.75rem;
+      background: linear-gradient(135deg, var(--blue, #60a5fa), var(--secondary, #4ecdc4));
+      color: white; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .add-book-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(96,165,250,0.3); }
+    .book-list { display: flex; flex-direction: column; gap: 1rem; }
+    .book-item {
+      background: white; padding: 1.5rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      border-left: 4px solid var(--blue, #60a5fa);
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    }
+    .book-item:hover {
+      transform: translateX(5px); box-shadow: 0 6px 20px rgba(96,165,250,0.15);
+    }
+    .book-info h4 {
+      font-size: 1.1rem; font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.25rem;
+    }
+    .book-info p { font-size: 0.9rem; color: var(--text-secondary, #6b7280); }
+    .book-actions { display: flex; gap: 0.5rem; }
+    .book-rating { font-size: 1.25rem; cursor: pointer; }
+    .book-remove {
+      padding: 0.375rem 0.75rem; background: #fee2e2; color: #991b1b; border: none;
+      border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+    }
+    .book-remove:hover { background: #fecaca; }
+    .empty-state {
+      text-align: center; padding: 3rem; color: var(--text-secondary, #6b7280);
+    }
+    .empty-state-icon { font-size: 4rem; margin-bottom: 1rem; }
+
+    /* =================== DAILY STREAK =================== */
+    .streak-bar {
+      background: linear-gradient(135deg, rgba(251,146,60,0.08), rgba(255,107,107,0.08));
+      border-radius: 24px; padding: 2rem 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--orange, #fb923c);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .streak-info { display: flex; align-items: center; gap: 1rem; }
+    .streak-icon { font-size: 3rem; }
+    .streak-count {
+      font-size: 2.5rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--orange, #fb923c), var(--primary, #ff6b6b));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--orange, #fb923c);
+    }
+    .streak-label { font-size: 0.9rem; color: var(--text-secondary, #6b7280); font-weight: 600; }
+    .streak-days {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .streak-day {
+      width: 40px; height: 40px; border-radius: 12px; display: flex;
+      align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem;
+      border: 2px solid var(--border, #e5e7eb); color: var(--text-secondary, #6b7280);
+    }
+    .streak-day.active {
+      background: linear-gradient(135deg, var(--orange, #fb923c), var(--primary, #ff6b6b));
+      color: white; border-color: transparent; box-shadow: 0 4px 12px rgba(251,146,60,0.3);
+    }
+    .streak-day.today {
+      border-color: var(--primary, #ff6b6b); border-width: 3px;
+    }
+    .streak-check-btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--orange, #fb923c), var(--primary, #ff6b6b));
+      color: white; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .streak-check-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(251,146,60,0.3); }
+    .streak-check-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* =================== QUOTES CAROUSEL =================== */
+    .quotes-section {
+      background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(244,114,182,0.08));
+      border-radius: 24px; padding: 3rem 2rem; margin: 3rem 0;
+      border: 3px solid var(--purple, #a78bfa); text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .quote-text {
+      font-size: 1.4rem; font-style: italic; color: var(--text, #1f2937);
+      line-height: 1.8; font-weight: 600; margin: 1.5rem auto; max-width: 700px;
+    }
+    .quote-author {
+      font-size: 1.1rem; font-weight: 700; color: var(--purple, #a78bfa);
+    }
+    .quote-controls { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
+    .quote-btn {
+      width: 50px; height: 50px; border-radius: 50%; border: none;
+      background: linear-gradient(135deg, var(--purple, #a78bfa), var(--pink, #f472b6));
+      color: white; font-size: 1.5rem; cursor: pointer; transition: all 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .quote-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(167,139,250,0.3); }
+
+    /* =================== ACHIEVEMENT BADGES =================== */
+    .achievements {
+      background: linear-gradient(135deg, rgba(52,211,153,0.08), rgba(78,205,196,0.08));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--green, #34d399);
+    }
+    .badges-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .badge-card {
+      text-align: center; padding: 1.5rem 1rem; background: white; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .badge-card.earned {
+      border-color: var(--green, #34d399);
+      box-shadow: 0 4px 16px rgba(52,211,153,0.2);
+    }
+    .badge-card:not(.earned) { opacity: 0.5; filter: grayscale(0.5); }
+    .badge-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .badge-name { font-weight: 700; font-size: 0.9rem; color: var(--text, #1f2937); margin-bottom: 0.25rem; }
+    .badge-desc { font-size: 0.75rem; color: var(--text-secondary, #6b7280); }
+
+    /* =================== SUBJECT EXPLORER =================== */
+    .subject-explorer {
+      background: linear-gradient(135deg, rgba(244,114,182,0.08), rgba(167,139,250,0.08));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--pink, #f472b6);
+    }
+    .subjects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .subject-card {
+      text-align: center; padding: 2rem 1rem; background: white; border-radius: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      border: 2px solid transparent; cursor: pointer;
+    }
+    .subject-card:hover, .subject-card:focus-visible {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    }
+    .subject-card[data-subject="math"] { border-color: var(--primary, #ff6b6b); }
+    .subject-card[data-subject="science"] { border-color: var(--green, #34d399); }
+    .subject-card[data-subject="english"] { border-color: var(--blue, #60a5fa); }
+    .subject-card[data-subject="history"] { border-color: var(--orange, #fb923c); }
+    .subject-card[data-subject="art"] { border-color: var(--purple, #a78bfa); }
+    .subject-card[data-subject="music"] { border-color: var(--pink, #f472b6); }
+    .subject-icon { font-size: 3rem; margin-bottom: 0.75rem; display: block; }
+    @media (prefers-reduced-motion: no-preference) {
+      .subject-icon { animation: subjectBounce 2s ease-in-out infinite; }
+      .subject-card:nth-child(2) .subject-icon { animation-delay: 0.3s; }
+      .subject-card:nth-child(3) .subject-icon { animation-delay: 0.6s; }
+      .subject-card:nth-child(4) .subject-icon { animation-delay: 0.9s; }
+      .subject-card:nth-child(5) .subject-icon { animation-delay: 1.2s; }
+      .subject-card:nth-child(6) .subject-icon { animation-delay: 1.5s; }
+    }
+    @keyframes subjectBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .subject-name { font-weight: 700; color: var(--text, #1f2937); font-size: 1rem; }
+    .subject-tip { font-size: 0.8rem; color: var(--text-secondary, #6b7280); margin-top: 0.5rem; }
+
+    /* =================== NOTE TEMPLATES =================== */
+    .note-templates {
+      background: linear-gradient(135deg, rgba(78,205,196,0.08), rgba(96,165,250,0.08));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--secondary, #4ecdc4);
+    }
+    .templates-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .template-card {
+      background: white; padding: 1.5rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+    }
+    .template-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(78,205,196,0.2); }
+    .template-preview {
+      background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;
+      font-family: 'Courier New', monospace; font-size: 0.8rem;
+      border-left: 4px solid var(--secondary, #4ecdc4); color: var(--text, #1f2937);
+    }
+    .download-btn {
+      width: 100%; padding: 0.75rem; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease; color: white;
+      background: linear-gradient(135deg, var(--secondary, #4ecdc4), var(--blue, #60a5fa));
+    }
+    .download-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(78,205,196,0.3); }
+
+    /* =================== RESOURCE HUB =================== */
+    .resource-nav {
+      margin: 3rem 0; padding: 2.5rem;
+      background: linear-gradient(135deg, rgba(255,107,107,0.08), rgba(78,205,196,0.08));
+      border-radius: 24px; border: 3px solid var(--primary, #ff6b6b);
+    }
+    .resource-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .resource-btn-card {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      background: white; border: 2px solid var(--border, #e5e7eb); border-radius: 20px;
+      padding: 2rem; width: 100%; font-family: inherit; font-size: inherit;
+      transition: all 0.3s ease;
+    }
+    .resource-btn-card:disabled { opacity: 0.6; cursor: not-allowed; }
+    .resource-icon-wrapper {
+      width: 64px; height: 64px; border-radius: 16px; display: flex;
+      align-items: center; justify-content: center; font-size: 2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary, #ff6b6b), var(--secondary, #4ecdc4));
+      box-shadow: 0 4px 12px rgba(255,107,107,0.2);
+    }
+    .resource-title { font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
+    .resource-description { font-size: 0.9rem; color: var(--text-secondary, #6b7280); line-height: 1.5; }
+    .coming-soon-badge {
+      display: inline-block; margin-top: 0.75rem; padding: 0.25rem 0.75rem;
+      background: var(--accent, #ffd93d); color: #92400e; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    }
+
+    /* =================== FUN FACT =================== */
     .fun-fact {
-      margin-top: 3rem;
-      padding: 2rem;
-      background: linear-gradient(135deg, #faf5ff, #f3e8ff);
-      border-radius: 20px;
-      border: 3px dashed var(--purple);
-      text-align: center;
+      background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(244,114,182,0.08));
+      border-radius: 24px; padding: 2rem; margin: 3rem 0;
+      border: 3px dashed var(--purple, #a78bfa);
+      display: flex; gap: 1.5rem; align-items: flex-start;
     }
-    
+    .fun-fact-icon { font-size: 2.5rem; flex-shrink: 0; }
     .fun-fact-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--purple);
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      font-size: 1.25rem; font-weight: 800; color: var(--purple, #a78bfa); margin-bottom: 0.5rem;
     }
-    
     .fun-fact-text {
-      font-size: 1.1rem;
-      color: var(--text);
-      font-weight: 600;
-      line-height: 1.6;
+      font-size: 1rem; color: var(--text, #1f2937); font-weight: 600; line-height: 1.7;
+    }
+
+    .back-nav { margin-top: 3rem; text-align: center; }
+
+    /* =================== RESPONSIVE =================== */
+    @media (max-width: 768px) {
+      .streak-bar { flex-direction: column; text-align: center; }
+      .reading-header { flex-direction: column; align-items: stretch; }
+      .timer-display { font-size: 3rem; }
+      .timer-controls { flex-direction: column; align-items: center; }
+      .fun-fact { flex-direction: column; text-align: center; }
+      .badges-grid { grid-template-columns: repeat(3, 1fr); }
+      .subjects-grid { grid-template-columns: repeat(2, 1fr); }
+      .gradient-heading-fun,
+      .gradient-heading-warm,
+      .gradient-heading-cool,
+      .gradient-heading-purple { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <div class="brand">
         <div class="logo" aria-hidden="true">
           <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <title>Study Buddy Logo</title>
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#fff"/>
           </svg>
         </div>
         <div>
-          <div class="site-title">Study Buddy</div>
-          <div class="site-sub">Elementary — Fun & easy study tips</div>
+          <h1 class="site-title">Study Buddy</h1>
+          <span class="site-sub">Elementary — Fun &amp; easy study tips</span>
         </div>
       </div>
 
-      <nav class="main-nav" role="navigation" aria-label="Main navigation">
-        <button 
-          id="menu-toggle" 
-          type="button"
-          aria-label="Toggle navigation menu"
-          aria-expanded="false"
-          aria-controls="menu"
-        >
-          ☰
-        </button>
-        <ul id="menu">
+      <nav class="main-nav" aria-label="Primary navigation">
+        <button id="menu-toggle" class="menu-btn" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu">☰</button>
+        <ul id="menu" class="menu-list">
           <li><a href="index.html">Home</a></li>
           <li><a href="elementary.html" class="active" aria-current="page">Elementary</a></li>
           <li><a href="highschool.html">High School</a></li>
@@ -224,200 +495,841 @@
           <li><a href="university.html">University</a></li>
           <li><a href="credits.html">Credits</a></li>
         </ul>
-        <button 
-          id="dark-toggle" 
-          type="button"
-          aria-label="Toggle dark mode"
-          title="Toggle dark mode"
-        >
-          🌙
-        </button>
+        <button id="dark-toggle" class="menu-btn" type="button" aria-label="Toggle dark mode">🌙</button>
       </nav>
     </div>
   </header>
 
   <main id="main-content">
-    <section class="page active">
+    <section class="page active" aria-labelledby="elem-heading">
       <div class="container">
-        <h1>Elementary (Grades 1–6)</h1>
-        <p class="section-sub">
-          Fun, bite-sized techniques that make learning enjoyable and effective for young students! 🎨📚
-        </p>
+        <h2 id="elem-heading">Elementary (Grades 1–6)</h2>
+        <p class="section-sub">Fun, bite-sized techniques that make learning enjoyable and effective for young students!</p>
 
-        <div class="card-container" role="list" aria-label="Study tips for elementary students">
-          <article class="card" role="listitem">
-            <div class="label">Sing & Rhyme</div>
-            <div class="mini">
-              Turn lessons into songs to improve retention and make learning fun. Music helps your brain remember better!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Colorful Flashcards</div>
-            <div class="mini">
-              Use colors and images for vocabulary and facts to enhance memory. Draw pictures to remember words!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Short Sessions</div>
-            <div class="mini">
-              Study for 15–25 minutes, then take a break to maintain focus. Play for 5 minutes, then get back to learning!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Read Aloud</div>
-            <div class="mini">
-              Reading aloud helps comprehension and memory retention. Hear your own voice to learn better!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Ask Questions</div>
-            <div class="mini">
-              Encourage students to ask teachers or parents when unsure. There are no silly questions—asking is smart!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Handwriting Drills</div>
-            <div class="mini">
-              Short daily practice improves writing skills and motor memory. Practice makes your handwriting neat!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Quiz Games</div>
-            <div class="mini">
-              Use short games for review with friends and family. Turn studying into a fun competition!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Reward Charts</div>
-            <div class="mini">
-              Stickers and charts motivate consistent effort and progress. Earn stars for each study session completed!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Tidy Study Space</div>
-            <div class="mini">
-              A dedicated, well-lit desk reduces distractions. Keep your study corner clean and organized!
-            </div>
-          </article>
-
-          <article class="card" role="listitem">
-            <div class="label">Sleep & Hydration</div>
-            <div class="mini">
-              Good sleep and water support attention and memory formation. Rest well and drink water to stay sharp!
-            </div>
-          </article>
+        <!-- ⭐ Star Reward Tracker -->
+        <div class="star-tracker">
+          <h3 class="gradient-heading-warm"><span aria-hidden="true">⭐ </span>Your Star Rewards</h3>
+          <p class="section-subtitle">Earn a star every time you finish a study session!</p>
+          <div class="star-display" id="star-display" aria-label="Stars earned" role="img"></div>
+          <div>
+            <div class="star-count" id="star-total">0</div>
+            <div class="star-label">Stars Earned</div>
+          </div>
+          <div class="star-actions">
+            <button class="star-btn earn" type="button" id="earn-star">
+              <span aria-hidden="true">⭐ </span>Earn a Star!
+            </button>
+            <button class="star-btn reset" type="button" id="reset-stars">Reset Stars</button>
+          </div>
         </div>
 
-        <!-- NEW: Resource Navigation Section -->
-        <div class="resource-nav">
-          <h2 class="resource-nav-title">🎨 Explore More Resources! 📚</h2>
-          <p class="resource-nav-subtitle">
-            Click on any card below to access fun learning tools and activities!
-          </p>
-          
+        <!-- 🔥 Daily Streak -->
+        <div class="streak-bar">
+          <div class="streak-info">
+            <div class="streak-icon" aria-hidden="true">🔥</div>
+            <div>
+              <div class="streak-count" id="streak-count">0</div>
+              <div class="streak-label">Day Study Streak</div>
+            </div>
+          </div>
+          <div class="streak-days" id="streak-days" role="group" aria-label="Weekly study progress"></div>
+          <button class="streak-check-btn" type="button" id="streak-checkin">
+            <span aria-hidden="true">✅ </span>I Studied Today!
+          </button>
+        </div>
+
+        <!-- ⏱️ Fun Study Timer -->
+        <div class="study-timer">
+          <h3 class="gradient-heading-fun"><span aria-hidden="true">⏱️ </span>Fun Study Timer</h3>
+          <p class="section-subtitle">Study a little, then play a little!</p>
+          <div class="timer-message" id="timer-message" aria-live="polite">Ready to start?</div>
+          <div class="timer-display" id="timer-display" role="timer" aria-live="off" aria-label="Time remaining">10:00</div>
+          <div class="timer-controls">
+            <button class="timer-btn start" id="start-timer" type="button">Start</button>
+            <button class="timer-btn pause" id="pause-timer" type="button">Pause</button>
+            <button class="timer-btn reset" id="reset-timer" type="button">Reset</button>
+          </div>
+          <div class="timer-presets" role="group" aria-label="Timer presets">
+            <button class="preset-btn" type="button" data-minutes="5">5 min</button>
+            <button class="preset-btn" type="button" data-minutes="10">10 min</button>
+            <button class="preset-btn" type="button" data-minutes="15">15 min</button>
+            <button class="preset-btn" type="button" data-minutes="25">25 min</button>
+          </div>
+        </div>
+
+        <!-- 📚 Study Tips Cards -->
+        <ul class="card-container card-list" aria-label="Study tips for elementary students">
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🎵</div>
+            <h3 class="card-label">Sing &amp; Rhyme</h3>
+            <p class="mini">Turn lessons into songs to improve retention and make learning fun. Music helps your brain remember better!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🎨</div>
+            <h3 class="card-label">Colorful Flashcards</h3>
+            <p class="mini">Use colors and images for vocabulary and facts to enhance memory. Draw pictures to remember words!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">⏰</div>
+            <h3 class="card-label">Short Sessions</h3>
+            <p class="mini">Study for 15–25 minutes, then take a break to maintain focus. Play for 5 minutes, then get back to learning!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">📖</div>
+            <h3 class="card-label">Read Aloud</h3>
+            <p class="mini">Reading aloud helps comprehension and memory retention. Hear your own voice to learn better!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">❓</div>
+            <h3 class="card-label">Ask Questions</h3>
+            <p class="mini">Encourage students to ask teachers or parents when unsure. There are no silly questions—asking is smart!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">✍️</div>
+            <h3 class="card-label">Handwriting Drills</h3>
+            <p class="mini">Short daily practice improves writing skills and motor memory. Practice makes your handwriting neat!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🎮</div>
+            <h3 class="card-label">Quiz Games</h3>
+            <p class="mini">Use short games for review with friends and family. Turn studying into a fun competition!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">⭐</div>
+            <h3 class="card-label">Reward Charts</h3>
+            <p class="mini">Stickers and charts motivate consistent effort and progress. Earn stars for each study session completed!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">🧹</div>
+            <h3 class="card-label">Tidy Study Space</h3>
+            <p class="mini">A dedicated, well-lit desk reduces distractions. Keep your study corner clean and organized!</p>
+          </li>
+          <li class="card">
+            <div class="card-icon" aria-hidden="true">😴</div>
+            <h3 class="card-label">Sleep &amp; Hydration</h3>
+            <p class="mini">Good sleep and water support attention and memory formation. Rest well and drink water to stay sharp!</p>
+          </li>
+        </ul>
+
+        <!-- 📚 Reading Adventure Log -->
+        <div class="reading-log">
+          <div class="reading-header">
+            <h3 class="gradient-heading-cool"><span aria-hidden="true">📚 </span>Reading Adventure Log</h3>
+            <button class="add-book-btn" id="add-book" type="button">+ Add a Book</button>
+          </div>
+          <div class="book-list" id="book-list" aria-live="polite">
+            <div class="empty-state">
+              <div class="empty-state-icon" aria-hidden="true">📚</div>
+              <p>No books yet! Click "+ Add a Book" to start your reading adventure!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 💬 Happy Quotes -->
+        <div class="quotes-section" aria-label="Motivational quotes for kids">
+          <h3 class="gradient-heading-purple"><span aria-hidden="true">💬 </span>Happy Thoughts</h3>
+          <div aria-live="polite" aria-atomic="true">
+            <p class="quote-text" id="quote-text">"You're braver than you believe, stronger than you seem, and smarter than you think."</p>
+            <p class="quote-author" id="quote-author">— A.A. Milne (Winnie the Pooh)</p>
+          </div>
+          <div class="quote-controls">
+            <button class="quote-btn" id="prev-quote" type="button" aria-label="Previous quote">←</button>
+            <button class="quote-btn" id="next-quote" type="button" aria-label="Next quote">→</button>
+          </div>
+        </div>
+
+        <!-- 🏆 Achievement Badges -->
+        <div class="achievements">
+          <h3 class="gradient-heading-cool" style="background: linear-gradient(135deg, var(--green, #34d399), var(--secondary, #4ecdc4)); -webkit-background-clip: text; background-clip: text; color: var(--green, #34d399);">
+            <span aria-hidden="true">🏆 </span>Achievement Badges
+          </h3>
+          <p class="section-subtitle">Complete challenges to unlock badges!</p>
+          <div class="badges-grid" id="badges-grid"></div>
+        </div>
+
+        <!-- 🎯 Subject Explorer -->
+        <div class="subject-explorer">
+          <h3 class="gradient-heading-purple"><span aria-hidden="true">🎯 </span>Subject Explorer</h3>
+          <p class="section-subtitle">Click a subject for a fun study tip!</p>
+          <div class="subjects-grid">
+            <div class="subject-card" role="button" tabindex="0" data-subject="math">
+              <span class="subject-icon" aria-hidden="true">🔢</span>
+              <div class="subject-name">Math</div>
+              <div class="subject-tip">Practice a little every day!</div>
+            </div>
+            <div class="subject-card" role="button" tabindex="0" data-subject="science">
+              <span class="subject-icon" aria-hidden="true">🔬</span>
+              <div class="subject-name">Science</div>
+              <div class="subject-tip">Ask "why?" about everything!</div>
+            </div>
+            <div class="subject-card" role="button" tabindex="0" data-subject="english">
+              <span class="subject-icon" aria-hidden="true">📖</span>
+              <div class="subject-name">English</div>
+              <div class="subject-tip">Read a book every week!</div>
+            </div>
+            <div class="subject-card" role="button" tabindex="0" data-subject="history">
+              <span class="subject-icon" aria-hidden="true">🏛️</span>
+              <div class="subject-name">History</div>
+              <div class="subject-tip">Make a timeline of events!</div>
+            </div>
+            <div class="subject-card" role="button" tabindex="0" data-subject="art">
+              <span class="subject-icon" aria-hidden="true">🎨</span>
+              <div class="subject-name">Art</div>
+              <div class="subject-tip">Draw what you learned today!</div>
+            </div>
+            <div class="subject-card" role="button" tabindex="0" data-subject="music">
+              <span class="subject-icon" aria-hidden="true">🎵</span>
+              <div class="subject-name">Music</div>
+              <div class="subject-tip">Sing your spelling words!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 📄 Note Templates -->
+        <div class="note-templates">
+          <h3 class="gradient-heading-cool"><span aria-hidden="true">📄 </span>Fun Note Templates</h3>
+          <p class="section-subtitle">Download and print these to help you take better notes!</p>
+          <div class="templates-grid">
+            <div class="template-card">
+              <h4 style="font-weight:700; margin-bottom:0.75rem; color:var(--text,#1f2937);">My Learning Journal</h4>
+              <div class="template-preview" aria-label="Learning journal template preview">
+                Date: ___________<br>
+                Subject: ________<br>
+                <br>
+                What I Learned:<br>
+                ________________<br>
+                <br>
+                My Favorite Part:<br>
+                ________________<br>
+                <br>
+                Questions I Have:<br>
+                ________________
+              </div>
+              <button class="download-btn" type="button" data-template="journal">Download Template</button>
+            </div>
+            <div class="template-card">
+              <h4 style="font-weight:700; margin-bottom:0.75rem; color:var(--text,#1f2937);">Spelling Practice</h4>
+              <div class="template-preview" aria-label="Spelling practice template preview">
+                Word: __________<br>
+                Say it: ________<br>
+                Write it 3 times:<br>
+                1. _____________<br>
+                2. _____________<br>
+                3. _____________<br>
+                Use it: ________<br>
+                ________________
+              </div>
+              <button class="download-btn" type="button" data-template="spelling">Download Template</button>
+            </div>
+            <div class="template-card">
+              <h4 style="font-weight:700; margin-bottom:0.75rem; color:var(--text,#1f2937);">Book Report</h4>
+              <div class="template-preview" aria-label="Book report template preview">
+                Title: _________<br>
+                Author: ________<br>
+                <br>
+                Characters:<br>
+                ________________<br>
+                <br>
+                What Happened:<br>
+                ________________<br>
+                <br>
+                My Rating: ⭐⭐⭐⭐⭐
+              </div>
+              <button class="download-btn" type="button" data-template="bookreport">Download Template</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🔗 Resource Hub (Coming Soon) -->
+        <section class="resource-nav" aria-label="Elementary learning resources">
+          <h3 class="gradient-heading-fun"><span aria-hidden="true">🎨 </span>More Learning Fun!</h3>
+          <p class="section-subtitle">These awesome tools are coming soon!</p>
           <div class="resource-grid">
-            <a href="elementary-notes.html" class="resource-card">
-              <div class="resource-icon">📝</div>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon-wrapper" aria-hidden="true">📝</div>
               <div class="resource-title">Study Notes</div>
-              <div class="resource-description">
-                Colorful, easy-to-read notes with pictures and fun facts to help you learn better!
-              </div>
-            </a>
-
-            <a href="elementary-videos.html" class="resource-card">
-              <div class="resource-icon">🎬</div>
+              <div class="resource-description">Colorful, easy-to-read notes with pictures and fun facts!</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon-wrapper" aria-hidden="true">🎬</div>
               <div class="resource-title">Learning Videos</div>
-              <div class="resource-description">
-                Cool educational videos, cartoons, and animations that make learning super fun!
-              </div>
-            </a>
-
-            <a href="elementary-pomodoro.html" class="resource-card">
-              <div class="resource-icon">⏰</div>
-              <div class="resource-title">Study Timer</div>
-              <div class="resource-description">
-                Fun timer with games and rewards! Study for a bit, then play for a bit!
-              </div>
-            </a>
-
-            <a href="elementary-motivation.html" class="resource-card">
-              <div class="resource-icon">🌟</div>
+              <div class="resource-description">Cool educational videos and animations that make learning fun!</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon-wrapper" aria-hidden="true">🧩</div>
+              <div class="resource-title">Puzzle Games</div>
+              <div class="resource-description">Fun puzzles and brain teasers that help you think sharper!</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon-wrapper" aria-hidden="true">🌟</div>
               <div class="resource-title">Motivation Zone</div>
-              <div class="resource-description">
-                Get inspired with happy quotes, fun challenges, and reward stickers!
-              </div>
-            </a>
+              <div class="resource-description">Happy quotes, fun challenges, and reward stickers!</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 💡 Fun Fact -->
+        <div class="fun-fact" aria-label="Fun fact about learning">
+          <div class="fun-fact-icon" aria-hidden="true">💡</div>
+          <div>
+            <h3 class="fun-fact-title">Did You Know?</h3>
+            <p class="fun-fact-text">
+              Your brain is like a super muscle! The more you use it, the stronger it gets!
+              That's why learning new things every day makes you smarter and smarter!
+            </p>
           </div>
         </div>
 
-        <div class="fun-fact">
-          <div class="fun-fact-title">
-            <span>💡</span>
-            <span>Did You Know?</span>
-            <span>💡</span>
-          </div>
-          <p class="fun-fact-text">
-            Your brain is like a super muscle! The more you use it, the stronger it gets! 
-            That's why learning new things every day makes you smarter and smarter! 🧠✨
-          </p>
-        </div>
-
-        <div style="margin-top: 2rem; text-align: center;">
-          <a href="index.html" class="btn">
-            Back to Home
-          </a>
+        <div class="back-nav">
+          <a href="index.html" class="btn">Back to Home</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer role="contentinfo">
+  <footer>
     <div class="container footer-inner">
-      <div>
-        © <span id="year">2025</span> Study Buddy
-      </div>
-      <div>
-        <a href="credits.html">Credits & Sources</a>
-      </div>
+      <div>&copy; <span id="year">2026</span> Study Buddy. All rights reserved.</div>
+      <div><a href="credits.html">Credits &amp; Sources</a></div>
     </div>
   </footer>
 
-  <!-- External JavaScript file -->
-  <script src="script.js"></script>
-
-  <!-- Internal JavaScript -->
   <script>
-    // Update copyright year
-    document.getElementById('year').textContent = new Date().getFullYear();
+  (function() {
+    'use strict';
 
-    // Mobile menu toggle
-    const menuToggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('menu');
+    // ===================== UTILITIES =====================
 
+    var storage = {
+      get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
+      set: function(k,v) { try { localStorage.setItem(k,v); } catch(e) {} },
+      getJSON: function(k) { try { var d=localStorage.getItem(k); return d?JSON.parse(d):null; } catch(e) { return null; } },
+      setJSON: function(k,v) { try { localStorage.setItem(k,JSON.stringify(v)); } catch(e) {} }
+    };
+
+    function sanitize(s) { var d=document.createElement('div'); d.textContent=String(s); return d.innerHTML; }
+
+    function showToast(msg, type, actionText, actionCb) {
+      type = type || 'info';
+      var c = document.getElementById('toast-container'); if (!c) return;
+      var t = document.createElement('div');
+      t.className = 'toast toast-' + type;
+      t.textContent = msg;
+      if (actionText && actionCb) {
+        var b = document.createElement('button');
+        b.className = 'toast-action'; b.type = 'button'; b.textContent = actionText;
+        b.addEventListener('click', function() { actionCb(); t.remove(); });
+        t.appendChild(b);
+      }
+      c.appendChild(t);
+      requestAnimationFrame(function() { requestAnimationFrame(function() { t.classList.add('show'); }); });
+      var to = setTimeout(function() { t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 5000);
+      t.addEventListener('click', function(e) { if(e.target===t){ clearTimeout(to); t.remove(); } });
+    }
+
+    // ===================== SETUP =====================
+
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Menu
+    var menuToggle = document.getElementById('menu-toggle');
+    var menu = document.getElementById('menu');
     if (menuToggle && menu) {
-      menuToggle.addEventListener('click', () => {
+      menuToggle.addEventListener('click', function() {
         menu.classList.toggle('active');
-        const isExpanded = menu.classList.contains('active');
-        menuToggle.setAttribute('aria-expanded', isExpanded);
+        menuToggle.setAttribute('aria-expanded', String(menu.classList.contains('active')));
+      });
+      document.addEventListener('click', function(e) {
+        if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
+          menu.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && menu.classList.contains('active')) {
+          menu.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.focus();
+        }
       });
     }
 
-    // Dark mode toggle (placeholder functionality)
-    const darkToggle = document.getElementById('dark-toggle');
+    // Dark mode
+    var darkToggle = document.getElementById('dark-toggle');
+    var html = document.documentElement;
     if (darkToggle) {
-      darkToggle.addEventListener('click', () => {
-        // Future dark mode implementation
-        alert('Dark mode coming soon! 🌟');
+      var saved = storage.get('theme');
+      if (saved === 'dark') { html.classList.add('dark'); darkToggle.textContent = '☀️'; }
+      else if (saved === 'light') { html.classList.add('light'); }
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        html.classList.add('dark'); darkToggle.textContent = '☀️';
+      }
+      darkToggle.addEventListener('click', function() {
+        html.classList.toggle('dark');
+        var isDark = html.classList.contains('dark');
+        darkToggle.textContent = isDark ? '☀️' : '🌙';
+        darkToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        storage.set('theme', isDark ? 'dark' : 'light');
+        if (isDark) html.classList.remove('light'); else html.classList.add('light');
       });
     }
+
+    // Intersection observer
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion && ('IntersectionObserver' in window)) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(en) {
+          if (en.isIntersecting) { en.target.classList.add('in-view'); observer.unobserve(en.target); }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.card, .tool-card, .template-card, .resource-btn-card, .subject-card, .badge-card, .scholarship-card').forEach(function(el) {
+        el.classList.add('animate-ready'); observer.observe(el);
+      });
+    }
+
+    // ===================== ⭐ STAR REWARD TRACKER =====================
+
+    var stars = parseInt(storage.get('elemStars')) || 0;
+
+    function renderStars() {
+      var display = document.getElementById('star-display');
+      var total = document.getElementById('star-total');
+      display.innerHTML = '';
+      var max = Math.max(10, Math.ceil((stars + 1) / 10) * 10);
+      for (var i = 0; i < Math.min(max, 20); i++) {
+        var s = document.createElement('span');
+        s.className = 'star ' + (i < stars ? 'earned' : 'empty');
+        s.textContent = '⭐';
+        s.setAttribute('aria-hidden', 'true');
+        display.appendChild(s);
+      }
+      display.setAttribute('aria-label', stars + ' stars earned out of ' + max);
+      total.textContent = stars;
+    }
+
+    document.getElementById('earn-star').addEventListener('click', function() {
+      stars++;
+      storage.set('elemStars', String(stars));
+      renderStars();
+      updateBadges();
+      showToast('You earned a star! ⭐ Total: ' + stars, 'star');
+    });
+
+    document.getElementById('reset-stars').addEventListener('click', function() {
+      var prev = stars;
+      stars = 0;
+      storage.set('elemStars', '0');
+      renderStars();
+      updateBadges();
+      showToast('Stars reset!', 'warning', 'Undo', function() {
+        stars = prev;
+        storage.set('elemStars', String(stars));
+        renderStars();
+        updateBadges();
+      });
+    });
+
+    renderStars();
+
+    // ===================== 🔥 DAILY STREAK =====================
+
+    var streakData = storage.getJSON('elemStreak') || { count: 0, lastDate: null, weekDays: [] };
+
+    function getToday() { return new Date().toISOString().slice(0, 10); }
+
+    function renderStreak() {
+      document.getElementById('streak-count').textContent = streakData.count;
+      var container = document.getElementById('streak-days');
+      container.innerHTML = '';
+      var dayNames = ['S','M','T','W','T','F','S'];
+      var today = new Date();
+      var dayOfWeek = today.getDay();
+
+      for (var i = 0; i < 7; i++) {
+        var d = document.createElement('div');
+        d.className = 'streak-day';
+        d.textContent = dayNames[i];
+        if (i === dayOfWeek) d.classList.add('today');
+        if (streakData.weekDays && streakData.weekDays.indexOf(i) !== -1) d.classList.add('active');
+        container.appendChild(d);
+      }
+
+      var btn = document.getElementById('streak-checkin');
+      btn.disabled = (streakData.lastDate === getToday());
+      if (btn.disabled) btn.textContent = '✅ Done for Today!';
+    }
+
+    document.getElementById('streak-checkin').addEventListener('click', function() {
+      var today = getToday();
+      if (streakData.lastDate === today) return;
+
+      var yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      var yStr = yesterday.toISOString().slice(0, 10);
+
+      if (streakData.lastDate === yStr) {
+        streakData.count++;
+      } else if (streakData.lastDate !== today) {
+        streakData.count = 1;
+      }
+
+      streakData.lastDate = today;
+      var dayOfWeek = new Date().getDay();
+      if (!streakData.weekDays) streakData.weekDays = [];
+      if (streakData.weekDays.indexOf(dayOfWeek) === -1) streakData.weekDays.push(dayOfWeek);
+
+      // Reset week on Sunday if last check was different week
+      if (dayOfWeek === 0 && streakData.weekDays.length > 1) {
+        streakData.weekDays = [0];
+      }
+
+      storage.setJSON('elemStreak', streakData);
+      renderStreak();
+      updateBadges();
+      showToast('Great job studying today! 🔥 Streak: ' + streakData.count + ' days!', 'success');
+    });
+
+    renderStreak();
+
+    // ===================== ⏱️ STUDY TIMER =====================
+
+    var timerDuration = 10 * 60;
+    var timerEndTime = null;
+    var timerRemaining = timerDuration;
+    var timerInterval = null;
+    var timerRunning = false;
+    var timerDisplay = document.getElementById('timer-display');
+    var timerMessage = document.getElementById('timer-message');
+
+    var funMessages = [
+      "You're doing amazing! 🌟",
+      "Keep going, superstar! ⭐",
+      "Your brain is getting stronger! 💪",
+      "Almost there, champ! 🏆",
+      "Focus power activated! ⚡",
+      "You're a study hero! 🦸",
+      "Great concentration! 🎯",
+      "Learning is your superpower! 🚀"
+    ];
+
+    function updateTimerDisplay() {
+      var m = Math.floor(timerRemaining / 60);
+      var s = timerRemaining % 60;
+      timerDisplay.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }
+
+    function timerTick() {
+      if (!timerRunning || !timerEndTime) return;
+      timerRemaining = Math.max(0, Math.round((timerEndTime - Date.now()) / 1000));
+      updateTimerDisplay();
+
+      // Show a fun message periodically
+      if (timerRemaining > 0 && timerRemaining % 30 === 0) {
+        timerMessage.textContent = funMessages[Math.floor(Math.random() * funMessages.length)];
+      }
+
+      if (timerRemaining <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false; timerEndTime = null;
+        timerMessage.textContent = "Time's up! Great job! 🎉🎊";
+        showToast("Amazing! You finished your study session! ⭐", 'success');
+        timerDisplay.setAttribute('aria-live', 'assertive');
+        setTimeout(function() { timerDisplay.setAttribute('aria-live', 'off'); }, 1000);
+
+        // Auto-earn a star
+        stars++;
+        storage.set('elemStars', String(stars));
+        renderStars();
+        updateBadges();
+        showToast('Bonus star earned for completing a timer! ⭐', 'star');
+      }
+    }
+
+    document.getElementById('start-timer').addEventListener('click', function() {
+      if (timerRunning) return;
+      if (timerRemaining <= 0) { timerRemaining = timerDuration; updateTimerDisplay(); }
+      timerRunning = true;
+      timerEndTime = Date.now() + (timerRemaining * 1000);
+      timerInterval = setInterval(timerTick, 250);
+      timerMessage.textContent = funMessages[Math.floor(Math.random() * funMessages.length)];
+    });
+
+    document.getElementById('pause-timer').addEventListener('click', function() {
+      if (!timerRunning) return;
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerRemaining = Math.max(0, Math.round((timerEndTime - Date.now()) / 1000));
+      timerEndTime = null;
+      updateTimerDisplay();
+      timerMessage.textContent = "Paused — take a breath! 😊";
+    });
+
+    document.getElementById('reset-timer').addEventListener('click', function() {
+      clearInterval(timerInterval);
+      timerRunning = false; timerEndTime = null;
+      timerRemaining = timerDuration;
+      updateTimerDisplay();
+      timerMessage.textContent = "Ready to start?";
+    });
+
+    document.querySelectorAll('.preset-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        clearInterval(timerInterval);
+        timerRunning = false; timerEndTime = null;
+        timerDuration = parseInt(btn.dataset.minutes) * 60;
+        timerRemaining = timerDuration;
+        updateTimerDisplay();
+        timerMessage.textContent = btn.dataset.minutes + " minutes — let's go! 🚀";
+      });
+    });
+
+    // ===================== 📚 READING LOG =====================
+
+    var booksData = storage.getJSON('elemBooks') || [];
+    var bookCounter = booksData.length > 0
+      ? Math.max.apply(null, booksData.map(function(b){return b.id;})) + 1 : 0;
+
+    function saveBooksModel() { storage.setJSON('elemBooks', booksData); }
+
+    function renderBooks() {
+      var list = document.getElementById('book-list');
+      list.innerHTML = '';
+      if (booksData.length === 0) {
+        var empty = document.createElement('div');
+        empty.className = 'empty-state';
+        empty.innerHTML = '<div class="empty-state-icon" aria-hidden="true">📚</div><p>No books yet! Click "+ Add a Book" to start your reading adventure!</p>';
+        list.appendChild(empty);
+        return;
+      }
+      booksData.forEach(function(book) { list.appendChild(createBookEl(book)); });
+      updateBadges();
+    }
+
+    function createBookEl(book) {
+      var item = document.createElement('div');
+      item.className = 'book-item';
+
+      var info = document.createElement('div');
+      info.className = 'book-info';
+      var h4 = document.createElement('h4');
+      h4.textContent = book.title;
+      h4.setAttribute('contenteditable', 'true');
+      h4.setAttribute('spellcheck', 'false');
+      h4.setAttribute('role', 'textbox');
+      h4.setAttribute('aria-label', 'Book title — click to edit');
+      h4.addEventListener('blur', function() {
+        book.title = h4.textContent.trim() || 'Untitled Book';
+        saveBooksModel();
+      });
+      h4.addEventListener('paste', function(e) {
+        e.preventDefault();
+        document.execCommand('insertText', false, (e.clipboardData||window.clipboardData).getData('text/plain'));
+      });
+      var p = document.createElement('p');
+      p.textContent = book.date || 'Just added';
+      info.appendChild(h4);
+      info.appendChild(p);
+
+      var actions = document.createElement('div');
+      actions.className = 'book-actions';
+
+      // Rating stars
+      var rating = document.createElement('span');
+      rating.className = 'book-rating';
+      rating.setAttribute('role', 'group');
+      rating.setAttribute('aria-label', 'Rate this book');
+      for (var i = 1; i <= 5; i++) {
+        (function(starNum) {
+          var star = document.createElement('span');
+          star.textContent = starNum <= (book.rating || 0) ? '⭐' : '☆';
+          star.setAttribute('role', 'button');
+          star.setAttribute('tabindex', '0');
+          star.setAttribute('aria-label', starNum + ' star' + (starNum > 1 ? 's' : ''));
+          star.addEventListener('click', function() {
+            book.rating = starNum;
+            saveBooksModel();
+            renderBooks();
+            showToast('Rated "' + book.title + '" ' + starNum + ' star' + (starNum > 1 ? 's' : '') + '!', 'success');
+          });
+          star.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); star.click(); }
+          });
+          rating.appendChild(star);
+        })(i);
+      }
+
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'book-remove';
+      removeBtn.type = 'button';
+      removeBtn.setAttribute('aria-label', 'Remove ' + sanitize(book.title));
+      removeBtn.textContent = '✕';
+      removeBtn.addEventListener('click', function() {
+        var copy = JSON.parse(JSON.stringify(book));
+        var idx = booksData.indexOf(book);
+        booksData.splice(idx, 1);
+        saveBooksModel(); renderBooks();
+        showToast('Book removed', 'warning', 'Undo', function() {
+          booksData.splice(idx, 0, copy);
+          saveBooksModel(); renderBooks();
+        });
+      });
+
+      actions.appendChild(rating);
+      actions.appendChild(removeBtn);
+      item.appendChild(info);
+      item.appendChild(actions);
+      return item;
+    }
+
+    document.getElementById('add-book').addEventListener('click', function() {
+      var today = new Date();
+      var dateStr = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      booksData.push({ id: bookCounter++, title: 'My New Book', date: dateStr, rating: 0 });
+      saveBooksModel(); renderBooks();
+      showToast('Book added! Tap the title to rename it.', 'info');
+      var items = document.querySelectorAll('.book-item');
+      if (items.length) items[items.length-1].querySelector('h4').focus();
+    });
+
+    renderBooks();
+
+    // ===================== 💬 QUOTES CAROUSEL =====================
+
+    var quotes = [
+      { text: '"You\'re braver than you believe, stronger than you seem, and smarter than you think."', author: 'A.A. Milne (Winnie the Pooh)' },
+      { text: '"The more that you read, the more things you will know. The more that you learn, the more places you\'ll go."', author: 'Dr. Seuss' },
+      { text: '"It\'s okay to make mistakes. That\'s how we learn!"', author: 'Ms. Frizzle (Magic School Bus)' },
+      { text: '"You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose."', author: 'Dr. Seuss' },
+      { text: '"Believe you can and you\'re halfway there."', author: 'Theodore Roosevelt' },
+      { text: '"Every expert was once a beginner."', author: 'Helen Hayes' },
+      { text: '"A little progress each day adds up to big results!"', author: 'Study Buddy' },
+      { text: '"Don\'t watch the clock; do what it does. Keep going!"', author: 'Sam Levenson' },
+      { text: '"Making mistakes means you\'re trying, and trying means you\'re learning!"', author: 'Study Buddy' },
+      { text: '"Your only limit is your mind. Dream big!"', author: 'Study Buddy' }
+    ];
+    var currentQuote = 0;
+
+    function updateQuote() {
+      document.getElementById('quote-text').textContent = quotes[currentQuote].text;
+      document.getElementById('quote-author').textContent = '— ' + quotes[currentQuote].author;
+    }
+
+    document.getElementById('next-quote').addEventListener('click', function() {
+      currentQuote = (currentQuote + 1) % quotes.length;
+      updateQuote();
+    });
+
+    document.getElementById('prev-quote').addEventListener('click', function() {
+      currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+      updateQuote();
+    });
+
+    // ===================== 🏆 ACHIEVEMENT BADGES =====================
+
+    var BADGES = [
+      { id: 'first-star', name: 'First Star', icon: '⭐', desc: 'Earn your first star', check: function() { return stars >= 1; } },
+      { id: 'five-stars', name: 'Star Collector', icon: '🌟', desc: 'Earn 5 stars', check: function() { return stars >= 5; } },
+      { id: 'ten-stars', name: 'Superstar', icon: '💫', desc: 'Earn 10 stars', check: function() { return stars >= 10; } },
+      { id: 'twenty-stars', name: 'Mega Star', icon: '🏅', desc: 'Earn 20 stars', check: function() { return stars >= 20; } },
+      { id: 'first-book', name: 'Bookworm', icon: '📖', desc: 'Log your first book', check: function() { return booksData.length >= 1; } },
+      { id: 'five-books', name: 'Book Explorer', icon: '📚', desc: 'Log 5 books', check: function() { return booksData.length >= 5; } },
+      { id: 'streak-3', name: 'On a Roll', icon: '🔥', desc: '3-day study streak', check: function() { return streakData.count >= 3; } },
+      { id: 'streak-7', name: 'Week Warrior', icon: '💪', desc: '7-day study streak', check: function() { return streakData.count >= 7; } },
+      { id: 'streak-14', name: 'Unstoppable', icon: '🚀', desc: '14-day study streak', check: function() { return streakData.count >= 14; } },
+      { id: 'champion', name: 'Study Champion', icon: '🏆', desc: 'Earn 6+ badges', check: function() {
+        var c = 0; BADGES.forEach(function(b) { if (b.id !== 'champion' && b.check()) c++; }); return c >= 6;
+      }}
+    ];
+
+    function updateBadges() {
+      var grid = document.getElementById('badges-grid');
+      grid.innerHTML = '';
+      BADGES.forEach(function(badge) {
+        var earned = badge.check();
+        var card = document.createElement('div');
+        card.className = 'badge-card' + (earned ? ' earned' : '');
+        var icon = document.createElement('div');
+        icon.className = 'badge-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = badge.icon;
+        var name = document.createElement('div');
+        name.className = 'badge-name';
+        name.textContent = badge.name;
+        var desc = document.createElement('div');
+        desc.className = 'badge-desc';
+        desc.textContent = earned ? '✅ Unlocked!' : badge.desc;
+        card.appendChild(icon);
+        card.appendChild(name);
+        card.appendChild(desc);
+        grid.appendChild(card);
+      });
+    }
+
+    updateBadges();
+
+    // ===================== 🎯 SUBJECT EXPLORER =====================
+
+    var subjectTips = {
+      math: ['Count objects around your house!', 'Practice times tables with songs!', 'Draw shapes and color them!', 'Play number games with friends!'],
+      science: ['Watch bugs in your garden!', 'Do a simple experiment with water!', 'Ask "why?" about everything!', 'Draw plants and animals you see!'],
+      english: ['Read a new book this week!', 'Write a short story!', 'Learn 3 new words today!', 'Read to your pet or stuffed animal!'],
+      history: ['Ask grandparents about the past!', 'Draw a timeline of your life!', 'Visit a museum or watch a documentary!', 'Learn about a famous person!'],
+      art: ['Draw your favorite animal!', 'Mix colors to make new ones!', 'Draw what you learned today!', 'Create a comic about your day!'],
+      music: ['Clap the rhythm of a song!', 'Make an instrument from recycled items!', 'Sing your spelling words!', 'Listen to different types of music!']
+    };
+
+    document.querySelectorAll('.subject-card').forEach(function(card) {
+      function handleSubject() {
+        var subject = card.dataset.subject;
+        var tips = subjectTips[subject];
+        if (tips) {
+          var tip = tips[Math.floor(Math.random() * tips.length)];
+          card.querySelector('.subject-tip').textContent = tip;
+          showToast(tip, 'info');
+        }
+      }
+      card.addEventListener('click', handleSubject);
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSubject(); }
+      });
+    });
+
+    // ===================== 📄 NOTE TEMPLATES =====================
+
+    var templates = {
+      journal: 'MY LEARNING JOURNAL\n==================\n\nDate: _______________\nSubject: ____________\n\nWhat I Learned Today:\n_____________________\n_____________________\n_____________________\n\nMy Favorite Part:\n_____________________\n_____________________\n\nQuestions I Have:\n1. __________________\n2. __________________\n\nHow I Feel About Today: 😊 😐 😕\n\nDrawing Space:\n[Draw something you learned!]\n\n© Study Buddy Elementary',
+      spelling: 'SPELLING PRACTICE\n=================\n\nName: ______________\nDate: ______________\n\nWord #1: ___________\nSay it out loud!\nWrite it 3 times:\n1. ________________\n2. ________________\n3. ________________\nUse it in a sentence:\n___________________\n\nWord #2: ___________\nSay it out loud!\nWrite it 3 times:\n1. ________________\n2. ________________\n3. ________________\nUse it in a sentence:\n___________________\n\nWord #3: ___________\nSay it out loud!\nWrite it 3 times:\n1. ________________\n2. ________________\n3. ________________\nUse it in a sentence:\n___________________\n\n© Study Buddy Elementary',
+      bookreport: 'MY BOOK REPORT\n==============\n\nTitle: _____________\nAuthor: ____________\nPages: _____________\n\nCharacters:\n- __________________\n- __________________\n- __________________\n\nWhat Happened (Beginning):\n_________________________\n_________________________\n\nWhat Happened (Middle):\n_________________________\n_________________________\n\nWhat Happened (End):\n_________________________\n_________________________\n\nMy Favorite Part:\n_________________________\n_________________________\n\nWould I recommend this book? YES / NO\n\nMy Rating: ⭐ ⭐ ⭐ ⭐ ⭐\n(Color in the stars!)\n\nDraw your favorite scene:\n[Drawing space]\n\n© Study Buddy Elementary'
+    };
+
+    document.querySelectorAll('.download-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var type = btn.dataset.template;
+        var content = templates[type];
+        if (!content) return;
+        try {
+          var blob = new Blob([content], { type: 'text/plain' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = type + '-template.txt';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast('Template downloaded! Print it and start writing! 📝', 'success');
+        } catch (e) {
+          showToast('Download failed. Try again!', 'warning');
+        }
+      });
+    });
+
+  })();
   </script>
 </body>
 </html>
