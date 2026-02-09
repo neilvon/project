@@ -1,48 +1,526 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Study Buddy Senior High - Practical strategies for academic success and career readiness for grades 11-12. Level up your future! 🎯" />
+  <meta name="description" content="Study Buddy Senior High - Practical strategies for academic success and career readiness for grades 11-12." />
   <meta name="theme-color" content="#7c3aed" />
+  <meta property="og:title" content="Study Buddy – Senior High" />
+  <meta property="og:description" content="Practical strategies for academic success and career readiness for grades 11-12." />
+  <meta property="og:type" content="website" />
   <title>Study Buddy – Senior High</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- (#85) Reduced to 3 font weights -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style-seniorhigh.css" />
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z' fill='%237c3aed'/%3E%3C/svg%3E">
+
+  <!-- (#6) Favicon with <title> -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3EStudy Buddy%3C/title%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z' fill='%237c3aed'/%3E%3C/svg%3E">
+
+  <style>
+    /* (#3,#25) Fallback CSS variables */
+    :root {
+      --accent-purple: #7c3aed;
+      --accent-pink: #ec4899;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-orange: #f59e0b;
+      --accent-green: #10b981;
+      --muted: #6b7280;
+      --text: #1f2937;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+    }
+
+    /* (#26) Box-sizing */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* (#27) Screen reader only */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* (#28) Focus styles */
+    :focus-visible {
+      outline: 3px solid var(--accent-purple, #7c3aed);
+      outline-offset: 2px;
+    }
+
+    /* (#29) Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* (#30) System dark mode preference */
+    @media (prefers-color-scheme: dark) {
+      html:not(.light) {
+        --text: #e5e7eb; --muted: #9ca3af; --bg: #111827; --border: #374151;
+      }
+    }
+
+    /* Card list reset (#8) */
+    .card-list { list-style: none; padding: 0; margin: 0; }
+
+    /* (#17) Utility classes replacing inline styles */
+    .section-subtitle {
+      color: var(--muted, #6b7280);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .back-nav { margin-top: 3rem; text-align: center; }
+
+    /* Toast notification system (#45,#46,#47,#92,#99) */
+    .toast-container {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000;
+      display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none;
+    }
+    .toast {
+      padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15); transform: translateX(120%);
+      transition: transform 0.3s ease; pointer-events: auto;
+      display: flex; align-items: center; gap: 0.75rem; max-width: 380px; cursor: pointer;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast-success { background: #d1fae5; color: #065f46; border: 2px solid #10b981; }
+    .toast-info { background: #dbeafe; color: #1e40af; border: 2px solid #3b82f6; }
+    .toast-warning { background: #fef3c7; color: #92400e; border: 2px solid #f59e0b; }
+    .toast-error { background: #fee2e2; color: #991b1b; border: 2px solid #ef4444; }
+    .toast-action {
+      padding: 0.375rem 0.875rem; border: 2px solid currentColor; border-radius: 50px;
+      background: transparent; color: inherit; font-weight: 700; cursor: pointer;
+      font-size: 0.85rem; white-space: nowrap;
+    }
+
+    /* Animations: (#24,#29,#32,#86) only when motion is OK */
+    @keyframes dashboardFloat {
+      0%, 100% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(-30px,30px) rotate(15deg); }
+    }
+    @keyframes iconBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes careerFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    @keyframes focusPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); box-shadow: 0 0 30px rgba(124,58,237,0.3); }
+    }
+    @keyframes slideOut {
+      to { opacity: 0; transform: translateX(-100px); }
+    }
+
+    /* Future Dashboard */
+    .future-dashboard {
+      background: linear-gradient(135deg, rgba(124,58,237,0.05), rgba(236,72,153,0.05));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent-purple, #7c3aed);
+      position: relative; overflow: hidden;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .future-dashboard::before {
+        content: '🎯'; position: absolute; top: -40px; right: -40px;
+        font-size: 18rem; opacity: 0.03; animation: dashboardFloat 20s ease-in-out infinite;
+      }
+    }
+    .dashboard-header { text-align: center; margin-bottom: 2.5rem; position: relative; z-index: 1; }
+    .dashboard-title {
+      font-size: 2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-purple, #7c3aed), var(--accent-pink, #ec4899));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-purple, #7c3aed); /* (#31) fallback */
+      margin-bottom: 0.75rem;
+    }
+    .dashboard-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem; position: relative; z-index: 1;
+    }
+    /* (#68) Dashboard cards as interactive buttons */
+    .dashboard-card {
+      background: white; padding: 2rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      cursor: pointer; position: relative; overflow: hidden;
+      border: none; border-left: 4px solid var(--accent-purple, #7c3aed);
+      text-align: left; font-family: inherit; width: 100;
+    }
+    .dashboard-card:hover, .dashboard-card:focus-visible {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 28px rgba(124,58,237,0.15);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .dashboard-card::before {
+        content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(124,58,237,0.05), transparent);
+        transition: left 0.5s ease;
+      }
+      .dashboard-card:hover::before { left: 100%; }
+    }
+    .dashboard-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    @media (prefers-reduced-motion: no-preference) {
+      .dashboard-icon { animation: iconBounce 2s ease-in-out infinite; }
+    }
+    .dashboard-label {
+      font-size: 0.85rem; color: var(--muted, #6b7280); font-weight: 600;
+      margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .dashboard-value {
+      font-size: 2.25rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-purple, #7c3aed), var(--accent-pink, #ec4899));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-purple, #7c3aed); margin-bottom: 0.25rem;
+    }
+    .dashboard-subtitle { font-size: 0.9rem; color: var(--muted, #6b7280); font-weight: 500; }
+
+    /* College Tracker */
+    .college-tracker {
+      background: linear-gradient(135deg, rgba(59,130,246,0.05), rgba(14,165,233,0.05));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent-blue, #3b82f6); position: relative; overflow: hidden;
+    }
+    .tracker-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .tracker-title {
+      font-size: 1.75rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-blue, #3b82f6), var(--accent-cyan, #06b6d4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-blue, #3b82f6);
+    }
+    .add-college-btn {
+      padding: 0.75rem 1.75rem;
+      background: linear-gradient(135deg, var(--accent-blue, #3b82f6), var(--accent-cyan, #06b6d4));
+      color: white; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+    }
+    .add-college-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
+    .college-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .college-item {
+      background: white; padding: 1.75rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      border-left: 4px solid var(--accent-blue, #3b82f6);
+    }
+    .college-item:hover { transform: translateX(8px); box-shadow: 0 6px 20px rgba(59,130,246,0.15); }
+    .college-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 1rem; margin-bottom: 1rem;
+    }
+    .college-info h4 { font-size: 1.2rem; font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
+    .college-meta { display: flex; gap: 1rem; font-size: 0.9rem; color: var(--muted, #6b7280); flex-wrap: wrap; }
+    .college-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    /* (#36) College status as a proper button */
+    .college-status {
+      padding: 0.5rem 1rem; border-radius: 50px; font-weight: 600; font-size: 0.85rem;
+      cursor: pointer; transition: all 0.3s ease; border: none;
+    }
+    .status-researching { background: #fef3c7; color: #92400e; }
+    .status-applying { background: #dbeafe; color: #1e40af; }
+    .status-waiting { background: #fce7f3; color: #9f1239; }
+    .status-accepted { background: #d1fae5; color: #065f46; }
+    .status-rejected { background: #fee2e2; color: #991b1b; }
+    .college-progress { margin-top: 1rem; }
+    .progress-label {
+      display: flex; justify-content: space-between; font-size: 0.85rem;
+      color: var(--muted, #6b7280); margin-bottom: 0.5rem; font-weight: 600;
+    }
+    .progress-bar {
+      width: 100%; height: 8px; background: rgba(59,130,246,0.1);
+      border-radius: 10px; overflow: hidden; cursor: pointer;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, var(--accent-blue, #3b82f6), var(--accent-cyan, #06b6d4));
+      transition: width 0.5s ease; border-radius: 10px;
+    }
+    /* (#37) Remove button class */
+    .remove-college-btn {
+      padding: 0.5rem 1rem; background: #ef4444; color: white; border: none;
+      border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;
+    }
+    .remove-college-btn:hover { background: #dc2626; }
+    /* (#97) Inline progress editor */
+    .progress-editor {
+      display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;
+    }
+    .progress-editor input[type="range"] { flex: 1; accent-color: var(--accent-blue, #3b82f6); }
+    .progress-editor .progress-value { font-weight: 700; color: var(--accent-blue, #3b82f6); min-width: 3ch; }
+
+    /* Skills Matrix */
+    .skills-matrix {
+      background: linear-gradient(135deg, rgba(245,158,11,0.05), rgba(249,115,22,0.05));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent-orange, #f59e0b); position: relative; overflow: hidden;
+    }
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    /* (#69) Skill cards as buttons for keyboard access */
+    .skill-card {
+      background: white; padding: 1.5rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      cursor: pointer; border: 2px solid transparent; text-align: left;
+    }
+    .skill-card:hover, .skill-card:focus-visible {
+      transform: translateY(-5px); box-shadow: 0 8px 24px rgba(245,158,11,0.15);
+      border-color: var(--accent-orange, #f59e0b);
+    }
+    .skill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .skill-name { font-weight: 700; font-size: 1.05rem; color: var(--text, #1f2937); }
+    .skill-level {
+      padding: 0.25rem 0.75rem;
+      background: linear-gradient(135deg, var(--accent-orange, #f59e0b), #ea580c);
+      color: white; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+    }
+    .skill-bars { display: flex; gap: 4px; margin-bottom: 0.75rem; }
+    .skill-bar {
+      flex: 1; height: 6px; background: rgba(245,158,11,0.15);
+      border-radius: 10px; transition: all 0.3s ease;
+    }
+    .skill-bar.filled { background: linear-gradient(90deg, var(--accent-orange, #f59e0b), #ea580c); }
+    .skill-description { font-size: 0.85rem; color: var(--muted, #6b7280); line-height: 1.5; }
+
+    /* Timeline */
+    .timeline-section {
+      background: linear-gradient(135deg, rgba(139,92,246,0.05), rgba(168,85,247,0.05));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent-purple, #7c3aed); position: relative; overflow: hidden;
+    }
+    .timeline-container { position: relative; max-width: 900px; margin: 2rem auto 0; }
+    .timeline-line {
+      position: absolute; left: 50%; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(180deg, var(--accent-purple, #7c3aed), var(--accent-pink, #ec4899));
+      transform: translateX(-50%);
+    }
+    /* (#77) Timeline list semantics */
+    .timeline-list { list-style: none; padding: 0; margin: 0; }
+    .timeline-item { position: relative; margin-bottom: 3rem; display: flex; align-items: center; }
+    .timeline-item:nth-child(odd) { flex-direction: row; }
+    .timeline-item:nth-child(even) { flex-direction: row-reverse; }
+    .timeline-content {
+      flex: 1; padding: 1.5rem; background: white; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; margin: 0 2rem; position: relative;
+    }
+    .timeline-content:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(124,58,237,0.15); }
+    .timeline-dot {
+      width: 20px; height: 20px;
+      background: linear-gradient(135deg, var(--accent-purple, #7c3aed), var(--accent-pink, #ec4899));
+      border-radius: 50%; position: absolute; left: 50%; transform: translateX(-50%); z-index: 2;
+      box-shadow: 0 0 0 4px white, 0 0 0 8px rgba(124,58,237,0.2);
+    }
+    .timeline-date { font-weight: 700; color: var(--accent-purple, #7c3aed); margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .timeline-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text, #1f2937); }
+    .timeline-description { font-size: 0.9rem; color: var(--muted, #6b7280); line-height: 1.6; }
+
+    /* Career Explorer */
+    .career-explorer {
+      background: linear-gradient(135deg, rgba(6,182,212,0.05), rgba(8,145,178,0.05));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent-cyan, #06b6d4);
+    }
+    .career-cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem; margin-top: 2rem;
+    }
+    .career-card {
+      background: white; padding: 2rem; border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); transition: all 0.4s ease;
+      border: 2px solid transparent; text-align: center; position: relative; overflow: hidden;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .career-card::before {
+        content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(6,182,212,0.05), transparent);
+        transition: left 0.5s ease;
+      }
+      .career-card:hover::before { left: 100%; }
+    }
+    .career-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(6,182,212,0.15);
+      border-color: var(--accent-cyan, #06b6d4);
+    }
+    .career-icon-large { font-size: 4rem; margin-bottom: 1.5rem; display: inline-block; }
+    @media (prefers-reduced-motion: no-preference) {
+      .career-icon-large { animation: careerFloat 3s ease-in-out infinite; }
+    }
+    .career-title { font-size: 1.5rem; font-weight: 800; color: var(--text, #1f2937); margin-bottom: 0.75rem; }
+    .career-description { font-size: 0.95rem; color: var(--muted, #6b7280); line-height: 1.6; margin-bottom: 1.5rem; }
+    .career-stats {
+      display: flex; justify-content: space-around; margin-bottom: 1.5rem; padding: 1rem 0;
+      border-top: 2px solid rgba(6,182,212,0.1); border-bottom: 2px solid rgba(6,182,212,0.1);
+    }
+    .career-stat { text-align: center; }
+    .career-stat-value { font-weight: 700; font-size: 1.25rem; color: var(--accent-cyan, #06b6d4); display: block; margin-bottom: 0.25rem; }
+    .career-stat-label { font-size: 0.75rem; color: var(--muted, #6b7280); text-transform: uppercase; letter-spacing: 0.5px; }
+    .career-btn {
+      width: 100%; padding: 0.875rem;
+      background: linear-gradient(135deg, var(--accent-cyan, #06b6d4), #0891b2);
+      color: white; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .career-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(6,182,212,0.3); }
+
+    /* Scholarship Tracker */
+    .scholarship-tracker {
+      background: linear-gradient(135deg, rgba(16,185,129,0.05), rgba(5,150,105,0.05));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent-green, #10b981);
+    }
+    .scholarship-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .scholarship-card {
+      background: white; padding: 1.75rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      border-top: 4px solid var(--accent-green, #10b981);
+    }
+    .scholarship-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(16,185,129,0.15); }
+    .scholarship-amount {
+      display: inline-block; padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, var(--accent-green, #10b981), #059669);
+      color: white; border-radius: 50px; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;
+    }
+    .scholarship-name { font-weight: 700; font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text, #1f2937); }
+    .scholarship-provider { color: var(--muted, #6b7280); font-size: 0.9rem; margin-bottom: 1rem; }
+    .scholarship-deadline {
+      display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem;
+      background: rgba(16,185,129,0.05); border-radius: 8px; margin-bottom: 1rem;
+    }
+    .scholarship-requirements { font-size: 0.85rem; color: var(--muted, #6b7280); line-height: 1.6; margin-bottom: 1rem; }
+    .scholarship-apply-btn {
+      width: 100%; padding: 0.75rem;
+      background: linear-gradient(135deg, var(--accent-green, #10b981), #059669);
+      color: white; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .scholarship-apply-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(16,185,129,0.3); }
+
+    /* Interview Prep */
+    .interview-prep {
+      background: linear-gradient(135deg, rgba(236,72,153,0.05), rgba(219,39,119,0.05));
+      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
+      border: 3px solid var(--accent-pink, #ec4899);
+    }
+    .question-bank { margin-top: 2rem; }
+    .question-item {
+      background: white; padding: 1.5rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 1.25rem;
+      transition: all 0.3s ease; cursor: pointer;
+      border-left: 4px solid var(--accent-pink, #ec4899);
+    }
+    .question-item:hover, .question-item:focus-visible {
+      transform: translateX(8px); box-shadow: 0 6px 20px rgba(236,72,153,0.15);
+    }
+    .question-category {
+      display: inline-block; padding: 0.25rem 0.75rem;
+      background: linear-gradient(135deg, var(--accent-pink, #ec4899), #db2777);
+      color: white; border-radius: 50px; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem;
+    }
+    .question-text { font-weight: 600; font-size: 1.05rem; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
+    .question-tip {
+      font-size: 0.85rem; color: var(--muted, #6b7280); line-height: 1.6;
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease, margin 0.3s ease, padding 0.3s ease;
+    }
+    .question-item[aria-expanded="true"] .question-tip {
+      max-height: 500px; margin-top: 0.75rem; padding-top: 0.75rem;
+      border-top: 2px solid rgba(236,72,153,0.1);
+    }
+
+    /* Strand selector */
+    .strand-selector {
+      display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: wrap; justify-content: center;
+    }
+    .strand-btn {
+      padding: 0.75rem 1.5rem; background: white;
+      border: 2px solid var(--accent-purple, #7c3aed); border-radius: 50px;
+      font-weight: 700; cursor: pointer; transition: all 0.3s ease; color: var(--text, #1f2937);
+    }
+    .strand-btn:hover { background: var(--accent-purple, #7c3aed); color: white; transform: scale(1.05); }
+    .strand-btn[aria-pressed="true"] {
+      background: linear-gradient(135deg, var(--accent-purple, #7c3aed), var(--accent-pink, #ec4899));
+      color: white; box-shadow: 0 4px 12px rgba(124,58,237,0.3);
+    }
+
+    /* (#11,#93) Disabled resource buttons */
+    .resource-btn-card {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      background: white; border: 2px solid var(--border, #e5e7eb); border-radius: 16px;
+      padding: 2rem; width: 100%; font-family: inherit; font-size: inherit;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .resource-btn-card:disabled { opacity: 0.65; cursor: not-allowed; }
+    .coming-soon-badge {
+      display: inline-block; margin-top: 0.75rem; padding: 0.25rem 0.75rem;
+      background: var(--accent-orange, #f59e0b); color: white; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted, #6b7280); }
+    .empty-state-icon { font-size: 4rem; margin-bottom: 1rem; }
+    @media (prefers-reduced-motion: no-preference) {
+      .empty-state-icon { animation: iconBounce 2s ease-in-out infinite; }
+    }
+
+    /* Reveal animation (#34: no parallax conflict) */
+    .animate-ready {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .in-view { opacity: 1; transform: translateY(0); }
+
+    /* (#38) Responsive */
+    @media (max-width: 768px) {
+      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+      .timeline-line { left: 20px; }
+      .timeline-item:nth-child(odd),
+      .timeline-item:nth-child(even) { flex-direction: row; }
+      .timeline-content { margin-left: 3rem; margin-right: 0; }
+      .timeline-dot { left: 20px; }
+      .career-cards, .skills-grid, .scholarship-grid { grid-template-columns: 1fr; }
+      .college-header { flex-direction: column; }
+      .tracker-header { flex-direction: column; align-items: flex-start; }
+      .dashboard-title { font-size: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <div class="brand">
         <div class="logo" aria-hidden="true">
           <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <title>Study Buddy Logo</title>
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#fff"/>
           </svg>
         </div>
         <div>
           <h1 class="site-title">Study Buddy</h1>
-          <p class="site-sub">Senior High – Level up your future 🚀</p>
+          <span class="site-sub">Senior High – Level up your future</span>
         </div>
       </div>
 
-      <nav class="main-nav" role="navigation" aria-label="Primary navigation">
-        <button 
-          id="menu-toggle" 
-          class="menu-btn" 
-          aria-label="Toggle menu" 
-          aria-expanded="false"
-          aria-controls="menu"
-          type="button"
-        >
-          ☰
-        </button>
+      <nav class="main-nav" aria-label="Primary navigation">
+        <button id="menu-toggle" class="menu-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu" type="button">☰</button>
         <ul id="menu" class="menu-list">
           <li><a href="index.html">Home</a></li>
           <li><a href="elementary.html">Elementary</a></li>
@@ -51,14 +529,7 @@
           <li><a href="university.html">University</a></li>
           <li><a href="credits.html">Credits</a></li>
         </ul>
-        <button 
-          id="dark-toggle" 
-          class="menu-btn" 
-          aria-label="Toggle dark mode"
-          type="button"
-        >
-          🌙
-        </button>
+        <button id="dark-toggle" class="menu-btn" aria-label="Toggle dark mode" type="button">🌙</button>
       </nav>
     </div>
   </header>
@@ -67,241 +538,782 @@
     <section class="page active">
       <div class="container">
         <h2>Senior High (Grades 11–12)</h2>
-        <p class="section-sub">
-          Master these strategies to excel academically and prepare for your dream career! 💼✨
-        </p>
+        <p class="section-sub">Master these strategies to excel academically and prepare for your dream career!</p>
 
-        <div class="card-container" role="list" aria-label="Study strategies for senior high students">
-          <article class="card" role="listitem">
-            <h3 class="label">Career Mapping</h3>
-            <p class="mini">
-              Identify pathways early using interest inventories and career assessments. Explore different fields, shadow professionals, and align your goals with real opportunities. Your future starts now! (DepEd)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Time Blocking</h3>
-            <p class="mini">
-              Plan fixed hours for subjects and rest to build discipline. Create a structured schedule that balances academics, extracurriculars, and self-care. Work smart, not just hard! (UNC)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Internship Journals</h3>
-            <p class="mini">
-              Reflect on OJT learnings weekly for professional growth. Document experiences, skills gained, and lessons learned during work immersion. Build your professional story! (TESDA)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Mock Interviews</h3>
-            <p class="mini">
-              Practice responses with peers for confidence. Prepare for college admissions and job applications through realistic simulations. Practice makes progress—and less nervous! (Career Center)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Study Groups</h3>
-            <p class="mini">
-              Collaborate on research and thesis projects efficiently. Share knowledge, divide complex tasks, and learn from each other's strengths. Together everyone achieves more! (HBS)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Presentation Skills</h3>
-            <p class="mini">
-              Record and review presentations to improve clarity, tone, and body language. Build confidence through regular practice and constructive feedback. Command the room! (Husson)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Digital Literacy</h3>
-            <p class="mini">
-              Learn Google Suite, Excel, and Canva basics for productivity. Master essential digital tools for academic projects and future workplace success. Tech skills = career skills! (USAHS)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Portfolio Building</h3>
-            <p class="mini">
-              Compile best works, certificates, and achievements early. Create a comprehensive showcase of your skills, projects, and accomplishments. Show, don't just tell! (DepEd)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Exam Simulations</h3>
-            <p class="mini">
-              Simulate test conditions to reduce anxiety and improve time management. Practice with past papers, timed assessments, and review mistakes. Train like you'll test! (UNC)
-            </p>
-          </article>
-
-          <article class="card" role="listitem">
-            <h3 class="label">Self-Care Routine</h3>
-            <p class="mini">
-              Exercise, rest, and mindfulness improve focus and mental health. Maintain a balanced lifestyle for optimal academic performance. Your wellbeing = your success! (Healthline)
-            </p>
-          </article>
+        <!-- (#68) Dashboard with keyboard-accessible cards -->
+        <div class="future-dashboard">
+          <div class="dashboard-header">
+            <h3 class="dashboard-title"><span aria-hidden="true">🎯 </span>Your Future Dashboard</h3>
+            <p class="section-subtitle">Track your progress toward your goals</p>
+          </div>
+          <div class="dashboard-grid">
+            <button class="dashboard-card" type="button" data-action="focus" data-target="college-tracker">
+              <span class="dashboard-icon" aria-hidden="true">🎓</span>
+              <div class="dashboard-label">College Applications</div>
+              <div class="dashboard-value" id="college-count">0</div>
+              <div class="dashboard-subtitle">Schools tracking</div>
+            </button>
+            <button class="dashboard-card" type="button" data-action="focus" data-target="scholarship-tracker">
+              <span class="dashboard-icon" aria-hidden="true">💰</span>
+              <div class="dashboard-label">Scholarships</div>
+              <div class="dashboard-value" id="scholarship-count">0</div>
+              <div class="dashboard-subtitle">Opportunities found</div>
+            </button>
+            <button class="dashboard-card" type="button" data-action="focus" data-target="skills-matrix">
+              <span class="dashboard-icon" aria-hidden="true">⚡</span>
+              <div class="dashboard-label">Skills Mastered</div>
+              <div class="dashboard-value" id="skills-count">0</div>
+              <div class="dashboard-subtitle">Out of 12 core skills</div>
+            </button>
+            <button class="dashboard-card" type="button" data-action="graduation">
+              <span class="dashboard-icon" aria-hidden="true">📅</span>
+              <div class="dashboard-label">Days Until Graduation</div>
+              <div class="dashboard-value" id="days-until">—</div>
+              <div class="dashboard-subtitle">Make them count!</div>
+            </button>
+          </div>
         </div>
 
-        <!-- NEW: Senior High Resource Hub -->
+        <!-- (#8,#9,#19) Proper list semantics -->
+        <ul class="card-container card-list" aria-label="Study strategies for senior high students">
+          <li class="card"><h3 class="card-label">Career Mapping</h3><p class="mini">Identify pathways early using interest inventories and career assessments. Explore different fields, shadow professionals, and align your goals with real opportunities. Your future starts now!</p></li>
+          <li class="card"><h3 class="card-label">Time Blocking</h3><p class="mini">Plan fixed hours for subjects and rest to build discipline. Create a structured schedule that balances academics, extracurriculars, and self-care. Work smart, not just hard!</p></li>
+          <li class="card"><h3 class="card-label">Internship Journals</h3><p class="mini">Reflect on OJT learnings weekly for professional growth. Document experiences, skills gained, and lessons learned during work immersion. Build your professional story!</p></li>
+          <li class="card"><h3 class="card-label">Mock Interviews</h3><p class="mini">Practice responses with peers for confidence. Prepare for college admissions and job applications through realistic simulations. Practice makes progress—and less nervous!</p></li>
+          <li class="card"><h3 class="card-label">Study Groups</h3><p class="mini">Collaborate on research and thesis projects efficiently. Share knowledge, divide complex tasks, and learn from each other's strengths. Together everyone achieves more!</p></li>
+          <li class="card"><h3 class="card-label">Presentation Skills</h3><p class="mini">Record and review presentations to improve clarity, tone, and body language. Build confidence through regular practice and constructive feedback. Command the room!</p></li>
+          <li class="card"><h3 class="card-label">Digital Literacy</h3><p class="mini">Learn Google Suite, Excel, and Canva basics for productivity. Master essential digital tools for academic projects and future workplace success. Tech skills = career skills!</p></li>
+          <li class="card"><h3 class="card-label">Portfolio Building</h3><p class="mini">Compile best works, certificates, and achievements early. Create a comprehensive showcase of your skills, projects, and accomplishments. Show, don't just tell!</p></li>
+          <li class="card"><h3 class="card-label">Exam Simulations</h3><p class="mini">Simulate test conditions to reduce anxiety and improve time management. Practice with past papers, timed assessments, and review mistakes. Train like you'll test!</p></li>
+          <li class="card"><h3 class="card-label">Self-Care Routine</h3><p class="mini">Exercise, rest, and mindfulness improve focus and mental health. Maintain a balanced lifestyle for optimal academic performance. Your wellbeing = your success!</p></li>
+        </ul>
+
+        <!-- (#75) Strand buttons with aria-pressed -->
+        <div class="strand-selector" role="group" aria-label="Filter by strand">
+          <button class="strand-btn" type="button" data-strand="all" aria-pressed="true">All Strands</button>
+          <button class="strand-btn" type="button" data-strand="stem" aria-pressed="false">STEM</button>
+          <button class="strand-btn" type="button" data-strand="abm" aria-pressed="false">ABM</button>
+          <button class="strand-btn" type="button" data-strand="humss" aria-pressed="false">HUMSS</button>
+          <button class="strand-btn" type="button" data-strand="gas" aria-pressed="false">GAS</button>
+          <button class="strand-btn" type="button" data-strand="tvl" aria-pressed="false">TVL</button>
+        </div>
+
+        <!-- College Tracker (shell — items rendered by JS) -->
+        <div id="college-tracker" class="college-tracker">
+          <div class="tracker-header">
+            <h3 class="tracker-title"><span aria-hidden="true">🎓 </span>College Application Tracker</h3>
+            <button class="add-college-btn" id="add-college" type="button">+ Add College</button>
+          </div>
+          <div class="college-list" id="college-list" aria-live="polite">
+            <div class="empty-state">
+              <div class="empty-state-icon" aria-hidden="true">🎓</div>
+              <p>Start tracking your college applications! Click "+ Add College" to begin.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- (#61,#67,#78) Scholarships with aria-hidden emojis, data-url buttons -->
+        <div id="scholarship-tracker" class="scholarship-tracker">
+          <div class="dashboard-header">
+            <h3 class="dashboard-title"><span aria-hidden="true">💰 </span>Scholarship Opportunities</h3>
+            <p class="section-subtitle">Don't let cost be a barrier to your dreams</p>
+          </div>
+          <div class="scholarship-grid" id="scholarship-grid">
+            <div class="scholarship-card">
+              <div class="scholarship-amount">₱50,000/sem</div>
+              <div class="scholarship-name">DOST-SEI Undergraduate Scholarship</div>
+              <div class="scholarship-provider">Department of Science and Technology</div>
+              <div class="scholarship-deadline"><span aria-hidden="true">📅</span> <span><strong>Deadline:</strong> March 15, 2026</span></div>
+              <div class="scholarship-requirements">Must be enrolled in priority science &amp; technology courses. Minimum grade: 85%</div>
+              <button class="scholarship-apply-btn" type="button" data-url="https://www.sei.dost.gov.ph/">Learn More</button>
+            </div>
+            <div class="scholarship-card">
+              <div class="scholarship-amount">Full Tuition</div>
+              <div class="scholarship-name">CHED Merit Scholarship</div>
+              <div class="scholarship-provider">Commission on Higher Education</div>
+              <div class="scholarship-deadline"><span aria-hidden="true">📅</span> <span><strong>Deadline:</strong> April 30, 2026</span></div>
+              <div class="scholarship-requirements">Top performers in national exams. Accepts all courses. Income-based eligibility.</div>
+              <button class="scholarship-apply-btn" type="button" data-url="https://ched.gov.ph/">Learn More</button>
+            </div>
+            <div class="scholarship-card">
+              <div class="scholarship-amount">₱40,000/year</div>
+              <div class="scholarship-name">SM Foundation College Scholarship</div>
+              <div class="scholarship-provider">SM Foundation</div>
+              <div class="scholarship-deadline"><span aria-hidden="true">📅</span> <span><strong>Deadline:</strong> May 15, 2026</span></div>
+              <div class="scholarship-requirements">For incoming freshmen. GWA of 85% or higher. Financial need considered.</div>
+              <button class="scholarship-apply-btn" type="button" data-url="https://www.sm-foundation.org/">Learn More</button>
+            </div>
+            <div class="scholarship-card">
+              <div class="scholarship-amount">Varies</div>
+              <div class="scholarship-name">Local Government Scholarship</div>
+              <div class="scholarship-provider">Your Municipality/City</div>
+              <div class="scholarship-deadline"><span aria-hidden="true">📅</span> <span><strong>Deadline:</strong> Varies by location</span></div>
+              <div class="scholarship-requirements">Check your local government office. Often requires residency proof and good grades.</div>
+              <button class="scholarship-apply-btn" type="button" data-action="local">Visit Office</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Matrix (cards rendered by JS from data) -->
+        <div id="skills-matrix" class="skills-matrix">
+          <div class="dashboard-header">
+            <h3 class="dashboard-title"><span aria-hidden="true">⚡ </span>21st Century Skills Matrix</h3>
+            <p class="section-subtitle">Master the skills employers and universities want — click to level up</p>
+          </div>
+          <div class="skills-grid" id="skills-grid" role="group" aria-label="Skills to level up"></div>
+        </div>
+
+        <!-- (#77) Timeline with ordered list semantics -->
+        <div class="timeline-section">
+          <div class="dashboard-header">
+            <h3 class="dashboard-title"><span aria-hidden="true">📅 </span>Your Senior High Timeline</h3>
+            <p class="section-subtitle">Key milestones on your journey to graduation</p>
+          </div>
+          <div class="timeline-container">
+            <div class="timeline-line" aria-hidden="true"></div>
+            <ol class="timeline-list">
+              <li class="timeline-item"><div class="timeline-dot" aria-hidden="true"></div><div class="timeline-content"><div class="timeline-date">Grade 11 - First Semester</div><div class="timeline-title">Foundation Building</div><div class="timeline-description">Adjust to senior high, explore your strand subjects, join clubs, and start building your portfolio</div></div></li>
+              <li class="timeline-item"><div class="timeline-dot" aria-hidden="true"></div><div class="timeline-content"><div class="timeline-date">Grade 11 - Second Semester</div><div class="timeline-title">Skill Development</div><div class="timeline-description">Focus on research projects, develop presentation skills, and start exploring career options</div></div></li>
+              <li class="timeline-item"><div class="timeline-dot" aria-hidden="true"></div><div class="timeline-content"><div class="timeline-date">Summer Before Grade 12</div><div class="timeline-title">Career Exploration</div><div class="timeline-description">Research colleges/courses, attend career fairs, take entrance exam reviews, build your resume</div></div></li>
+              <li class="timeline-item"><div class="timeline-dot" aria-hidden="true"></div><div class="timeline-content"><div class="timeline-date">Grade 12 - First Semester</div><div class="timeline-title">Work Immersion &amp; Applications</div><div class="timeline-description">Complete OJT/work immersion, take entrance exams, submit college applications, apply for scholarships</div></div></li>
+              <li class="timeline-item"><div class="timeline-dot" aria-hidden="true"></div><div class="timeline-content"><div class="timeline-date">Grade 12 - Second Semester</div><div class="timeline-title">Final Push</div><div class="timeline-description">Finish strong academically, wait for college results, make final decisions about your future</div></div></li>
+              <li class="timeline-item"><div class="timeline-dot" aria-hidden="true"></div><div class="timeline-content"><div class="timeline-date">After Graduation</div><div class="timeline-title">New Chapter Begins</div><div class="timeline-description">Celebrate your achievements, prepare for college/work, and embrace your exciting future!</div></div></li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Career Explorer — no inline onclick -->
+        <div class="career-explorer">
+          <div class="dashboard-header">
+            <h3 class="dashboard-title"><span aria-hidden="true">🚀 </span>Career Path Explorer</h3>
+            <p class="section-subtitle">Discover where your interests can take you</p>
+          </div>
+          <div class="career-cards">
+            <div class="career-card">
+              <div class="career-icon-large" aria-hidden="true">💻</div>
+              <div class="career-title">Technology</div>
+              <div class="career-description">Software development, cybersecurity, data science, AI engineering, and IT management</div>
+              <div class="career-stats"><div class="career-stat"><span class="career-stat-value">High</span><span class="career-stat-label">Demand</span></div><div class="career-stat"><span class="career-stat-value">₱40K+</span><span class="career-stat-label">Starting</span></div><div class="career-stat"><span class="career-stat-value">4+ yrs</span><span class="career-stat-label">Study</span></div></div>
+              <button class="career-btn" type="button" data-strand-rec="STEM or ICT strand">Explore Path</button>
+            </div>
+            <div class="career-card">
+              <div class="career-icon-large" aria-hidden="true">⚕️</div>
+              <div class="career-title">Healthcare</div>
+              <div class="career-description">Medicine, nursing, pharmacy, medical technology, physical therapy, and allied health</div>
+              <div class="career-stats"><div class="career-stat"><span class="career-stat-value">Very High</span><span class="career-stat-label">Demand</span></div><div class="career-stat"><span class="career-stat-value">₱25K+</span><span class="career-stat-label">Starting</span></div><div class="career-stat"><span class="career-stat-value">4-8 yrs</span><span class="career-stat-label">Study</span></div></div>
+              <button class="career-btn" type="button" data-strand-rec="STEM or ABM strand">Explore Path</button>
+            </div>
+            <div class="career-card">
+              <div class="career-icon-large" aria-hidden="true">💼</div>
+              <div class="career-title">Business</div>
+              <div class="career-description">Accounting, marketing, management, entrepreneurship, finance, and human resources</div>
+              <div class="career-stats"><div class="career-stat"><span class="career-stat-value">High</span><span class="career-stat-label">Demand</span></div><div class="career-stat"><span class="career-stat-value">₱20K+</span><span class="career-stat-label">Starting</span></div><div class="career-stat"><span class="career-stat-value">4 yrs</span><span class="career-stat-label">Study</span></div></div>
+              <button class="career-btn" type="button" data-strand-rec="ABM or GAS strand">Explore Path</button>
+            </div>
+            <div class="career-card">
+              <div class="career-icon-large" aria-hidden="true">🎨</div>
+              <div class="career-title">Creative Arts</div>
+              <div class="career-description">Graphic design, animation, digital media, advertising, architecture, and fine arts</div>
+              <div class="career-stats"><div class="career-stat"><span class="career-stat-value">Medium</span><span class="career-stat-label">Demand</span></div><div class="career-stat"><span class="career-stat-value">₱18K+</span><span class="career-stat-label">Starting</span></div><div class="career-stat"><span class="career-stat-value">4 yrs</span><span class="career-stat-label">Study</span></div></div>
+              <button class="career-btn" type="button" data-strand-rec="HUMSS or GAS strand">Explore Path</button>
+            </div>
+            <div class="career-card">
+              <div class="career-icon-large" aria-hidden="true">⚖️</div>
+              <div class="career-title">Law &amp; Government</div>
+              <div class="career-description">Legal practice, public administration, diplomacy, political science, and social work</div>
+              <div class="career-stats"><div class="career-stat"><span class="career-stat-value">Medium</span><span class="career-stat-label">Demand</span></div><div class="career-stat"><span class="career-stat-value">₱30K+</span><span class="career-stat-label">Starting</span></div><div class="career-stat"><span class="career-stat-value">7+ yrs</span><span class="career-stat-label">Study</span></div></div>
+              <button class="career-btn" type="button" data-strand-rec="HUMSS strand">Explore Path</button>
+            </div>
+            <div class="career-card">
+              <div class="career-icon-large" aria-hidden="true">🔧</div>
+              <div class="career-title">Skilled Trades</div>
+              <div class="career-description">Automotive, welding, electrical, plumbing, carpentry, and HVAC technicians</div>
+              <div class="career-stats"><div class="career-stat"><span class="career-stat-value">High</span><span class="career-stat-label">Demand</span></div><div class="career-stat"><span class="career-stat-value">₱15K+</span><span class="career-stat-label">Starting</span></div><div class="career-stat"><span class="career-stat-value">1-2 yrs</span><span class="career-stat-label">Study</span></div></div>
+              <button class="career-btn" type="button" data-strand-rec="TVL strand or TESDA">Explore Path</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- (#58,#70,#71,#79) Interview Prep with keyboard access + aria-expanded -->
+        <div class="interview-prep">
+          <div class="dashboard-header">
+            <h3 class="dashboard-title"><span aria-hidden="true">🎤 </span>Interview Preparation Bank</h3>
+            <p class="section-subtitle">Master common interview questions — click or press Enter to reveal tips</p>
+          </div>
+          <div class="question-bank">
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Introduction</span>
+              <div class="question-text">Tell me about yourself</div>
+              <div class="question-tip"><strong>Tip:</strong> Use the "Present-Past-Future" formula: Start with who you are now, briefly mention your background, then share your goals. Keep it under 2 minutes and relate it to why you're interested in this school/company.</div>
+            </div>
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Motivation</span>
+              <div class="question-text">Why do you want to attend this university/program?</div>
+              <div class="question-tip"><strong>Tip:</strong> Research specific programs, professors, facilities, or opportunities unique to this institution. Show you've done your homework by mentioning concrete examples. Connect their strengths to your personal goals.</div>
+            </div>
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Strengths</span>
+              <div class="question-text">What are your greatest strengths?</div>
+              <div class="question-tip"><strong>Tip:</strong> Choose 2-3 relevant strengths and back each with a specific example. Use the STAR method (Situation, Task, Action, Result) to tell mini-stories that demonstrate your strengths in action.</div>
+            </div>
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Weakness</span>
+              <div class="question-text">What is your biggest weakness?</div>
+              <div class="question-tip"><strong>Tip:</strong> Choose a real weakness that isn't critical, then explain the concrete steps you're taking to improve. Example: "I used to struggle with public speaking, so I joined the debate club."</div>
+            </div>
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Challenge</span>
+              <div class="question-text">Describe a challenge you've overcome</div>
+              <div class="question-tip"><strong>Tip:</strong> Use STAR method. Pick a genuine challenge. Emphasize what you learned, how you grew, and how it shaped who you are today. Focus more on the solution and growth than the problem itself.</div>
+            </div>
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Leadership</span>
+              <div class="question-text">Give an example of your leadership skills</div>
+              <div class="question-tip"><strong>Tip:</strong> Leadership isn't just about being class president. Talk about group projects, organizing events, or helping peers. Show how you motivated others or took initiative.</div>
+            </div>
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Teamwork</span>
+              <div class="question-text">How do you work in a team?</div>
+              <div class="question-tip"><strong>Tip:</strong> Give a specific example of successful collaboration. Mention how you handle conflicts, respect different opinions, and contribute your strengths.</div>
+            </div>
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Goals</span>
+              <div class="question-text">Where do you see yourself in 5 years?</div>
+              <div class="question-tip"><strong>Tip:</strong> Show ambition but be realistic. Connect your answer to the program/company. Mention specific skills you want to develop or impact you want to make.</div>
+            </div>
+            <div class="question-item" role="button" tabindex="0" aria-expanded="false">
+              <span class="question-category">Closing</span>
+              <div class="question-text">Do you have any questions for us?</div>
+              <div class="question-tip"><strong>Tip:</strong> ALWAYS have 2-3 thoughtful questions ready! Ask about specific programs, opportunities for growth, or campus culture. Avoid questions about basic info on their website.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- (#11,#18,#93) Resource hub — disabled buttons, demoted to h3 -->
         <section class="resource-nav" aria-label="Senior high planning resources">
-          <h2 class="resource-nav-title">📌 Senior High Planning Hub</h2>
-          <p class="resource-nav-subtitle">
-            Explore tools that help you bridge the gap between high school and your next step.
-          </p>
-
+          <h3 class="resource-nav-title"><span aria-hidden="true">📌 </span>Senior High Planning Hub</h3>
+          <p class="resource-nav-subtitle">Explore tools that help you bridge the gap between high school and your next step.</p>
           <div class="resource-grid">
-            <a href="#" class="resource-card" onclick="alert('Course Planner - Coming Soon'); return false;">
-              <div class="resource-icon">📚</div>
-              <div class="resource-title">Strand & Course Planner</div>
-              <div class="resource-description">
-                Map out your current strand, elective choices, and possible college courses or training programs.
-              </div>
-            </a>
-
-            <a href="#" class="resource-card" onclick="alert('College Checklist - Coming Soon'); return false;">
-              <div class="resource-icon">🎓</div>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon" aria-hidden="true">📚</div>
+              <div class="resource-title">Strand &amp; Course Planner</div>
+              <div class="resource-description">Map out your current strand, elective choices, and possible college courses or training programs.</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon" aria-hidden="true">🎓</div>
               <div class="resource-title">College / Training Checklist</div>
-              <div class="resource-description">
-                Track entrance exam dates, application requirements, recommendation letters, and deadlines.
-              </div>
-            </a>
-
-            <a href="#" class="resource-card" onclick="alert('Resume Builder - Coming Soon'); return false;">
-              <div class="resource-icon">📄</div>
+              <div class="resource-description">Track entrance exam dates, application requirements, recommendation letters, and deadlines.</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon" aria-hidden="true">📄</div>
               <div class="resource-title">First Resume Builder</div>
-              <div class="resource-description">
-                Turn your school projects, OJT, and extracurriculars into a clean, professional resume.
-              </div>
-            </a>
-
-            <a href="#" class="resource-card" onclick="alert('Scholarship Finder - Coming Soon'); return false;">
-              <div class="resource-icon">💰</div>
-              <div class="resource-title">Scholarship & Grant Tracker</div>
-              <div class="resource-description">
-                Organize scholarship options, eligibility, and requirements in one clear overview.
-              </div>
-            </a>
+              <div class="resource-description">Turn your school projects, OJT, and extracurriculars into a clean, professional resume.</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
+            <button class="resource-btn-card" type="button" disabled aria-disabled="true">
+              <div class="resource-icon" aria-hidden="true">💰</div>
+              <div class="resource-title">Scholarship &amp; Grant Tracker</div>
+              <div class="resource-description">Organize scholarship options, eligibility, and requirements in one clear overview.</div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </button>
           </div>
         </section>
 
-        <!-- NEW: Quick Insight -->
-        <section class="insight-card" aria-label="Senior high insight">
-          <div class="insight-icon">💡</div>
+        <!-- (#21,#67) Insight as div with aria-hidden emoji -->
+        <div class="insight-card" aria-label="Senior high insight">
+          <div class="insight-icon" aria-hidden="true">💡</div>
           <div>
             <h3 class="insight-title">Senior High Mindset</h3>
-            <p class="insight-text">
-              Grades matter—but so do skills, habits, and character. Treat every project, OJT task, and group work
-              as practice for the workplace or college. Show up as the kind of person you want future you to be proud of.
-            </p>
+            <p class="insight-text">Grades matter—but so do skills, habits, and character. Treat every project, OJT task, and group work as practice for the workplace or college. Show up as the kind of person you want future you to be proud of.</p>
           </div>
-        </section>
+        </div>
 
-        <div style="margin-top: 48px; text-align: center;">
-          <button class="btn" onclick="window.location.href='index.html'">
-            Back to Home
-          </button>
+        <!-- (#12,#102) Proper <a> for navigation -->
+        <div class="back-nav">
+          <a href="index.html" class="btn">Back to Home</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer role="contentinfo">
+  <!-- (#14) Removed redundant role -->
+  <footer>
     <div class="container footer-inner">
-      <div>© <span id="year"></span> Study Buddy. All rights reserved.</div>
-      <div>
-        <a href="credits.html">Credits & Sources</a>
-      </div>
+      <div>&copy; <span id="year">2026</span> Study Buddy. All rights reserved.</div>
+      <div><a href="credits.html">Credits &amp; Sources</a></div>
     </div>
   </footer>
 
-  <!-- External JavaScript file -->
-  <script src="script.js"></script>
+  <!-- (#4) Removed script.js to prevent duplicate handlers -->
 
-  <!-- Internal JavaScript -->
-  <script>
-    // Set current year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    <script>
+  (function() {
+    'use strict';
 
-    // Mobile menu toggle
-    const menuToggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('menu');
+    // ===================== UTILITIES =====================
 
+    // (#39,#54) Safe localStorage
+    var storage = {
+      get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
+      set: function(k,v) { try { localStorage.setItem(k,v); } catch(e) {} },
+      getJSON: function(k) { try { var d=localStorage.getItem(k); return d?JSON.parse(d):null; } catch(e) { return null; } },
+      setJSON: function(k,v) { try { localStorage.setItem(k,JSON.stringify(v)); } catch(e) {} }
+    };
+
+    // (#48) Sanitize
+    function sanitize(s) { var d=document.createElement('div'); d.textContent=String(s); return d.innerHTML; }
+
+    // (#45,#46,#47,#92,#99) Toast system
+    function showToast(msg, type, actionText, actionCb) {
+      type = type || 'info';
+      var c = document.getElementById('toast-container');
+      if (!c) return;
+      var t = document.createElement('div');
+      t.className = 'toast toast-' + type;
+      t.textContent = msg;
+      if (actionText && actionCb) {
+        var b = document.createElement('button');
+        b.className = 'toast-action'; b.type = 'button'; b.textContent = actionText;
+        b.addEventListener('click', function() { actionCb(); t.remove(); });
+        t.appendChild(b);
+      }
+      c.appendChild(t);
+      requestAnimationFrame(function() { requestAnimationFrame(function() { t.classList.add('show'); }); });
+      var to = setTimeout(function() { t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 5000);
+      t.addEventListener('click', function(e) { if (e.target === t) { clearTimeout(to); t.remove(); } });
+    }
+
+    // (#55) Safe open
+    function safeOpen(url) { window.open(url, '_blank', 'noopener,noreferrer'); }
+
+    // ===================== SETUP =====================
+
+    // (#15) Year
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Menu
+    var menuToggle = document.getElementById('menu-toggle');
+    var menu = document.getElementById('menu');
     if (menuToggle && menu) {
-      menuToggle.addEventListener('click', () => {
+      menuToggle.addEventListener('click', function() {
         menu.classList.toggle('active');
-        const isExpanded = menu.classList.contains('active');
-        menuToggle.setAttribute('aria-expanded', isExpanded);
+        menuToggle.setAttribute('aria-expanded', String(menu.classList.contains('active')));
       });
-
-      // Close menu when clicking outside
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', function(e) {
         if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
           menu.classList.remove('active');
           menuToggle.setAttribute('aria-expanded', 'false');
         }
       });
-    }
-
-    // WORKING DARK MODE (shared behavior with other pages)
-    const darkToggle = document.getElementById('dark-toggle');
-    const html = document.documentElement;
-
-    if (darkToggle) {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        html.classList.add('dark');
-        darkToggle.textContent = '☀️';
-      }
-
-      darkToggle.addEventListener('click', () => {
-        html.classList.toggle('dark');
-        const isDark = html.classList.contains('dark');
-        darkToggle.textContent = isDark ? '☀️' : '🌙';
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      });
-    }
-
-    // Keyboard navigation (Escape closes menu)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && menu && menu.classList.contains('active')) {
-        menu.classList.remove('active');
-        if (menuToggle) {
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && menu.classList.contains('active')) {
+          menu.classList.remove('active');
           menuToggle.setAttribute('aria-expanded', 'false');
           menuToggle.focus();
         }
-      }
-    });
+      });
+    }
 
-    // Intersection-based reveal animation
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
+    // (#30) Dark mode with system preference
+    var darkToggle = document.getElementById('dark-toggle');
+    var html = document.documentElement;
+    if (darkToggle) {
+      var saved = storage.get('theme');
+      if (saved === 'dark') { html.classList.add('dark'); darkToggle.textContent = '☀️'; }
+      else if (saved === 'light') { html.classList.add('light'); }
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        html.classList.add('dark'); darkToggle.textContent = '☀️';
+      }
+      darkToggle.addEventListener('click', function() {
+        html.classList.toggle('dark');
+        var isDark = html.classList.contains('dark');
+        darkToggle.textContent = isDark ? '☀️' : '🌙';
+        darkToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        storage.set('theme', isDark ? 'dark' : 'light');
+        if (isDark) html.classList.remove('light'); else html.classList.add('light');
+      });
+    }
+
+    // (#29,#34,#41,#88) Observer — no parallax, unobserve, motion-safe
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion && ('IntersectionObserver' in window)) {
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(en) {
+          if (en.isIntersecting) { en.target.classList.add('in-view'); obs.unobserve(en.target); }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.card, .resource-btn-card, .insight-card, .career-card, .scholarship-card').forEach(function(el) {
+        el.classList.add('animate-ready');
+        obs.observe(el);
+      });
+    }
+
+    // ===================== DASHBOARD =====================
+
+    document.querySelectorAll('.dashboard-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var action = card.dataset.action;
+        var target = card.dataset.target;
+        if (action === 'focus' && target) {
+          var section = document.getElementById(target);
+          if (section) {
+            section.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+            if (!reducedMotion) {
+              section.style.animation = 'focusPulse 0.6s ease';
+              setTimeout(function() { section.style.animation = ''; }, 600);
+            }
+          }
+        } else if (action === 'graduation') {
+          showToast('Graduation countdown is calculated automatically!', 'info');
         }
       });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.card, .resource-card, .insight-card').forEach(el => {
-      observer.observe(el);
     });
 
-    // Subtle scroll parallax for cards
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrolled = window.pageYOffset;
-          const cards = document.querySelectorAll('.card');
-          cards.forEach((card, index) => {
-            const speed = 0.4 + (index % 3) * 0.08;
-            card.style.transform = `translateY(${scrolled * speed * 0.01}px)`;
-          });
-          ticking = false;
+    // (#62) Graduation calculator
+    function calcGraduation() {
+      var today = new Date();
+      var yr = today.getFullYear();
+      if (today.getMonth() >= 3) yr++;
+      var grad = new Date(yr, 3, 1);
+      var diff = Math.ceil((grad - today) / (1000*60*60*24));
+      document.getElementById('days-until').textContent = diff > 0 ? diff : 0;
+    }
+    calcGraduation();
+
+    // (#61) Dynamic scholarship count
+    function updateScholarshipCount() {
+      var count = document.querySelectorAll('.scholarship-card').length;
+      document.getElementById('scholarship-count').textContent = count;
+    }
+    updateScholarshipCount();
+
+    // ===================== STRAND SELECTOR (#59,#75,#101) =====================
+
+    document.querySelectorAll('.strand-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.strand-btn').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
         });
-        ticking = true;
-      }
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+        showToast('Filtering for ' + btn.dataset.strand.toUpperCase() + ' strand — coming soon!', 'info');
+      });
     });
+
+    // ===================== COLLEGE TRACKER (#48,#49,#50,#51,#53,#96) =====================
+
+    var collegesData = storage.getJSON('seniorHighColleges') || [];
+    var collegeCounter = collegesData.length > 0
+      ? Math.max.apply(null, collegesData.map(function(c){return c.id;})) + 1
+      : 0;
+
+    function saveCollegesModel() {
+      storage.setJSON('seniorHighColleges', collegesData);
+      document.getElementById('college-count').textContent = collegesData.length;
+    }
+
+    function getCollege(id) {
+      for (var i=0; i<collegesData.length; i++) { if (collegesData[i].id===id) return collegesData[i]; }
+      return null;
+    }
+
+    function renderColleges() {
+      var list = document.getElementById('college-list');
+      list.innerHTML = '';
+      if (collegesData.length === 0) {
+        var empty = document.createElement('div');
+        empty.className = 'empty-state';
+        empty.innerHTML = '<div class="empty-state-icon" aria-hidden="true">🎓</div><p>Start tracking your college applications! Click "+ Add College" to begin.</p>';
+        list.appendChild(empty);
+        document.getElementById('college-count').textContent = '0';
+        return;
+      }
+      collegesData.forEach(function(c) { list.appendChild(createCollegeEl(c)); });
+      document.getElementById('college-count').textContent = collegesData.length;
+    }
+
+    function createCollegeEl(college) {
+      var item = document.createElement('div');
+      item.className = 'college-item';
+      item.dataset.id = college.id;
+
+      var header = document.createElement('div');
+      header.className = 'college-header';
+
+      var info = document.createElement('div');
+      info.className = 'college-info';
+      var h4 = document.createElement('h4');
+      h4.textContent = college.name;
+      h4.setAttribute('contenteditable', 'true');
+      h4.setAttribute('spellcheck', 'false');
+      h4.setAttribute('role', 'textbox');
+      h4.setAttribute('aria-label', 'College name — click to edit');
+      h4.addEventListener('blur', function() {
+        college.name = h4.textContent.trim() || 'Untitled';
+        saveCollegesModel();
+      });
+      h4.addEventListener('paste', function(e) {
+        e.preventDefault();
+        document.execCommand('insertText', false, (e.clipboardData||window.clipboardData).getData('text/plain'));
+      });
+
+      var meta = document.createElement('div');
+      meta.className = 'college-meta';
+      var courseMeta = document.createElement('span');
+      courseMeta.textContent = '📚 ' + college.course;
+      var deadlineMeta = document.createElement('span');
+      deadlineMeta.textContent = '📅 ' + college.deadline;
+      meta.appendChild(courseMeta);
+      meta.appendChild(deadlineMeta);
+      info.appendChild(h4);
+      info.appendChild(meta);
+
+      var actions = document.createElement('div');
+      actions.className = 'college-actions';
+
+      // Status button
+      var statuses = ['researching','applying','waiting','accepted','rejected'];
+      var statusBtn = document.createElement('button');
+      statusBtn.type = 'button';
+      statusBtn.className = 'college-status status-' + college.status;
+      statusBtn.textContent = college.status;
+      statusBtn.setAttribute('aria-label', 'Application status: ' + college.status + '. Click to change.');
+      statusBtn.addEventListener('click', function() {
+        var idx = statuses.indexOf(college.status);
+        college.status = statuses[(idx+1) % statuses.length];
+        statusBtn.className = 'college-status status-' + college.status;
+        statusBtn.textContent = college.status;
+        statusBtn.setAttribute('aria-label', 'Application status: ' + college.status + '. Click to change.');
+        saveCollegesModel();
+        showToast('Status: ' + college.status, 'success');
+      });
+
+      // (#96) Remove with undo
+      var removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'remove-college-btn';
+      removeBtn.setAttribute('aria-label', 'Remove ' + sanitize(college.name));
+      removeBtn.textContent = '✕';
+      removeBtn.addEventListener('click', function() {
+        var copy = JSON.parse(JSON.stringify(college));
+        var idx = collegesData.indexOf(getCollege(college.id));
+        collegesData.splice(idx, 1);
+        saveCollegesModel();
+        renderColleges();
+        showToast('College removed', 'warning', 'Undo', function() {
+          collegesData.splice(idx, 0, copy);
+          saveCollegesModel();
+          renderColleges();
+        });
+      });
+
+      actions.appendChild(statusBtn);
+      actions.appendChild(removeBtn);
+      header.appendChild(info);
+      header.appendChild(actions);
+
+      // (#97) Progress with range slider instead of prompt
+      var progress = document.createElement('div');
+      progress.className = 'college-progress';
+      var progLabel = document.createElement('div');
+      progLabel.className = 'progress-label';
+      var progSpan1 = document.createElement('span');
+      progSpan1.textContent = 'Application Progress';
+      var progSpan2 = document.createElement('span');
+      progSpan2.className = 'progress-value';
+      progSpan2.textContent = (college.progress || 0) + '%';
+      progLabel.appendChild(progSpan1);
+      progLabel.appendChild(progSpan2);
+
+      var progBar = document.createElement('div');
+      progBar.className = 'progress-bar';
+      var progFill = document.createElement('div');
+      progFill.className = 'progress-fill';
+      progFill.style.width = (college.progress || 0) + '%';
+      progBar.appendChild(progFill);
+
+      var editor = document.createElement('div');
+      editor.className = 'progress-editor';
+      var range = document.createElement('input');
+      range.type = 'range';
+      range.min = '0'; range.max = '100'; range.value = college.progress || 0;
+      range.setAttribute('aria-label', 'Set application progress');
+      range.addEventListener('input', function() {
+        var v = parseInt(range.value);
+        progFill.style.width = v + '%';
+        progSpan2.textContent = v + '%';
+      });
+      range.addEventListener('change', function() {
+        college.progress = parseInt(range.value);
+        saveCollegesModel();
+      });
+      editor.appendChild(range);
+
+      progress.appendChild(progLabel);
+      progress.appendChild(progBar);
+      progress.appendChild(editor);
+
+      item.appendChild(header);
+      item.appendChild(progress);
+      return item;
+    }
+
+    document.getElementById('add-college').addEventListener('click', function() {
+      collegesData.push({
+        id: collegeCounter++,
+        name: 'New University',
+        course: 'Course Name',
+        deadline: 'TBD',
+        status: 'researching',
+        progress: 0
+      });
+      saveCollegesModel();
+      renderColleges();
+      showToast('College added!', 'info');
+      var items = document.querySelectorAll('.college-item');
+      if (items.length) items[items.length-1].querySelector('h4').focus();
+    });
+
+    renderColleges();
+
+    // ===================== SKILLS MATRIX (#63,#69,#98) =====================
+
+    var SKILLS = [
+      {id:1, name:'Critical Thinking', desc:'Analyze problems, evaluate evidence, and make logical decisions'},
+      {id:2, name:'Communication', desc:'Express ideas clearly in writing, speaking, and presentations'},
+      {id:3, name:'Collaboration', desc:'Work effectively in teams and contribute to group success'},
+      {id:4, name:'Digital Literacy', desc:'Navigate technology tools and platforms confidently'},
+      {id:5, name:'Time Management', desc:'Prioritize tasks and meet deadlines consistently'},
+      {id:6, name:'Creativity', desc:'Generate innovative ideas and unique solutions'},
+      {id:7, name:'Research Skills', desc:'Find, evaluate, and synthesize information from various sources'},
+      {id:8, name:'Leadership', desc:'Guide teams, make decisions, and inspire others'},
+      {id:9, name:'Adaptability', desc:'Adjust to new situations and learn from challenges'},
+      {id:10, name:'Financial Literacy', desc:'Understand budgeting, saving, and financial planning basics'},
+      {id:11, name:'Problem Solving', desc:'Identify issues and develop effective solutions'},
+      {id:12, name:'Self-Awareness', desc:'Understand your strengths, weaknesses, and values'}
+    ];
+    var LEVELS = ['None','Beginner','Developing','Proficient','Advanced','Expert'];
+    var skillLevels = storage.getJSON('seniorHighSkills') || {};
+
+    function saveSkillsModel() { storage.setJSON('seniorHighSkills', skillLevels); }
+
+    function updateSkillsCount() {
+      var count = 0;
+      for (var k in skillLevels) { if (skillLevels[k] >= 3) count++; }
+      document.getElementById('skills-count').textContent = count;
+    }
+
+    function renderSkills() {
+      var grid = document.getElementById('skills-grid');
+      grid.innerHTML = '';
+      SKILLS.forEach(function(skill) {
+        var level = skillLevels[skill.id] || 0;
+        var card = document.createElement('div');
+        card.className = 'skill-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', skill.name + ': ' + LEVELS[level] + '. Click to level up.');
+        card.dataset.skillId = skill.id;
+
+        var header = document.createElement('div');
+        header.className = 'skill-header';
+        var name = document.createElement('span');
+        name.className = 'skill-name';
+        name.textContent = skill.name;
+        var lvl = document.createElement('span');
+        lvl.className = 'skill-level';
+        lvl.textContent = LEVELS[level];
+        header.appendChild(name);
+        header.appendChild(lvl);
+
+        var bars = document.createElement('div');
+        bars.className = 'skill-bars';
+        for (var i = 0; i < 5; i++) {
+          var bar = document.createElement('div');
+          bar.className = 'skill-bar' + (i < level ? ' filled' : '');
+          bars.appendChild(bar);
+        }
+
+        var desc = document.createElement('div');
+        desc.className = 'skill-description';
+        desc.textContent = skill.desc;
+
+        card.appendChild(header);
+        card.appendChild(bars);
+        card.appendChild(desc);
+
+        function handleSkill() {
+          var cur = skillLevels[skill.id] || 0;
+          if (cur >= 5) {
+            showToast(skill.name + ' is already at Expert! 🎉', 'success');
+            return;
+          }
+          skillLevels[skill.id] = cur + 1;
+          saveSkillsModel();
+          updateSkillsCount();
+          renderSkills();
+          showToast(skill.name + ': ' + LEVELS[skillLevels[skill.id]], 'success');
+        }
+        card.addEventListener('click', handleSkill);
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSkill(); }
+        });
+
+        grid.appendChild(card);
+      });
+    }
+    renderSkills();
+    updateSkillsCount();
+
+    // ===================== INTERVIEW QUESTIONS (#58,#70,#71) =====================
+
+    document.querySelectorAll('.question-item').forEach(function(item) {
+      function toggleQ() {
+        var expanded = item.getAttribute('aria-expanded') === 'true';
+        item.setAttribute('aria-expanded', String(!expanded));
+      }
+      item.addEventListener('click', toggleQ);
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleQ(); }
+      });
+    });
+
+    // ===================== CAREER BUTTONS (#10,#45) =====================
+
+    document.querySelectorAll('.career-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var rec = btn.dataset.strandRec;
+        if (rec) showToast('Recommended: ' + rec, 'info');
+      });
+    });
+
+    // ===================== SCHOLARSHIP BUTTONS (#23,#55,#83) =====================
+
+    document.querySelectorAll('.scholarship-apply-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var url = btn.dataset.url;
+        if (url) {
+          safeOpen(url);
+        } else if (btn.dataset.action === 'local') {
+          showToast('Visit your city/municipal hall for details!', 'info');
+        }
+      });
+    });
+
+    // ===================== REVEAL SKILLS ON SCROLL (also observe) =====================
+
+    if (!reducedMotion && ('IntersectionObserver' in window)) {
+      document.querySelectorAll('.skill-card, .college-item').forEach(function(el) {
+        el.classList.add('animate-ready');
+        obs.observe(el);
+      });
+    }
+
+  })();
   </script>
 </body>
 </html>
