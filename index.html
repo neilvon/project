@@ -15,8 +15,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
-
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3EStudy Buddy%3C/title%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%230b84ff'/%3E%3C/svg%3E" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Study Buddy",
+    "url": "https://studybuddy.example.com",
+    "description": "Research-backed study tips from elementary to university",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://studybuddy.example.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 
   <style>
     :root {
@@ -46,268 +61,154 @@
       overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
 
-    :focus-visible {
-      outline: 3px solid var(--primary, #0b84ff);
-      outline-offset: 2px;
-    }
+    :focus-visible { outline: 3px solid var(--primary, #0b84ff); outline-offset: 2px; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important; scroll-behavior: auto !important;
       }
     }
 
-    /* (#1,#5) Dark mode with card-bg and level icon adaptations */
     @media (prefers-color-scheme: dark) {
       html:not(.light) {
-        --text: #f3f4f6; --text-secondary: #9ca3af;
-        --bg: #111827; --bg-secondary: #1f2937; --border: #374151;
-        --card-bg: #1f2937; --bg-hover: #374151;
+        --text: #f3f4f6; --text-secondary: #9ca3af; --bg: #111827;
+        --bg-secondary: #1f2937; --border: #374151; --card-bg: #1f2937; --bg-hover: #374151;
       }
     }
     html.dark {
-      --text: #f3f4f6; --text-secondary: #9ca3af;
-      --bg: #111827; --bg-secondary: #1f2937; --border: #374151;
-      --card-bg: #1f2937; --bg-hover: #374151;
+      --text: #f3f4f6; --text-secondary: #9ca3af; --bg: #111827;
+      --bg-secondary: #1f2937; --border: #374151; --card-bg: #1f2937; --bg-hover: #374151;
+    }
+
+    @media (forced-colors: active) {
+      .btn, .btn-filled, .btn-ghost, .quote-btn, .featured-nav-btn, .scroll-top-btn {
+        border: 2px solid ButtonText;
+      }
     }
 
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
-    /* (#4) Header/nav fallback styles */
+    /* Header */
     .site-header {
       background: var(--primary, #0b84ff); color: white; padding: 0.75rem 0;
       position: sticky; top: 0; z-index: 1000;
     }
-    .header-inner {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 1rem;
-    }
+    .header-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
     .brand { display: flex; align-items: center; gap: 0.75rem; }
-    .logo {
-      width: 42px; height: 42px; border-radius: 12px; display: flex;
-      align-items: center; justify-content: center;
-      background: rgba(255,255,255,0.15);
-    }
+    .logo { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); }
     .site-title { font-size: 1.35rem; font-weight: 800; color: white; margin: 0; }
     .site-sub { font-size: 0.8rem; opacity: 0.85; }
     .main-nav { display: flex; align-items: center; gap: 0.5rem; }
-    .menu-btn {
-      background: rgba(255,255,255,0.15); border: none; color: white;
-      padding: 0.5rem 0.75rem; border-radius: 8px; cursor: pointer;
-      font-size: 1.1rem; transition: background 0.2s ease;
-    }
+    .menu-btn { background: rgba(255,255,255,0.15); border: none; color: white; padding: 0.5rem 0.75rem; border-radius: 8px; cursor: pointer; font-size: 1.1rem; transition: background 0.2s ease; }
     .menu-btn:hover { background: rgba(255,255,255,0.25); }
-    .menu-list {
-      display: flex; list-style: none; margin: 0; padding: 0; gap: 0.25rem;
-    }
-    .menu-list a {
-      color: rgba(255,255,255,0.85); text-decoration: none; padding: 0.5rem 0.75rem;
-      border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease;
-    }
+    .menu-list { display: flex; list-style: none; margin: 0; padding: 0; gap: 0.25rem; }
+    .menu-list a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 0.5rem 0.75rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease; }
     .menu-list a:hover, .menu-list a.active { background: rgba(255,255,255,0.15); color: white; }
     @media (max-width: 768px) {
-      .menu-list {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; background: var(--primary, #0b84ff);
-        padding: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-      }
+      .menu-list { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; background: var(--primary, #0b84ff); padding: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.2); z-index: 100; }
       .menu-list.active { display: flex; }
     }
 
-    /* Toast system */
-    .toast-container {
-      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000;
-      display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none;
-    }
-    .toast {
-      padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15); transform: translateX(120%);
-      transition: transform 0.3s ease; pointer-events: auto;
-      display: flex; align-items: center; gap: 0.75rem; max-width: 380px; cursor: pointer;
-    }
+    /* Toast */
+    .toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000; display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none; }
+    .toast { padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem; box-shadow: 0 8px 24px rgba(0,0,0,0.15); transform: translateX(120%); transition: transform 0.3s ease; pointer-events: auto; display: flex; align-items: center; gap: 0.75rem; max-width: 380px; cursor: pointer; }
     .toast.show { transform: translateX(0); }
     .toast-success { background: #d1fae5; color: #065f46; border: 2px solid #10b981; }
     .toast-info { background: #dbeafe; color: #1e40af; border: 2px solid #3b82f6; }
     .toast-warning { background: #fef3c7; color: #92400e; border: 2px solid #f59e0b; }
 
     /* =================== HERO =================== */
-    .hero {
-      position: relative; overflow: hidden;
-      background: linear-gradient(135deg, #0b84ff 0%, #06b6d4 50%, #8b5cf6 100%);
-      color: white; padding: 5rem 0 4rem;
-    }
-    .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
-    }
-    .hero-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
-      position: relative; z-index: 1;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.5rem 1rem; background: rgba(255,255,255,0.15);
-      border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem;
-      backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
-    }
-    .hero h2 {
-      font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin: 0 0 1.5rem;
-      letter-spacing: -0.02em;
-    }
-    .hero .lead {
-      font-size: 1.25rem; opacity: 0.9; line-height: 1.7; margin-bottom: 2rem; max-width: 540px;
-    }
+    .hero { position: relative; overflow: hidden; background: linear-gradient(135deg, #0b84ff 0%, #06b6d4 50%, #8b5cf6 100%); color: white; padding: 5rem 0 4rem; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 60%); }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(255,255,255,0.15); border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+    .hero h2 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin: 0 0 1.5rem; letter-spacing: -0.02em; }
+    .hero .lead { font-size: 1.25rem; opacity: 0.9; line-height: 1.7; margin-bottom: 2rem; max-width: 540px; }
 
     /* Search */
     .search-wrapper { margin-bottom: 2rem; max-width: 500px; position: relative; }
-    .search-box {
-      display: flex; align-items: center; background: rgba(255,255,255,0.15);
-      border-radius: 16px; padding: 0 1rem; backdrop-filter: blur(10px);
-      border: 2px solid rgba(255,255,255,0.2); transition: all 0.3s ease;
-    }
-    .search-box:focus-within {
-      background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.4);
-    }
+    .search-box { display: flex; align-items: center; background: rgba(255,255,255,0.15); border-radius: 16px; padding: 0 1rem; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.2); transition: all 0.3s ease; }
+    .search-box:focus-within { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.4); }
     .search-icon { color: rgba(255,255,255,0.7); flex-shrink: 0; }
-    .search-box input {
-      flex: 1; padding: 0.875rem 0.75rem; background: transparent; border: none;
-      color: white; font-size: 1rem; font-family: inherit;
-    }
+    .search-box input { flex: 1; padding: 0.875rem 0.75rem; background: transparent; border: none; color: white; font-size: 1rem; font-family: inherit; }
     .search-box input::placeholder { color: rgba(255,255,255,0.6); }
-    /* (#2) Only remove outline for mouse users — keyboard keeps focus-visible */
     .search-box input:focus:not(:focus-visible) { outline: none; }
-    #search-clear {
-      background: none; border: none; color: rgba(255,255,255,0.6);
-      cursor: pointer; font-size: 1.1rem; padding: 0.5rem; display: none;
-    }
+    .search-hint { position: absolute; right: 3.5rem; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); padding: 0.15rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; opacity: 0.6; pointer-events: none; border: 1px solid rgba(255,255,255,0.2); }
+    #search-clear { background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 1.1rem; padding: 0.5rem; display: none; }
     #search-clear.visible { display: block; }
-    /* (#1) var(--card-bg) instead of white */
-    .search-results {
-      position: absolute; top: 100%; left: 0; right: 0; margin-top: 0.5rem;
-      background: var(--card-bg, #ffffff); border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      max-height: 360px; overflow-y: auto; z-index: 100; display: none;
-    }
+    .search-results { position: absolute; top: 100%; left: 0; right: 0; margin-top: 0.5rem; background: var(--card-bg, #ffffff); border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); max-height: 360px; overflow-y: auto; z-index: 100; display: none; }
     .search-results.active { display: block; }
-    /* (#6) Changed from role=option to role=listitem */
-    .search-result-item {
-      padding: 1rem 1.25rem; border-bottom: 1px solid var(--border, #e5e7eb);
-      cursor: pointer; transition: background 0.2s ease; display: block;
-      text-decoration: none; color: var(--text, #1f2937);
-    }
-    /* (#1) var(--bg-hover) instead of hardcoded */
-    .search-result-item:hover, .search-result-item:focus { background: var(--bg-hover, #f0f7ff); }
+    .search-result-item { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border, #e5e7eb); cursor: pointer; transition: background 0.2s ease; display: block; text-decoration: none; color: var(--text, #1f2937); }
+    .search-result-item:hover, .search-result-item:focus, .search-result-item.active-desc { background: var(--bg-hover, #f0f7ff); }
     .search-result-item:last-child { border-bottom: none; }
-    .search-result-item.active-desc { background: var(--bg-hover, #f0f7ff); }
     .search-result-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
-    .search-result-level {
-      font-size: 0.75rem; font-weight: 600; padding: 0.15rem 0.5rem;
-      border-radius: 50px; display: inline-block; margin-bottom: 0.25rem;
-    }
+    .search-result-level { font-size: 0.75rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 50px; display: inline-block; margin-bottom: 0.25rem; }
     .search-result-desc { font-size: 0.85rem; color: var(--text-secondary, #6b7280); }
-    .search-no-results {
-      padding: 2rem; text-align: center; color: var(--text-secondary, #6b7280); font-weight: 600;
-    }
-    /* (#8) Search status for screen readers */
-    .search-status {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
-    }
+    .search-no-results { padding: 2rem; text-align: center; color: var(--text-secondary, #6b7280); font-weight: 600; }
+    .search-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .level-elementary .search-result-level { background: #fee2e2; color: #991b1b; }
     .level-highschool .search-result-level { background: #e0e7ff; color: #3730a3; }
     .level-seniorhigh .search-result-level { background: #ede9fe; color: #5b21b6; }
     .level-university .search-result-level { background: #dbeafe; color: #1e40af; }
 
-    /* Hero Actions */
+    /* Hero Actions / Stats / Illustration */
     .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.875rem 1.75rem; border-radius: 12px; font-weight: 700;
-      font-size: 0.95rem; text-decoration: none; transition: all 0.3s ease;
-      border: none; cursor: pointer; font-family: inherit;
-    }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; border-radius: 12px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.3s ease; border: none; cursor: pointer; font-family: inherit; }
     .btn:hover { transform: translateY(-2px); }
-    .btn svg { flex-shrink: 0; }
-    .btn-primary {
-      background: white; color: var(--primary, #0b84ff);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    .btn-primary { background: white; color: var(--primary, #0b84ff); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     .btn-primary:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
-    .btn-secondary {
-      background: rgba(255,255,255,0.15); color: white;
-      border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px);
-    }
+    .btn-secondary { background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); }
     .btn-secondary:hover { background: rgba(255,255,255,0.25); }
-
-    /* Hero Stats */
     .hero-stats { display: flex; gap: 3rem; }
     .stat { text-align: center; }
     .stat-number { font-size: 2rem; font-weight: 800; }
     .stat-label { font-size: 0.85rem; opacity: 0.8; font-weight: 600; }
-
-    /* Hero Illustration */
     .hero-ill { position: relative; min-height: 300px; }
-    /* (#1) var(--card-bg) */
-    .floating-card {
-      position: absolute; background: var(--card-bg, #ffffff); border-radius: 16px;
-      padding: 1rem 1.25rem; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      display: flex; align-items: center; gap: 0.75rem;
-      font-weight: 600; font-size: 0.9rem; color: var(--text, #1f2937);
-    }
+    .floating-card { position: absolute; background: var(--card-bg, #ffffff); border-radius: 16px; padding: 1rem 1.25rem; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 0.75rem; font-weight: 600; font-size: 0.9rem; color: var(--text, #1f2937); }
     @media (prefers-reduced-motion: no-preference) {
       .floating-card { animation: float 6s ease-in-out infinite; }
-      .card-1 { animation-delay: 0s; }
-      .card-2 { animation-delay: 2s; }
-      .card-3 { animation-delay: 4s; }
+      .card-1 { animation-delay: 0s; } .card-2 { animation-delay: 2s; } .card-3 { animation-delay: 4s; }
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-    .card-1 { top: 10%; right: 10%; }
-    .card-2 { top: 45%; left: 5%; }
-    .card-3 { bottom: 15%; right: 15%; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .card-1 { top: 10%; right: 10%; } .card-2 { top: 45%; left: 5%; } .card-3 { bottom: 15%; right: 15%; }
     .hero-main-graphic { display: flex; justify-content: center; align-items: center; padding-top: 2rem; }
 
+    /* =================== PROGRESS DASHBOARD =================== */
+    .progress-section { padding: 4rem 0; background: linear-gradient(135deg, rgba(11,132,255,0.03), rgba(6,182,212,0.03)); display: none; }
+    .progress-section.has-data { display: block; }
+    .progress-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.25rem; margin-top: 2rem; }
+    .progress-stat-card { text-align: center; padding: 1.5rem; background: var(--card-bg, #ffffff); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border: 2px solid var(--border, #e5e7eb); transition: all 0.3s ease; }
+    .progress-stat-card:hover { transform: translateY(-4px); border-color: var(--primary, #0b84ff); }
+    .progress-stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .progress-stat-value { font-size: 1.75rem; font-weight: 800; color: var(--primary, #0b84ff); }
+    .progress-stat-label { font-size: 0.85rem; color: var(--text-secondary, #6b7280); font-weight: 600; margin-top: 0.25rem; }
+    .progress-bar-wrapper { margin-top: 2rem; padding: 1.5rem; background: var(--card-bg, #ffffff); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .progress-bar-label { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--text, #1f2937); }
+    .progress-bar-track { height: 12px; background: var(--border, #e5e7eb); border-radius: 10px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary, #0b84ff), var(--secondary, #06b6d4)); border-radius: 10px; transition: width 1s ease; }
+
+    /* =================== HOW IT WORKS =================== */
+    .how-section { padding: 5rem 0; }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; position: relative; }
+    .steps-grid::before { content: ''; position: absolute; top: 48px; left: 15%; right: 15%; height: 3px; background: linear-gradient(90deg, var(--primary, #0b84ff), var(--secondary, #06b6d4), var(--purple, #8b5cf6)); border-radius: 10px; z-index: 0; }
+    .step-card { text-align: center; position: relative; z-index: 1; }
+    .step-number { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4)); color: white; font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; box-shadow: 0 4px 16px rgba(11,132,255,0.3); }
+    .step-card:nth-child(2) .step-number { background: linear-gradient(135deg, var(--secondary, #06b6d4), var(--purple, #8b5cf6)); }
+    .step-card:nth-child(3) .step-number { background: linear-gradient(135deg, var(--purple, #8b5cf6), var(--pink, #ec4899)); }
+    .step-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text, #1f2937); }
+    .step-desc { font-size: 0.95rem; color: var(--text-secondary, #6b7280); line-height: 1.6; max-width: 280px; margin: 0 auto; }
+
     /* =================== LEVEL NAVIGATOR =================== */
-    .levels-section {
-      padding: 5rem 0;
-      background: var(--bg-secondary, #f9fafb);
-    }
-    .section-header {
-      text-align: center; margin-bottom: 3rem;
-    }
-    .section-header h2 {
-      font-size: 2rem; font-weight: 800; margin: 0 0 0.75rem;
-      color: var(--text, #1f2937);
-    }
-    .section-subtitle {
-      color: var(--text-secondary, #6b7280); font-size: 1.1rem; font-weight: 500;
-    }
-    .levels-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
-    }
-    /* (#1) var(--card-bg) */
-    .level-card {
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-      padding: 2.5rem 1.5rem; background: var(--card-bg, #ffffff); border-radius: 20px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.4s ease;
-      border: 2px solid transparent; text-decoration: none; color: inherit;
-    }
-    .level-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 16px 32px rgba(0,0,0,0.1);
-    }
+    .levels-section { padding: 5rem 0; background: var(--bg-secondary, #f9fafb); }
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-header h2 { font-size: 2rem; font-weight: 800; margin: 0 0 0.75rem; color: var(--text, #1f2937); }
+    .section-subtitle { color: var(--text-secondary, #6b7280); font-size: 1.1rem; font-weight: 500; }
+    .levels-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .level-card { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2.5rem 1.5rem; background: var(--card-bg, #ffffff); border-radius: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.4s ease; border: 2px solid transparent; text-decoration: none; color: inherit; }
+    .level-card:hover { transform: translateY(-10px); box-shadow: 0 16px 32px rgba(0,0,0,0.1); }
     .level-card:hover .level-icon { transform: scale(1.1); }
-    .level-icon {
-      width: 72px; height: 72px; border-radius: 20px; display: flex;
-      align-items: center; justify-content: center; font-size: 2.5rem;
-      margin-bottom: 1.25rem; transition: transform 0.3s ease;
-    }
-    /* (#5) Dark-mode-aware level icon backgrounds */
+    .level-icon { width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 1.25rem; transition: transform 0.3s ease; }
     .level-card[data-level="elementary"] .level-icon { background: linear-gradient(135deg, #fee2e2, #fecaca); }
     .level-card[data-level="elementary"]:hover { border-color: #ff6b6b; }
     .level-card[data-level="highschool"] .level-icon { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); }
@@ -320,180 +221,119 @@
     html.dark .level-card[data-level="highschool"] .level-icon { background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.1)); }
     html.dark .level-card[data-level="seniorhigh"] .level-icon { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(139,92,246,0.1)); }
     html.dark .level-card[data-level="university"] .level-icon { background: linear-gradient(135deg, rgba(11,132,255,0.2), rgba(11,132,255,0.1)); }
-
     .level-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text, #1f2937); }
     .level-grades { font-size: 0.85rem; color: var(--text-secondary, #6b7280); margin-bottom: 0.75rem; font-weight: 600; }
     .level-desc { font-size: 0.9rem; color: var(--text-secondary, #6b7280); line-height: 1.5; }
-    .level-arrow {
-      margin-top: 1rem; color: var(--primary, #0b84ff); font-weight: 700; font-size: 0.9rem;
-      display: flex; align-items: center; gap: 0.25rem; transition: gap 0.3s ease;
-    }
+    .level-arrow { margin-top: 1rem; color: var(--primary, #0b84ff); font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 0.25rem; transition: gap 0.3s ease; }
     .level-card:hover .level-arrow { gap: 0.75rem; }
 
+    /* =================== QUICK TIPS PREVIEW =================== */
+    .tips-preview-section { padding: 5rem 0; }
+    .tips-tabs { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .tips-tab { padding: 0.625rem 1.25rem; border: 2px solid var(--border, #e5e7eb); border-radius: 50px; background: var(--card-bg, #ffffff); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; color: var(--text-secondary, #6b7280); }
+    .tips-tab:hover { border-color: var(--primary, #0b84ff); color: var(--primary, #0b84ff); }
+    .tips-tab[aria-pressed="true"] { background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4)); color: white; border-color: transparent; }
+    .tips-carousel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .tip-preview-card { padding: 1.5rem; background: var(--card-bg, #ffffff); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border: 2px solid var(--border, #e5e7eb); transition: all 0.3s ease; }
+    .tip-preview-card:hover { transform: translateY(-4px); border-color: var(--primary, #0b84ff); box-shadow: 0 8px 24px rgba(11,132,255,0.1); }
+    .tip-emoji { font-size: 2rem; margin-bottom: 0.75rem; }
+    .tip-name { font-weight: 700; font-size: 1.05rem; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
+    .tip-desc { font-size: 0.9rem; color: var(--text-secondary, #6b7280); line-height: 1.5; }
+    .tip-level-badge { display: inline-block; margin-top: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; }
+
     /* =================== FEATURED TIP =================== */
-    .featured-section { padding: 5rem 0; }
-    .featured-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
-    }
-    .badge {
-      padding: 0.375rem 0.875rem; background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4));
-      color: white; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    /* (#1) var(--card-bg) */
-    .featured-card {
-      display: grid; grid-template-columns: auto 1fr; gap: 2rem; padding: 2.5rem;
-      background: var(--card-bg, #ffffff); border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      border: 2px solid var(--border, #e5e7eb); transition: all 0.3s ease;
-    }
-    .featured-card:hover {
-      border-color: var(--primary, #0b84ff);
-      box-shadow: 0 16px 32px rgba(11,132,255,0.1);
-    }
-    .featured-icon {
-      width: 64px; height: 64px; border-radius: 16px;
-      background: linear-gradient(135deg, rgba(11,132,255,0.1), rgba(6,182,212,0.1));
-      display: flex; align-items: center; justify-content: center; color: var(--primary, #0b84ff);
-    }
+    .featured-section { padding: 5rem 0; background: var(--bg-secondary, #f9fafb); }
+    .featured-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .badge { padding: 0.375rem 0.875rem; background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4)); color: white; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .featured-card { display: grid; grid-template-columns: auto 1fr; gap: 2rem; padding: 2.5rem; background: var(--card-bg, #ffffff); border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); border: 2px solid var(--border, #e5e7eb); transition: all 0.3s ease; }
+    .featured-card:hover { border-color: var(--primary, #0b84ff); box-shadow: 0 16px 32px rgba(11,132,255,0.1); }
+    .featured-icon { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, rgba(11,132,255,0.1), rgba(6,182,212,0.1)); display: flex; align-items: center; justify-content: center; color: var(--primary, #0b84ff); }
     .featured-icon svg { width: 32px; height: 32px; }
-    .featured-content h3 {
-      font-size: 1.35rem; font-weight: 700; margin: 0 0 0.75rem; color: var(--text, #1f2937);
-    }
-    .featured-content p {
-      color: var(--text-secondary, #6b7280); line-height: 1.7; margin: 0 0 1.25rem;
-    }
-    .featured-meta {
-      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
-    }
+    .featured-content h3 { font-size: 1.35rem; font-weight: 700; margin: 0 0 0.75rem; color: var(--text, #1f2937); }
+    .featured-content p { color: var(--text-secondary, #6b7280); line-height: 1.7; margin: 0 0 1.25rem; }
     .source { font-size: 0.85rem; color: var(--text-secondary, #6b7280); font-weight: 600; }
-    .featured-nav {
-      display: flex; gap: 0.5rem; margin-top: 1.5rem;
-    }
-    /* (#1) var(--card-bg) */
-    .featured-nav-btn {
-      width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border, #e5e7eb);
-      background: var(--card-bg, #ffffff); cursor: pointer; font-size: 1rem;
-      transition: all 0.3s ease;
-      display: flex; align-items: center; justify-content: center; color: var(--text, #1f2937);
-    }
-    .featured-nav-btn:hover {
-      border-color: var(--primary, #0b84ff); color: var(--primary, #0b84ff);
-      background: rgba(11,132,255,0.05);
-    }
+    .featured-nav { display: flex; gap: 0.5rem; margin-top: 1.5rem; }
+    .featured-nav-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border, #e5e7eb); background: var(--card-bg, #ffffff); cursor: pointer; font-size: 1rem; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; color: var(--text, #1f2937); }
+    .featured-nav-btn:hover { border-color: var(--primary, #0b84ff); color: var(--primary, #0b84ff); }
 
     /* =================== BENEFITS =================== */
-    .benefits-section { padding: 5rem 0; background: var(--bg-secondary, #f9fafb); }
-    .benefits-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
-    }
-    /* (#1) var(--card-bg) */
-    .benefit-card {
-      padding: 2.5rem; background: var(--card-bg, #ffffff); border-radius: 20px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.3s ease;
-      border: 2px solid transparent; text-align: center;
-    }
-    .benefit-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 16px 32px rgba(0,0,0,0.1);
-      border-color: var(--primary, #0b84ff);
-    }
-    .benefit-icon {
-      width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 1.5rem;
-      background: linear-gradient(135deg, rgba(11,132,255,0.1), rgba(6,182,212,0.1));
-      display: flex; align-items: center; justify-content: center; color: var(--primary, #0b84ff);
-    }
+    .benefits-section { padding: 5rem 0; }
+    .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .benefit-card { padding: 2.5rem; background: var(--card-bg, #ffffff); border-radius: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.3s ease; border: 2px solid transparent; text-align: center; }
+    .benefit-card:hover { transform: translateY(-8px); box-shadow: 0 16px 32px rgba(0,0,0,0.1); border-color: var(--primary, #0b84ff); }
+    .benefit-icon { width: 64px; height: 64px; border-radius: 16px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, rgba(11,132,255,0.1), rgba(6,182,212,0.1)); display: flex; align-items: center; justify-content: center; color: var(--primary, #0b84ff); }
     .benefit-icon svg { width: 28px; height: 28px; }
-    .benefit-card h3 {
-      font-size: 1.2rem; font-weight: 700; margin: 0 0 0.75rem; color: var(--text, #1f2937);
-    }
+    .benefit-card h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 0.75rem; color: var(--text, #1f2937); }
     .benefit-card p { color: var(--text-secondary, #6b7280); line-height: 1.6; margin: 0; }
 
+    /* =================== TESTIMONIALS =================== */
+    .testimonials-section { padding: 5rem 0; background: var(--bg-secondary, #f9fafb); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2rem; }
+    .testimonial-card { padding: 2rem; background: var(--card-bg, #ffffff); border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border-top: 4px solid var(--primary, #0b84ff); transition: all 0.3s ease; }
+    .testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.1); }
+    .testimonial-card:nth-child(2) { border-top-color: var(--purple, #8b5cf6); }
+    .testimonial-card:nth-child(3) { border-top-color: var(--green, #10b981); }
+    .testimonial-stars { color: var(--accent, #ffd166); font-size: 1.1rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .testimonial-text { font-style: italic; line-height: 1.7; color: var(--text, #1f2937); margin-bottom: 1.25rem; font-size: 0.95rem; }
+    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testimonial-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    .testimonial-card:nth-child(1) .testimonial-avatar { background: linear-gradient(135deg, rgba(11,132,255,0.15), rgba(6,182,212,0.15)); }
+    .testimonial-card:nth-child(2) .testimonial-avatar { background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(236,72,153,0.15)); }
+    .testimonial-card:nth-child(3) .testimonial-avatar { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(245,158,11,0.15)); }
+    .testimonial-name { font-weight: 700; font-size: 0.9rem; color: var(--text, #1f2937); }
+    .testimonial-role { font-size: 0.8rem; color: var(--text-secondary, #6b7280); }
+
     /* =================== QUOTES =================== */
-    .quotes-section {
-      padding: 5rem 0; text-align: center;
-      background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4));
-      color: white;
-    }
-    /* (#3) CSS class instead of inline style */
-    .section-label {
-      font-size: 1.1rem; font-weight: 700; opacity: 0.8; text-transform: uppercase;
-      letter-spacing: 0.1em; margin: 0 0 0.5rem;
-    }
-    .quote-text {
-      font-size: 1.5rem; font-weight: 600; line-height: 1.8; font-style: italic;
-      max-width: 700px; margin: 1.5rem auto;
-    }
+    .quotes-section { padding: 5rem 0; text-align: center; background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4)); color: white; }
+    .section-label { font-size: 1.1rem; font-weight: 700; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 0.5rem; }
+    .quote-text { font-size: 1.5rem; font-weight: 600; line-height: 1.8; font-style: italic; max-width: 700px; margin: 1.5rem auto; }
     .quote-author { font-weight: 700; opacity: 0.9; }
     .quote-controls { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
-    .quote-btn {
-      width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
-      background: rgba(255,255,255,0.1); color: white; font-size: 1.2rem; cursor: pointer;
-      transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(10px);
-    }
+    .quote-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
     .quote-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.5); }
+    .quote-dots { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+    .quote-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); border: none; cursor: pointer; transition: all 0.3s ease; padding: 0; }
+    .quote-dot.active { background: white; transform: scale(1.3); }
 
     /* =================== CTA =================== */
     .cta-section { padding: 5rem 0; text-align: center; }
-    .cta-card {
-      padding: 4rem 3rem; border-radius: 24px;
-      background: linear-gradient(135deg, rgba(11,132,255,0.05), rgba(6,182,212,0.05));
-      border: 2px solid var(--border, #e5e7eb);
-    }
-    .cta-card h2 {
-      font-size: 2rem; font-weight: 800; margin: 0 0 1rem; color: var(--text, #1f2937);
-    }
-    .cta-card p {
-      color: var(--text-secondary, #6b7280); font-size: 1.1rem; margin-bottom: 2rem;
-      max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6;
-    }
+    .cta-card { padding: 4rem 3rem; border-radius: 24px; background: linear-gradient(135deg, rgba(11,132,255,0.05), rgba(6,182,212,0.05)); border: 2px solid var(--border, #e5e7eb); }
+    .cta-card h2 { font-size: 2rem; font-weight: 800; margin: 0 0 1rem; color: var(--text, #1f2937); }
+    .cta-card p { color: var(--text-secondary, #6b7280); font-size: 1.1rem; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6; }
     .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn-filled {
-      background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4));
-      color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 700;
-      text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
-      transition: all 0.3s ease; border: none; font-size: 1rem; cursor: pointer;
-    }
+    .btn-filled { background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4)); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; border: none; font-size: 1rem; cursor: pointer; }
     .btn-filled:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(11,132,255,0.3); }
-    .btn-ghost {
-      background: transparent; color: var(--text, #1f2937); padding: 1rem 2rem;
-      border: 2px solid var(--border, #e5e7eb); border-radius: 12px; font-weight: 700;
-      text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
-      transition: all 0.3s ease; font-size: 1rem;
-    }
+    .btn-ghost { background: transparent; color: var(--text, #1f2937); padding: 1rem 2rem; border: 2px solid var(--border, #e5e7eb); border-radius: 12px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; font-size: 1rem; }
     .btn-ghost:hover { border-color: var(--primary, #0b84ff); color: var(--primary, #0b84ff); }
 
-    /* =================== FOOTER =================== */
-    footer {
-      padding: 2rem 0; background: var(--bg-secondary, #f9fafb);
-      border-top: 1px solid var(--border, #e5e7eb);
-    }
-    .footer-inner {
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
-    }
+    /* =================== SCROLL TO TOP =================== */
+    .scroll-top-btn { position: fixed; bottom: 2rem; left: 2rem; width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--primary, #0b84ff), var(--secondary, #06b6d4)); color: white; border: none; font-size: 1.25rem; cursor: pointer; box-shadow: 0 4px 16px rgba(11,132,255,0.3); transition: all 0.3s ease; opacity: 0; pointer-events: none; z-index: 999; display: flex; align-items: center; justify-content: center; }
+    .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+    .scroll-top-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(11,132,255,0.4); }
+
+    /* Footer */
+    footer { padding: 2rem 0; background: var(--bg-secondary, #f9fafb); border-top: 1px solid var(--border, #e5e7eb); }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
     .footer-brand { display: flex; align-items: center; gap: 0.75rem; }
     .footer-title { font-weight: 700; color: var(--text, #1f2937); }
     .footer-tagline { font-size: 0.85rem; color: var(--text-secondary, #6b7280); }
-    .footer-links {
-      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
-      font-size: 0.9rem; color: var(--text-secondary, #6b7280);
-    }
+    .footer-links { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-secondary, #6b7280); }
     .footer-links a { color: var(--text-secondary, #6b7280); text-decoration: none; font-weight: 600; }
     .footer-links a:hover { color: var(--primary, #0b84ff); }
 
-    /* Animate reveals */
     .animate-ready { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .in-view { opacity: 1; transform: translateY(0); }
 
-    /* (#18) noscript */
-    .noscript-banner {
-      padding: 1rem; background: #fef3c7; color: #92400e; text-align: center;
-      font-weight: 600; border-bottom: 2px solid #f59e0b;
+    .noscript-banner { padding: 1rem; background: #fef3c7; color: #92400e; text-align: center; font-weight: 600; border-bottom: 2px solid #f59e0b; }
+
+    /* Print */
+    @media print {
+      .site-header, .search-wrapper, .hero-ill, .hero-actions, .toast-container, .scroll-top-btn, .quote-controls, .featured-nav, .tips-tabs, .noscript-banner { display: none !important; }
+      .hero { background: none !important; color: black !important; padding: 2rem 0; }
+      body { color: black; background: white; }
+      .level-card, .benefit-card, .tip-preview-card, .testimonial-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
     }
 
-    /* =================== RESPONSIVE =================== */
     @media (max-width: 1024px) {
       .hero-inner { grid-template-columns: 1fr; text-align: center; }
       .hero .lead { margin: 0 auto 2rem; }
@@ -502,48 +342,37 @@
       .hero-stats { justify-content: center; }
       .hero-ill { display: none; }
       .levels-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid::before { display: none; }
     }
     @media (max-width: 768px) {
       .hero h2 { font-size: 2.25rem; }
       .hero-actions { flex-direction: column; align-items: center; }
       .hero-stats { flex-direction: column; gap: 1.5rem; }
-      .levels-grid { grid-template-columns: 1fr; }
-      .benefits-grid { grid-template-columns: 1fr; }
+      .levels-grid, .benefits-grid, .steps-grid, .testimonials-grid { grid-template-columns: 1fr; }
+      .tips-carousel { grid-template-columns: 1fr; }
       .featured-card { grid-template-columns: 1fr; }
       .featured-header { flex-direction: column; align-items: flex-start; }
       .quote-text { font-size: 1.2rem; }
+      .search-hint { display: none; }
     }
   </style>
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
-
-  <!-- (#18) Noscript fallback -->
-  <noscript>
-    <div class="noscript-banner">
-      Search, dark mode, and interactive features require JavaScript. Core content is still accessible below.
-    </div>
-  </noscript>
-
+  <noscript><div class="noscript-banner">Search, dark mode, and interactive features require JavaScript. Core content is still accessible.</div></noscript>
   <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- (#11) Removed redundant role="banner" -->
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-            <title>Study Buddy Logo</title>
-            <rect x="2" y="3" width="20" height="14" rx="2" fill="#fff" opacity="0.12"/>
-            <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#fff"/>
-          </svg>
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><title>Study Buddy Logo</title><rect x="2" y="3" width="20" height="14" rx="2" fill="#fff" opacity="0.12"/><path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" fill="#fff"/></svg>
         </div>
         <div>
           <h1 class="site-title">Study Buddy</h1>
           <span class="site-sub">Study smarter – from Elementary to University</span>
         </div>
       </div>
-
       <nav class="main-nav" aria-label="Primary navigation">
         <button id="menu-toggle" class="menu-btn" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu">☰</button>
         <ul id="menu" class="menu-list">
@@ -560,114 +389,89 @@
   </header>
 
   <main id="main-content">
-    <!-- =================== HERO =================== -->
+    <!-- HERO -->
     <section class="hero" aria-labelledby="hero-heading">
       <div class="container hero-inner">
         <div class="hero-left">
           <div class="hero-badge">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
-            </svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/></svg>
             Research-backed learning
           </div>
           <h2 id="hero-heading">Study smarter, not harder.</h2>
-          <p class="lead">
-            Discover proven study techniques and downloadable resources tailored for every stage of your educational journey.
-          </p>
-
-          <!-- (#6,#7,#8) Proper combobox pattern with keyboard nav + live status -->
+          <p class="lead">Discover proven study techniques and downloadable resources tailored for every stage of your educational journey.</p>
           <div class="search-wrapper">
             <label for="searchBar" class="sr-only">Search study tips</label>
             <div class="search-box">
-              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-                <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              <input
-                id="searchBar"
-                type="search"
-                role="combobox"
-                aria-autocomplete="list"
-                aria-expanded="false"
-                aria-controls="search-results"
-                aria-activedescendant=""
-                placeholder="Search tips (e.g., 'flashcards', 'Pomodoro')"
-                autocomplete="off"
-              />
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <input id="searchBar" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-results" aria-activedescendant="" placeholder="Search tips (e.g., 'flashcards', 'Pomodoro')" autocomplete="off" />
+              <kbd class="search-hint" aria-hidden="true">/</kbd>
               <button id="search-clear" type="button" aria-label="Clear search">✕</button>
             </div>
             <div class="search-results" id="search-results" role="listbox" aria-label="Search results"></div>
-            <!-- (#8) Live status for screen readers -->
             <div id="search-status" class="search-status" aria-live="polite" aria-atomic="true"></div>
           </div>
-
           <div class="hero-actions">
-            <a href="elementary.html" class="btn btn-primary">
-              <span aria-hidden="true">📚</span> Explore Elementary
-            </a>
-            <a href="university.html" class="btn btn-secondary">
-              <span aria-hidden="true">🎓</span> Go to University
-            </a>
+            <a href="elementary.html" class="btn btn-primary"><span aria-hidden="true">📚</span> Explore Elementary</a>
+            <a href="university.html" class="btn btn-secondary"><span aria-hidden="true">🎓</span> Go to University</a>
           </div>
-
-          <!-- (#9) Added role="group" so aria-label is announced -->
           <div class="hero-stats" role="group" aria-label="Site statistics">
-            <div class="stat">
-              <div class="stat-number">50+</div>
-              <div class="stat-label">Study techniques</div>
-            </div>
-            <div class="stat">
-              <div class="stat-number">4</div>
-              <div class="stat-label">Education levels</div>
-            </div>
-            <div class="stat">
-              <div class="stat-number">100%</div>
-              <div class="stat-label">Research-backed</div>
-            </div>
+            <div class="stat"><div class="stat-number" data-count="50">0</div><div class="stat-label">Study techniques</div></div>
+            <div class="stat"><div class="stat-number" data-count="4">0</div><div class="stat-label">Education levels</div></div>
+            <div class="stat"><div class="stat-number" data-count="100">0</div><div class="stat-label">% Research-backed</div></div>
           </div>
         </div>
-
         <div class="hero-ill" aria-hidden="true">
-          <div class="floating-card card-1">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="18" height="18" rx="2" fill="#0b84ff" opacity="0.2"/>
-              <path d="M9 12l2 2 4-4" stroke="#0b84ff" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <span>Task Complete</span>
+          <div class="floating-card card-1"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" fill="#0b84ff" opacity="0.2"/><path d="M9 12l2 2 4-4" stroke="#0b84ff" stroke-width="2" stroke-linecap="round"/></svg><span>Task Complete</span></div>
+          <div class="floating-card card-2"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#06b6d4" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/></svg><span>25 min Focus</span></div>
+          <div class="floating-card card-3"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="#ffd166" stroke-width="2"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="#ffd166" stroke-width="2"/></svg><span>Study Guide</span></div>
+          <div class="hero-main-graphic"><svg width="280" height="200" viewBox="0 0 280 200" fill="none"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0b84ff;stop-opacity:0.1"/><stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.1"/></linearGradient></defs><rect x="40" y="60" width="200" height="120" rx="12" fill="url(#grad1)"/><rect x="60" y="80" width="160" height="12" rx="6" fill="#0b84ff" opacity="0.3"/><rect x="60" y="100" width="140" height="12" rx="6" fill="#06b6d4" opacity="0.3"/><rect x="60" y="120" width="120" height="12" rx="6" fill="#ffd166" opacity="0.3"/></svg></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CROSS-PAGE PROGRESS (shown only if user has data) -->
+    <section class="progress-section" id="progress-section" aria-labelledby="progress-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="progress-heading"><span aria-hidden="true">📊 </span>Your Progress</h2>
+          <p class="section-subtitle">Welcome back! Here's a snapshot across all your Study Buddy activity.</p>
+        </div>
+        <div class="progress-grid" id="progress-grid"></div>
+        <div class="progress-bar-wrapper">
+          <div class="progress-bar-label"><span>Overall Engagement</span><span id="progress-percent">0%</span></div>
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-section" aria-labelledby="how-heading">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="how-heading">How It Works</h2>
+          <p class="section-subtitle">Three simple steps to better study habits</p>
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-title">Choose Your Level</div>
+            <div class="step-desc">Pick from Elementary, High School, Senior High, or University — each with tailored strategies.</div>
           </div>
-          <div class="floating-card card-2">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="9" stroke="#06b6d4" stroke-width="2"/>
-              <path d="M12 6v6l4 2" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <span>25 min Focus</span>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-title">Learn &amp; Practice</div>
+            <div class="step-desc">Explore research-backed techniques, use interactive tools, and track your progress with built-in features.</div>
           </div>
-          <div class="floating-card card-3">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="#ffd166" stroke-width="2"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="#ffd166" stroke-width="2"/>
-            </svg>
-            <span>Study Guide</span>
-          </div>
-          <div class="hero-main-graphic">
-            <svg width="280" height="200" viewBox="0 0 280 200" fill="none">
-              <defs>
-                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#0b84ff;stop-opacity:0.1" />
-                  <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.1" />
-                </linearGradient>
-              </defs>
-              <rect x="40" y="60" width="200" height="120" rx="12" fill="url(#grad1)"/>
-              <rect x="60" y="80" width="160" height="12" rx="6" fill="#0b84ff" opacity="0.3"/>
-              <rect x="60" y="100" width="140" height="12" rx="6" fill="#06b6d4" opacity="0.3"/>
-              <rect x="60" y="120" width="120" height="12" rx="6" fill="#ffd166" opacity="0.3"/>
-            </svg>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-title">Study Smarter</div>
+            <div class="step-desc">Build lasting habits, earn rewards, and watch your confidence and grades improve over time.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- =================== LEVEL NAVIGATOR =================== -->
+    <!-- LEVEL NAVIGATOR -->
     <section class="levels-section" aria-labelledby="levels-heading">
       <div class="container">
         <div class="section-header">
@@ -675,119 +479,73 @@
           <p class="section-subtitle">Tailored study strategies for every stage of your journey</p>
         </div>
         <div class="levels-grid">
-          <a href="elementary.html" class="level-card" data-level="elementary">
-            <div class="level-icon" aria-hidden="true">🎨</div>
-            <div class="level-name">Elementary</div>
-            <div class="level-grades">Grades 1–6</div>
-            <div class="level-desc">Fun, bite-sized techniques with star rewards and reading adventures!</div>
-            <!-- (#12) aria-hidden on redundant arrow text -->
-            <div class="level-arrow" aria-hidden="true">Explore →</div>
-          </a>
-          <a href="highschool.html" class="level-card" data-level="highschool">
-            <div class="level-icon" aria-hidden="true">📝</div>
-            <div class="level-name">High School</div>
-            <div class="level-grades">Grades 7–10</div>
-            <div class="level-desc">Cornell notes, mind maps, Pomodoro technique, and exam strategies.</div>
-            <div class="level-arrow" aria-hidden="true">Explore →</div>
-          </a>
-          <a href="seniorhigh.html" class="level-card" data-level="seniorhigh">
-            <div class="level-icon" aria-hidden="true">🚀</div>
-            <div class="level-name">Senior High</div>
-            <div class="level-grades">Grades 11–12</div>
-            <div class="level-desc">Career mapping, college prep, skills matrix, and interview practice.</div>
-            <div class="level-arrow" aria-hidden="true">Explore →</div>
-          </a>
-          <a href="university.html" class="level-card" data-level="university">
-            <div class="level-icon" aria-hidden="true">🎓</div>
-            <div class="level-name">University</div>
-            <div class="level-grades">College &amp; Beyond</div>
-            <div class="level-desc">Research tools, GPA calculator, paper tracker, and academic analytics.</div>
-            <div class="level-arrow" aria-hidden="true">Explore →</div>
-          </a>
+          <a href="elementary.html" class="level-card" data-level="elementary"><div class="level-icon" aria-hidden="true">🎨</div><div class="level-name">Elementary</div><div class="level-grades">Grades 1–6</div><div class="level-desc">Fun techniques with star rewards, reading log, and study timer!</div><div class="level-arrow" aria-hidden="true">Explore →</div></a>
+          <a href="highschool.html" class="level-card" data-level="highschool"><div class="level-icon" aria-hidden="true">📝</div><div class="level-name">High School</div><div class="level-grades">Grades 7–10</div><div class="level-desc">Cornell notes, mind maps, Pomodoro technique, and exam strategies.</div><div class="level-arrow" aria-hidden="true">Explore →</div></a>
+          <a href="seniorhigh.html" class="level-card" data-level="seniorhigh"><div class="level-icon" aria-hidden="true">🚀</div><div class="level-name">Senior High</div><div class="level-grades">Grades 11–12</div><div class="level-desc">Career mapping, college tracker, skills matrix, and interview prep.</div><div class="level-arrow" aria-hidden="true">Explore →</div></a>
+          <a href="university.html" class="level-card" data-level="university"><div class="level-icon" aria-hidden="true">🎓</div><div class="level-name">University</div><div class="level-grades">College &amp; Beyond</div><div class="level-desc">GPA calculator, paper tracker, research tools, and academic analytics.</div><div class="level-arrow" aria-hidden="true">Explore →</div></a>
         </div>
       </div>
     </section>
 
-    <!-- =================== FEATURED TIP =================== -->
-    <section class="featured-section" aria-labelledby="featured-heading">
-      <div class="container">
-        <div class="featured-header">
-          <div>
-            <h2 id="featured-heading">Featured Tip of the Week</h2>
-            <p class="section-subtitle">Science-backed strategies for better learning</p>
-          </div>
-          <span class="badge">Weekly Update</span>
-        </div>
-        <div class="featured-card" id="featured-card">
-          <div class="featured-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <!-- (#10) aria-live on featured content wrapper -->
-          <div class="featured-content" aria-live="polite" aria-atomic="true">
-            <h3 id="featured-title">Use spaced practice – avoid cramming</h3>
-            <p id="featured-desc">
-              Short study sessions spread over days or weeks build stronger long-term memory
-              than one long cram session. Research shows this technique can improve retention by up to 200%.
-            </p>
-            <div class="featured-meta">
-              <span class="source" id="featured-source">Source: UNC Learning Center</span>
-            </div>
-            <div class="featured-nav">
-              <button class="featured-nav-btn" type="button" id="prev-tip" aria-label="Previous tip">←</button>
-              <button class="featured-nav-btn" type="button" id="next-tip" aria-label="Next tip">→</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- =================== BENEFITS =================== -->
-    <section class="benefits-section" aria-labelledby="benefits-heading">
+    <!-- QUICK TIPS PREVIEW -->
+    <section class="tips-preview-section" aria-labelledby="tips-heading">
       <div class="container">
         <div class="section-header">
-          <h2 id="benefits-heading">Why Study Buddy Works</h2>
-          <p class="section-subtitle">Built on cognitive science and proven educational research</p>
+          <h2 id="tips-heading"><span aria-hidden="true">💡 </span>Sample Study Tips</h2>
+          <p class="section-subtitle">A taste of what each level offers</p>
         </div>
-        <div class="benefits-grid">
-          <div class="benefit-card">
-            <div class="benefit-icon">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <h3>Research-Backed</h3>
-            <p>Every technique is grounded in peer-reviewed cognitive science and educational research.</p>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <h3>All Levels</h3>
-            <p>Tailored resources for elementary through university students and lifelong learners.</p>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <h3>Free Resources</h3>
-            <p>Download planners, templates, and guides completely free. No hidden costs ever.</p>
+        <div class="tips-tabs" role="tablist" aria-label="Filter tips by level">
+          <button class="tips-tab" role="tab" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="tips-tab" role="tab" type="button" data-filter="elementary" aria-pressed="false">Elementary</button>
+          <button class="tips-tab" role="tab" type="button" data-filter="highschool" aria-pressed="false">High School</button>
+          <button class="tips-tab" role="tab" type="button" data-filter="seniorhigh" aria-pressed="false">Senior High</button>
+          <button class="tips-tab" role="tab" type="button" data-filter="university" aria-pressed="false">University</button>
+        </div>
+        <div class="tips-carousel" id="tips-carousel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- FEATURED TIP -->
+    <section class="featured-section" aria-labelledby="featured-heading">
+      <div class="container">
+        <div class="featured-header"><div><h2 id="featured-heading">Featured Tip of the Week</h2><p class="section-subtitle">Science-backed strategies for better learning</p></div><span class="badge">Weekly Update</span></div>
+        <div class="featured-card" id="featured-card">
+          <div class="featured-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="featured-content" aria-live="polite" aria-atomic="true">
+            <h3 id="featured-title">Use spaced practice – avoid cramming</h3>
+            <p id="featured-desc">Short study sessions spread over days or weeks build stronger long-term memory than one long cram session. Research shows this technique can improve retention by up to 200%.</p>
+            <div class="featured-meta"><span class="source" id="featured-source">Source: UNC Learning Center</span></div>
+            <div class="featured-nav"><button class="featured-nav-btn" type="button" id="prev-tip" aria-label="Previous tip">←</button><button class="featured-nav-btn" type="button" id="next-tip" aria-label="Next tip">→</button></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- =================== QUOTES =================== -->
-    <!-- (#17) Using sr-only h2 + visible label p for proper heading hierarchy -->
+    <!-- BENEFITS -->
+    <section class="benefits-section" aria-labelledby="benefits-heading">
+      <div class="container">
+        <div class="section-header"><h2 id="benefits-heading">Why Study Buddy Works</h2><p class="section-subtitle">Built on cognitive science and proven educational research</p></div>
+        <div class="benefits-grid">
+          <div class="benefit-card"><div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Research-Backed</h3><p>Every technique is grounded in peer-reviewed cognitive science and educational research.</p></div>
+          <div class="benefit-card"><div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><h3>All Levels</h3><p>Tailored resources for elementary through university students and lifelong learners.</p></div>
+          <div class="benefit-card"><div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Free Resources</h3><p>Download planners, templates, and guides completely free. No hidden costs ever.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <div class="section-header"><h2 id="testimonials-heading"><span aria-hidden="true">💬 </span>What Students Say</h2><p class="section-subtitle">Real feedback from students using Study Buddy</p></div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card"><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><p class="testimonial-text">"The Pomodoro timer and star rewards made studying actually fun for my kids. They ask to use Study Buddy every day now!"</p><div class="testimonial-author"><div class="testimonial-avatar" aria-hidden="true">👩</div><div><div class="testimonial-name">Maria Santos</div><div class="testimonial-role">Parent of Elementary Students</div></div></div></div>
+          <div class="testimonial-card"><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><p class="testimonial-text">"The college application tracker and skills matrix helped me stay organized during the most stressful semester of my life."</p><div class="testimonial-author"><div class="testimonial-avatar" aria-hidden="true">👨‍🎓</div><div><div class="testimonial-name">James Cruz</div><div class="testimonial-role">Grade 12 Student</div></div></div></div>
+          <div class="testimonial-card"><div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div><p class="testimonial-text">"The GPA calculator and paper tracker are lifesavers. I finally feel in control of my academic workload."</p><div class="testimonial-author"><div class="testimonial-avatar" aria-hidden="true">👩‍💻</div><div><div class="testimonial-name">Anika Patel</div><div class="testimonial-role">University Sophomore</div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUOTES -->
     <section class="quotes-section" aria-labelledby="quotes-heading">
       <div class="container">
         <h2 id="quotes-heading" class="sr-only">Inspirational Quotes</h2>
@@ -796,39 +554,23 @@
           <p class="quote-text" id="home-quote-text">"The beautiful thing about learning is that no one can take it away from you."</p>
           <p class="quote-author" id="home-quote-author">— B.B. King</p>
         </div>
-        <div class="quote-controls">
-          <button class="quote-btn" id="home-prev-quote" type="button" aria-label="Previous quote">←</button>
-          <button class="quote-btn" id="home-next-quote" type="button" aria-label="Next quote">→</button>
-        </div>
+        <div class="quote-controls"><button class="quote-btn" id="home-prev-quote" type="button" aria-label="Previous quote">←</button><button class="quote-btn" id="home-next-quote" type="button" aria-label="Next quote">→</button></div>
+        <div class="quote-dots" id="quote-dots" role="tablist" aria-label="Quote indicators"></div>
       </div>
     </section>
 
-    <!-- =================== CTA =================== -->
+    <!-- CTA -->
     <section class="cta-section" aria-labelledby="cta-heading">
-      <div class="container">
-        <div class="cta-card">
-          <h2 id="cta-heading">Ready to study smarter?</h2>
-          <p>Pick your education level and discover proven techniques that will transform your study habits.</p>
-          <div class="cta-actions">
-            <a href="elementary.html" class="btn-filled">Get Started</a>
-            <a href="credits.html" class="btn-ghost">View Sources</a>
-          </div>
-        </div>
-      </div>
+      <div class="container"><div class="cta-card"><h2 id="cta-heading">Ready to study smarter?</h2><p>Pick your education level and discover proven techniques that will transform your study habits.</p><div class="cta-actions"><a href="elementary.html" class="btn-filled">Get Started</a><a href="credits.html" class="btn-ghost">View Sources</a></div></div></div>
     </section>
   </main>
 
-  <!-- (#19) Simplified footer structure -->
+  <button class="scroll-top-btn" id="scroll-top" type="button" aria-label="Scroll to top">↑</button>
+
   <footer>
     <div class="container footer-inner">
-      <div class="footer-brand">
-        <div class="footer-title">Study Buddy</div>
-        <div class="footer-tagline">Study smarter, achieve more</div>
-      </div>
-      <div class="footer-links">
-        <a href="credits.html">Credits &amp; Sources</a>
-        <span>&copy; <span id="year">2026</span> Study Buddy</span>
-      </div>
+      <div class="footer-brand"><div class="footer-title">Study Buddy</div><div class="footer-tagline">Study smarter, achieve more</div></div>
+      <div class="footer-links"><a href="credits.html">Credits &amp; Sources</a><span>&copy; <span id="year">2026</span> Study Buddy</span></div>
     </div>
   </footer>
 
@@ -836,35 +578,29 @@
   (function() {
     'use strict';
 
-    // (#16) All variables declared at IIFE top
     var searchTimeout = null;
     var activeResultIndex = -1;
     var currentResultItems = [];
 
-    // ===================== UTILITIES =====================
-
     var storage = {
       get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
-      set: function(k,v) { try { localStorage.setItem(k,v); } catch(e) {} }
+      set: function(k,v) { try { localStorage.setItem(k,v); } catch(e) {} },
+      getJSON: function(k) { try { var d=localStorage.getItem(k); return d?JSON.parse(d):null; } catch(e) { return null; } }
     };
+
+    function getEl(id) { return document.getElementById(id); }
 
     function showToast(msg, type) {
       type = type || 'info';
-      var c = document.getElementById('toast-container'); if (!c) return;
+      var c = getEl('toast-container'); if (!c) return;
       var t = document.createElement('div');
-      t.className = 'toast toast-' + type;
-      t.textContent = msg;
-      c.appendChild(t);
+      t.className = 'toast toast-' + type; t.textContent = msg; c.appendChild(t);
       requestAnimationFrame(function() { requestAnimationFrame(function() { t.classList.add('show'); }); });
       var to = setTimeout(function() { t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 4000);
       t.addEventListener('click', function() { clearTimeout(to); t.remove(); });
     }
 
-    // (#13,#14) Safe element getter
-    function getEl(id) { return document.getElementById(id); }
-
-    // ===================== SETUP =====================
-
+    // Year
     var yearEl = getEl('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 
@@ -877,17 +613,10 @@
         menuToggle.setAttribute('aria-expanded', String(menu.classList.contains('active')));
       });
       document.addEventListener('click', function(e) {
-        if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
-          menu.classList.remove('active');
-          menuToggle.setAttribute('aria-expanded', 'false');
-        }
+        if (!menuToggle.contains(e.target) && !menu.contains(e.target)) { menu.classList.remove('active'); menuToggle.setAttribute('aria-expanded', 'false'); }
       });
       document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && menu.classList.contains('active')) {
-          menu.classList.remove('active');
-          menuToggle.setAttribute('aria-expanded', 'false');
-          menuToggle.focus();
-        }
+        if (e.key === 'Escape' && menu.classList.contains('active')) { menu.classList.remove('active'); menuToggle.setAttribute('aria-expanded', 'false'); menuToggle.focus(); }
       });
     }
 
@@ -898,9 +627,7 @@
       var saved = storage.get('theme');
       if (saved === 'dark') { html.classList.add('dark'); darkToggle.textContent = '☀️'; }
       else if (saved === 'light') { html.classList.add('light'); }
-      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        html.classList.add('dark'); darkToggle.textContent = '☀️';
-      }
+      else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { html.classList.add('dark'); darkToggle.textContent = '☀️'; }
       darkToggle.addEventListener('click', function() {
         html.classList.toggle('dark');
         var isDark = html.classList.contains('dark');
@@ -911,21 +638,136 @@
       });
     }
 
-    // Intersection observer
+    // Observer
     var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reducedMotion && ('IntersectionObserver' in window)) {
       var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(en) {
-          if (en.isIntersecting) { en.target.classList.add('in-view'); observer.unobserve(en.target); }
-        });
+        entries.forEach(function(en) { if (en.isIntersecting) { en.target.classList.add('in-view'); observer.unobserve(en.target); } });
       }, { threshold: 0.1 });
-      document.querySelectorAll('.level-card, .benefit-card, .featured-card, .cta-card').forEach(function(el) {
+      document.querySelectorAll('.level-card, .benefit-card, .featured-card, .cta-card, .step-card, .testimonial-card, .tip-preview-card, .progress-stat-card').forEach(function(el) {
         el.classList.add('animate-ready'); observer.observe(el);
       });
     }
 
-    // ===================== SEARCH (#6,#7,#8) =====================
+    // =================== ANIMATED STAT COUNTERS ===================
+    if (!reducedMotion && ('IntersectionObserver' in window)) {
+      var statsObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(en) {
+          if (en.isIntersecting) {
+            var nums = en.target.querySelectorAll('[data-count]');
+            nums.forEach(function(el) {
+              var target = parseInt(el.dataset.count);
+              var duration = 1500;
+              var start = 0;
+              var startTime = null;
+              function step(ts) {
+                if (!startTime) startTime = ts;
+                var progress = Math.min((ts - startTime) / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(eased * target);
+                if (progress < 1) requestAnimationFrame(step);
+                else el.textContent = target + (el.dataset.count === '50' ? '+' : el.dataset.count === '100' ? '' : '');
+              }
+              requestAnimationFrame(step);
+            });
+            statsObserver.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      var statsGroup = document.querySelector('.hero-stats');
+      if (statsGroup) statsObserver.observe(statsGroup);
+    } else {
+      document.querySelectorAll('[data-count]').forEach(function(el) {
+        el.textContent = el.dataset.count + (el.dataset.count === '50' ? '+' : '');
+      });
+    }
 
+    // =================== CROSS-PAGE PROGRESS DASHBOARD ===================
+    (function() {
+      var stars = parseInt(storage.get('elemStars')) || 0;
+      var streak = (storage.getJSON('elemStreak') || {}).count || 0;
+      var books = (storage.getJSON('elemBooks') || []).length;
+      var colleges = (storage.getJSON('seniorHighColleges') || []).length;
+      var skillsData = storage.getJSON('seniorHighSkills') || {};
+      var skillsCount = 0;
+      for (var k in skillsData) { if (skillsData[k] >= 3) skillsCount++; }
+
+      var total = stars + streak + books + colleges + skillsCount;
+      if (total === 0) return;
+
+      var section = getEl('progress-section');
+      var grid = getEl('progress-grid');
+      if (!section || !grid) return;
+      section.classList.add('has-data');
+
+      var items = [
+        { icon: '⭐', value: stars, label: 'Stars Earned', show: stars > 0 },
+        { icon: '🔥', value: streak, label: 'Day Streak', show: streak > 0 },
+        { icon: '📚', value: books, label: 'Books Read', show: books > 0 },
+        { icon: '🎓', value: colleges, label: 'Colleges Tracked', show: colleges > 0 },
+        { icon: '⚡', value: skillsCount, label: 'Skills Mastered', show: skillsCount > 0 }
+      ];
+
+      items.forEach(function(item) {
+        if (!item.show) return;
+        var card = document.createElement('div');
+        card.className = 'progress-stat-card';
+        card.innerHTML = '<div class="progress-stat-icon" aria-hidden="true">' + item.icon + '</div><div class="progress-stat-value">' + item.value + '</div><div class="progress-stat-label">' + item.label + '</div>';
+        grid.appendChild(card);
+      });
+
+      var maxScore = 50;
+      var score = Math.min(total, maxScore);
+      var pct = Math.round((score / maxScore) * 100);
+      var pctEl = getEl('progress-percent');
+      var fillEl = getEl('progress-fill');
+      if (pctEl) pctEl.textContent = pct + '%';
+      if (fillEl) setTimeout(function() { fillEl.style.width = pct + '%'; }, 300);
+    })();
+
+    // =================== QUICK TIPS PREVIEW ===================
+    var allTips = [
+      { emoji: '🎵', name: 'Sing & Rhyme', desc: 'Turn lessons into songs to improve retention and make learning fun.', level: 'elementary', badge: 'Elementary', color: '#fee2e2', textColor: '#991b1b' },
+      { emoji: '⏰', name: 'Short Sessions', desc: 'Study for 15\u201325 minutes, then take a break to maintain focus.', level: 'elementary', badge: 'Elementary', color: '#fee2e2', textColor: '#991b1b' },
+      { emoji: '🎮', name: 'Quiz Games', desc: 'Use short games for review with friends and family.', level: 'elementary', badge: 'Elementary', color: '#fee2e2', textColor: '#991b1b' },
+      { emoji: '📝', name: 'Cornell Notes', desc: 'Organize lectures into cues, notes, and summaries for effective review.', level: 'highschool', badge: 'High School', color: '#e0e7ff', textColor: '#3730a3' },
+      { emoji: '🧠', name: 'Mind Maps', desc: 'Connect ideas visually to improve understanding and revision.', level: 'highschool', badge: 'High School', color: '#e0e7ff', textColor: '#3730a3' },
+      { emoji: '⏱️', name: 'Pomodoro', desc: '25-minute focus sessions with 5-minute breaks for sustained focus.', level: 'highschool', badge: 'High School', color: '#e0e7ff', textColor: '#3730a3' },
+      { emoji: '🚀', name: 'Career Mapping', desc: 'Identify pathways using interest inventories and career assessments.', level: 'seniorhigh', badge: 'Senior High', color: '#ede9fe', textColor: '#5b21b6' },
+      { emoji: '🎤', name: 'Mock Interviews', desc: 'Practice responses with peers for confidence in admissions.', level: 'seniorhigh', badge: 'Senior High', color: '#ede9fe', textColor: '#5b21b6' },
+      { emoji: '📊', name: 'Skills Matrix', desc: 'Track and level up 21st century skills employers want.', level: 'seniorhigh', badge: 'Senior High', color: '#ede9fe', textColor: '#5b21b6' },
+      { emoji: '📖', name: 'Research Databases', desc: 'Master JSTOR, Google Scholar, and your library\u2019s resources.', level: 'university', badge: 'University', color: '#dbeafe', textColor: '#1e40af' },
+      { emoji: '🔬', name: 'Critical Reading', desc: 'Evaluate sources, analyze arguments, and synthesize information.', level: 'university', badge: 'University', color: '#dbeafe', textColor: '#1e40af' },
+      { emoji: '📈', name: 'GPA Calculator', desc: 'Calculate and project your semester or cumulative GPA.', level: 'university', badge: 'University', color: '#dbeafe', textColor: '#1e40af' }
+    ];
+
+    function renderTips(filter) {
+      var carousel = getEl('tips-carousel');
+      if (!carousel) return;
+      carousel.innerHTML = '';
+      var filtered = filter === 'all' ? allTips : allTips.filter(function(t) { return t.level === filter; });
+      var show = filtered.slice(0, 6);
+      show.forEach(function(tip) {
+        var card = document.createElement('div');
+        card.className = 'tip-preview-card';
+        card.innerHTML = '<div class="tip-emoji" aria-hidden="true">' + tip.emoji + '</div><div class="tip-name">' + tip.name + '</div><div class="tip-desc">' + tip.desc + '</div><span class="tip-level-badge" style="background:' + tip.color + ';color:' + tip.textColor + '">' + tip.badge + '</span>';
+        carousel.appendChild(card);
+      });
+      if (!reducedMotion && observer) {
+        carousel.querySelectorAll('.tip-preview-card').forEach(function(el) { el.classList.add('animate-ready'); observer.observe(el); });
+      }
+    }
+    renderTips('all');
+
+    document.querySelectorAll('.tips-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tips-tab').forEach(function(t) { t.setAttribute('aria-pressed', 'false'); });
+        tab.setAttribute('aria-pressed', 'true');
+        renderTips(tab.dataset.filter);
+      });
+    });
+
+    // =================== SEARCH ===================
     var searchTips = [
       { title: 'Sing & Rhyme', desc: 'Turn lessons into songs to improve retention', level: 'Elementary', levelClass: 'level-elementary', url: 'elementary.html' },
       { title: 'Colorful Flashcards', desc: 'Use colors and images for vocabulary and facts', level: 'Elementary', levelClass: 'level-elementary', url: 'elementary.html' },
@@ -947,7 +789,7 @@
       { title: 'Citation Managers', desc: 'Organize references with Zotero or Mendeley', level: 'University', levelClass: 'level-university', url: 'university.html' },
       { title: 'Critical Reading', desc: 'Evaluate sources, analyze argument structures', level: 'University', levelClass: 'level-university', url: 'university.html' },
       { title: 'Thesis Planning', desc: 'Outline research chapters and set realistic timelines', level: 'University', levelClass: 'level-university', url: 'university.html' },
-      { title: 'Spaced Repetition', desc: 'Review material at increasing intervals for lasting memory', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
+      { title: 'Spaced Repetition', desc: 'Review material at increasing intervals', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
       { title: 'Active Recall', desc: 'Test yourself instead of re-reading notes', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
       { title: 'Study Groups', desc: 'Explain concepts to peers to deepen comprehension', level: 'High School', levelClass: 'level-highschool', url: 'highschool.html' },
       { title: 'GPA Calculator', desc: 'Calculate your semester or cumulative GPA', level: 'University', levelClass: 'level-university', url: 'university.html' },
@@ -964,144 +806,75 @@
       currentResultItems.forEach(function(item) { item.classList.remove('active-desc'); });
       if (searchInput) searchInput.setAttribute('aria-activedescendant', '');
     }
-
     function setActiveDescendant(index) {
       clearActiveDescendant();
       if (index < 0 || index >= currentResultItems.length) return;
       activeResultIndex = index;
       var item = currentResultItems[index];
-      item.classList.add('active-desc');
-      item.scrollIntoView({ block: 'nearest' });
+      item.classList.add('active-desc'); item.scrollIntoView({ block: 'nearest' });
       searchInput.setAttribute('aria-activedescendant', item.id);
     }
-
     function performSearch(query) {
       query = query.toLowerCase().trim();
       if (searchResults) searchResults.innerHTML = '';
-      currentResultItems = [];
-      activeResultIndex = -1;
-
+      currentResultItems = []; activeResultIndex = -1;
       if (!query) {
         if (searchResults) searchResults.classList.remove('active');
         if (searchClear) searchClear.classList.remove('visible');
         if (searchInput) searchInput.setAttribute('aria-expanded', 'false');
         if (searchStatus) searchStatus.textContent = '';
+        var hint = document.querySelector('.search-hint');
+        if (hint) hint.style.display = '';
         return;
       }
-
+      var hint2 = document.querySelector('.search-hint');
+      if (hint2) hint2.style.display = 'none';
       if (searchClear) searchClear.classList.add('visible');
-      var matches = searchTips.filter(function(tip) {
-        return tip.title.toLowerCase().indexOf(query) !== -1 ||
-               tip.desc.toLowerCase().indexOf(query) !== -1 ||
-               tip.level.toLowerCase().indexOf(query) !== -1;
-      });
-
+      var matches = searchTips.filter(function(tip) { return tip.title.toLowerCase().indexOf(query) !== -1 || tip.desc.toLowerCase().indexOf(query) !== -1 || tip.level.toLowerCase().indexOf(query) !== -1; });
       if (matches.length === 0) {
-        var noRes = document.createElement('div');
-        noRes.className = 'search-no-results';
+        var noRes = document.createElement('div'); noRes.className = 'search-no-results';
         noRes.textContent = 'No tips found for \u201c' + query + '\u201d. Try a different keyword!';
         if (searchResults) searchResults.appendChild(noRes);
         if (searchStatus) searchStatus.textContent = 'No results found.';
       } else {
         matches.slice(0, 8).forEach(function(tip, idx) {
-          var item = document.createElement('a');
-          item.className = 'search-result-item ' + tip.levelClass;
-          item.href = tip.url;
-          item.id = 'search-result-' + idx;
-          item.setAttribute('role', 'option');
-
-          var level = document.createElement('span');
-          level.className = 'search-result-level';
-          level.textContent = tip.level;
-
-          var title = document.createElement('div');
-          title.className = 'search-result-title';
-          title.textContent = tip.title;
-
-          var desc = document.createElement('div');
-          desc.className = 'search-result-desc';
-          desc.textContent = tip.desc;
-
-          item.appendChild(level);
-          item.appendChild(title);
-          item.appendChild(desc);
+          var item = document.createElement('a'); item.className = 'search-result-item ' + tip.levelClass; item.href = tip.url; item.id = 'search-result-' + idx; item.setAttribute('role', 'option');
+          item.innerHTML = '<span class="search-result-level">' + tip.level + '</span><div class="search-result-title"></div><div class="search-result-desc"></div>';
+          item.querySelector('.search-result-title').textContent = tip.title;
+          item.querySelector('.search-result-desc').textContent = tip.desc;
           if (searchResults) searchResults.appendChild(item);
           currentResultItems.push(item);
         });
-        // (#8) Announce count to screen readers
-        if (searchStatus) {
-          searchStatus.textContent = matches.length + ' result' + (matches.length !== 1 ? 's' : '') + ' found. Use arrow keys to navigate.';
-        }
+        if (searchStatus) searchStatus.textContent = matches.length + ' result' + (matches.length !== 1 ? 's' : '') + ' found. Use arrow keys to navigate.';
       }
       if (searchResults) searchResults.classList.add('active');
       if (searchInput) searchInput.setAttribute('aria-expanded', 'true');
     }
 
     if (searchInput) {
-      searchInput.addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(function() { performSearch(searchInput.value); }, 200);
-      });
-
-      // (#7) Full keyboard navigation: arrows, Enter, Escape
+      searchInput.addEventListener('input', function() { clearTimeout(searchTimeout); searchTimeout = setTimeout(function() { performSearch(searchInput.value); }, 200); });
       searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          searchInput.value = '';
-          if (searchResults) searchResults.classList.remove('active');
-          if (searchClear) searchClear.classList.remove('visible');
-          searchInput.setAttribute('aria-expanded', 'false');
-          clearActiveDescendant();
-          if (searchStatus) searchStatus.textContent = '';
-          return;
-        }
-
+        if (e.key === 'Escape') { searchInput.value = ''; if (searchResults) searchResults.classList.remove('active'); if (searchClear) searchClear.classList.remove('visible'); searchInput.setAttribute('aria-expanded', 'false'); clearActiveDescendant(); if (searchStatus) searchStatus.textContent = ''; var h = document.querySelector('.search-hint'); if (h) h.style.display = ''; return; }
         if (!searchResults || !searchResults.classList.contains('active')) return;
-
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          var nextIdx = activeResultIndex + 1;
-          if (nextIdx < currentResultItems.length) setActiveDescendant(nextIdx);
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          var prevIdx = activeResultIndex - 1;
-          if (prevIdx >= 0) setActiveDescendant(prevIdx);
-          else clearActiveDescendant();
-        } else if (e.key === 'Enter') {
-          e.preventDefault();
-          if (activeResultIndex >= 0 && currentResultItems[activeResultIndex]) {
-            window.location.href = currentResultItems[activeResultIndex].href;
-          }
-        }
+        if (e.key === 'ArrowDown') { e.preventDefault(); if (activeResultIndex + 1 < currentResultItems.length) setActiveDescendant(activeResultIndex + 1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); if (activeResultIndex > 0) setActiveDescendant(activeResultIndex - 1); else clearActiveDescendant(); }
+        else if (e.key === 'Enter') { e.preventDefault(); if (activeResultIndex >= 0 && currentResultItems[activeResultIndex]) window.location.href = currentResultItems[activeResultIndex].href; }
       });
     }
+    if (searchClear) { searchClear.addEventListener('click', function() { if (searchInput) { searchInput.value = ''; searchInput.setAttribute('aria-expanded', 'false'); searchInput.focus(); } if (searchResults) searchResults.classList.remove('active'); searchClear.classList.remove('visible'); clearActiveDescendant(); if (searchStatus) searchStatus.textContent = ''; var h = document.querySelector('.search-hint'); if (h) h.style.display = ''; }); }
+    document.addEventListener('click', function(e) { if (searchResults && searchInput && searchClear && !searchResults.contains(e.target) && e.target !== searchInput && e.target !== searchClear) { searchResults.classList.remove('active'); if (searchInput) searchInput.setAttribute('aria-expanded', 'false'); clearActiveDescendant(); } });
 
-    if (searchClear) {
-      searchClear.addEventListener('click', function() {
-        if (searchInput) {
-          searchInput.value = '';
-          searchInput.setAttribute('aria-expanded', 'false');
-          searchInput.focus();
-        }
-        if (searchResults) searchResults.classList.remove('active');
-        searchClear.classList.remove('visible');
-        clearActiveDescendant();
-        if (searchStatus) searchStatus.textContent = '';
-      });
-    }
-
-    // Close search on outside click
-    document.addEventListener('click', function(e) {
-      if (searchResults && searchInput && searchClear &&
-          !searchResults.contains(e.target) &&
-          e.target !== searchInput && e.target !== searchClear) {
-        searchResults.classList.remove('active');
-        if (searchInput) searchInput.setAttribute('aria-expanded', 'false');
-        clearActiveDescendant();
+    // "/" keyboard shortcut to focus search
+    document.addEventListener('keydown', function(e) {
+      if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        var tag = (document.activeElement || {}).tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+        e.preventDefault();
+        if (searchInput) searchInput.focus();
       }
     });
 
-    // ===================== FEATURED TIPS ROTATION (#13,#14) =====================
-
+    // =================== FEATURED TIPS ===================
     var featuredTips = [
       { title: 'Use spaced practice \u2013 avoid cramming', desc: 'Short study sessions spread over days or weeks build stronger long-term memory than one long cram session. Research shows this technique can improve retention by up to 200%.', source: 'Source: UNC Learning Center' },
       { title: 'Test yourself with active recall', desc: 'Instead of re-reading notes, close your book and try to recall what you learned. Self-testing strengthens neural pathways and reveals knowledge gaps early.', source: 'Source: Cognitive Psychology Research' },
@@ -1110,38 +883,14 @@
       { title: 'Use the Pomodoro Technique', desc: 'Study for 25 minutes, take a 5-minute break. After 4 cycles, take a longer 15\u201330 minute break. This maintains high focus and prevents burnout.', source: 'Source: Francesco Cirillo' },
       { title: 'Sleep on it \u2014 literally', desc: 'Your brain consolidates memories during sleep. Reviewing material before bed and getting a full night\u2019s rest significantly improves recall the next day.', source: 'Source: Harvard Medical School' }
     ];
-
     var currentTip = 0;
-    var featuredTitle = getEl('featured-title');
-    var featuredDesc = getEl('featured-desc');
-    var featuredSource = getEl('featured-source');
-    var nextTipBtn = getEl('next-tip');
-    var prevTipBtn = getEl('prev-tip');
+    var featuredTitle = getEl('featured-title'), featuredDesc = getEl('featured-desc'), featuredSource = getEl('featured-source');
+    var nextTipBtn = getEl('next-tip'), prevTipBtn = getEl('prev-tip');
+    function updateFeaturedTip() { if (!featuredTitle || !featuredDesc || !featuredSource) return; var t = featuredTips[currentTip]; featuredTitle.textContent = t.title; featuredDesc.textContent = t.desc; featuredSource.textContent = t.source; }
+    if (nextTipBtn) nextTipBtn.addEventListener('click', function() { currentTip = (currentTip + 1) % featuredTips.length; updateFeaturedTip(); });
+    if (prevTipBtn) prevTipBtn.addEventListener('click', function() { currentTip = (currentTip - 1 + featuredTips.length) % featuredTips.length; updateFeaturedTip(); });
 
-    function updateFeaturedTip() {
-      if (!featuredTitle || !featuredDesc || !featuredSource) return;
-      var tip = featuredTips[currentTip];
-      featuredTitle.textContent = tip.title;
-      featuredDesc.textContent = tip.desc;
-      featuredSource.textContent = tip.source;
-    }
-
-    if (nextTipBtn) {
-      nextTipBtn.addEventListener('click', function() {
-        currentTip = (currentTip + 1) % featuredTips.length;
-        updateFeaturedTip();
-      });
-    }
-
-    if (prevTipBtn) {
-      prevTipBtn.addEventListener('click', function() {
-        currentTip = (currentTip - 1 + featuredTips.length) % featuredTips.length;
-        updateFeaturedTip();
-      });
-    }
-
-    // ===================== QUOTES CAROUSEL (#13,#14) =====================
-
+    // =================== QUOTES WITH DOTS + AUTO-ROTATE ===================
     var quotes = [
       { text: '\u201cThe beautiful thing about learning is that no one can take it away from you.\u201d', author: 'B.B. King' },
       { text: '\u201cEducation is the most powerful weapon which you can use to change the world.\u201d', author: 'Nelson Mandela' },
@@ -1151,28 +900,52 @@
       { text: '\u201cSuccess is no accident. It is hard work, perseverance, learning, studying, sacrifice.\u201d', author: 'Pel\u00e9' }
     ];
     var currentQuote = 0;
-    var quoteText = getEl('home-quote-text');
-    var quoteAuthor = getEl('home-quote-author');
-    var nextQuoteBtn = getEl('home-next-quote');
-    var prevQuoteBtn = getEl('home-prev-quote');
+    var quoteText = getEl('home-quote-text'), quoteAuthor = getEl('home-quote-author');
+    var nextQuoteBtn = getEl('home-next-quote'), prevQuoteBtn = getEl('home-prev-quote');
+    var dotsContainer = getEl('quote-dots');
+    var quoteAutoInterval;
+
+    // Build dots
+    if (dotsContainer) {
+      quotes.forEach(function(_, i) {
+        var dot = document.createElement('button');
+        dot.className = 'quote-dot' + (i === 0 ? ' active' : '');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', 'Go to quote ' + (i + 1));
+        dot.addEventListener('click', function() { currentQuote = i; updateHomeQuote(); resetAutoQuote(); });
+        dotsContainer.appendChild(dot);
+      });
+    }
 
     function updateHomeQuote() {
       if (!quoteText || !quoteAuthor) return;
       quoteText.textContent = quotes[currentQuote].text;
       quoteAuthor.textContent = '\u2014 ' + quotes[currentQuote].author;
+      if (dotsContainer) {
+        dotsContainer.querySelectorAll('.quote-dot').forEach(function(d, i) { d.classList.toggle('active', i === currentQuote); });
+      }
     }
+    function resetAutoQuote() { clearInterval(quoteAutoInterval); quoteAutoInterval = setInterval(function() { currentQuote = (currentQuote + 1) % quotes.length; updateHomeQuote(); }, 8000); }
 
-    if (nextQuoteBtn) {
-      nextQuoteBtn.addEventListener('click', function() {
-        currentQuote = (currentQuote + 1) % quotes.length;
-        updateHomeQuote();
-      });
+    if (nextQuoteBtn) nextQuoteBtn.addEventListener('click', function() { currentQuote = (currentQuote + 1) % quotes.length; updateHomeQuote(); resetAutoQuote(); });
+    if (prevQuoteBtn) prevQuoteBtn.addEventListener('click', function() { currentQuote = (currentQuote - 1 + quotes.length) % quotes.length; updateHomeQuote(); resetAutoQuote(); });
+
+    // Pause auto-rotate on hover
+    var quotesSection = document.querySelector('.quotes-section');
+    if (quotesSection) {
+      quotesSection.addEventListener('mouseenter', function() { clearInterval(quoteAutoInterval); });
+      quotesSection.addEventListener('mouseleave', function() { resetAutoQuote(); });
     }
+    if (!reducedMotion) resetAutoQuote();
 
-    if (prevQuoteBtn) {
-      prevQuoteBtn.addEventListener('click', function() {
-        currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
-        updateHomeQuote();
+    // =================== SCROLL TO TOP ===================
+    var scrollBtn = getEl('scroll-top');
+    if (scrollBtn) {
+      window.addEventListener('scroll', function() {
+        scrollBtn.classList.toggle('visible', window.scrollY > 600);
+      }, { passive: true });
+      scrollBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
       });
     }
 
