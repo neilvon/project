@@ -3,23 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Proven study strategies for high school students in grades 7-10. Master effective techniques like Cornell notes, mind maps, and the Pomodoro technique." />
+  <meta name="description" content="Study Buddy High School - Proven study strategies and tools for high school students in grades 7-10" />
   <meta name="theme-color" content="#6366f1" />
+  <meta property="og:title" content="Study Buddy – High School" />
+  <meta property="og:description" content="Smart strategies and interactive tools for high school success" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="High School Study Tips — Study Buddy" />
-  <meta property="og:description" content="Smart strategies for high school success" />
-  <title>High School Study Tips — Study Buddy</title>
+  <title>Study Buddy – High School</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="preload" href="style-highschool.css" as="style" />
   <link rel="stylesheet" href="style-highschool.css" />
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3EStudy Buddy%3C/title%3E%3Crect x='2' y='3' width='20' height='14' rx='2' fill='%236366f1'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3EStudy Buddy%3C/title%3E%3Cpath d='M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z' fill='%236366f1'/%3E%3C/svg%3E">
 
   <style>
-    /* Fallback CSS variables */
     :root {
       --accent-1: #6366f1;
       --accent-2: #8b5cf6;
@@ -29,6 +27,7 @@
       --text: #1f2937;
       --border: #e5e7eb;
       --bg: #ffffff;
+      --spacing-section: 3rem;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -58,29 +57,47 @@
       }
     }
 
-    /* Card list reset */
-    .card-list { list-style: none; padding: 0; margin: 0; }
-
-    /* Reveal animation */
-    .animate-ready {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .in-view { opacity: 1; transform: translateY(0); }
-
-    /* Utility */
-    .section-subtitle {
-      color: var(--muted, #6b7280); font-weight: 600; text-align: center;
-    }
-    .back-nav { margin-top: 3rem; text-align: center; }
-
-    /* Gradient headings */
-    .gradient-heading {
+    /* Gradient heading utilities */
+    .gradient-heading-primary {
       font-size: 1.75rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-2, #8b5cf6));
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-3, #06b6d4));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       color: var(--accent-1, #6366f1);
     }
+
+    .gradient-heading-timer {
+      font-size: 1.75rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-2, #8b5cf6));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-1, #6366f1); margin-bottom: 1rem;
+    }
+
+    .gradient-heading-warm {
+      font-size: 1.75rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-4, #f59e0b), #ea580c);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-4, #f59e0b);
+    }
+
+    .gradient-heading-cool {
+      font-size: 1.75rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-3, #06b6d4), #0891b2);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-3, #06b6d4);
+    }
+
+    .gradient-heading-purple {
+      font-size: 1.75rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-2, #8b5cf6), var(--accent-4, #f59e0b));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-2, #8b5cf6);
+    }
+
+    .section-subtitle {
+      color: var(--muted, #6b7280); font-weight: 600; text-align: center; margin-bottom: 1rem;
+    }
+
+    .card-list { list-style: none; padding: 0; margin: 0; }
 
     /* Toast notification system */
     .toast-container {
@@ -91,115 +108,387 @@
       padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem;
       box-shadow: 0 8px 24px rgba(0,0,0,0.15); transform: translateX(120%);
       transition: transform 0.3s ease; pointer-events: auto;
-      display: flex; align-items: center; gap: 0.75rem; max-width: 380px; cursor: pointer;
+      display: flex; align-items: center; gap: 0.75rem; max-width: 380px;
     }
     .toast.show { transform: translateX(0); }
     .toast-success { background: #d1fae5; color: #065f46; border: 2px solid #10b981; }
     .toast-info { background: #dbeafe; color: #1e40af; border: 2px solid #3b82f6; }
     .toast-warning { background: #fef3c7; color: #92400e; border: 2px solid #f59e0b; }
-
-    /* Toolkit section */
-    .hs-toolkit {
-      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.05));
-      border-radius: 24px; padding: 2.5rem; margin: 3rem 0;
-      border: 3px solid var(--accent-1, #6366f1);
+    .toast-error { background: #fee2e2; color: #991b1b; border: 2px solid #ef4444; }
+    .toast-action {
+      padding: 0.375rem 0.875rem; border: 2px solid currentColor; border-radius: 50px;
+      background: transparent; color: inherit; font-weight: 700; cursor: pointer;
+      font-size: 0.85rem; white-space: nowrap;
     }
-    .toolkit-title {
-      font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;
+    .toast-action:hover { opacity: 0.8; }
+
+    /* Progress tracker */
+    .progress-tracker {
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(6,182,212,0.05));
+      border-radius: 20px; padding: 2rem; margin: var(--spacing-section, 3rem) 0;
+      border: 2px solid var(--accent-3, #06b6d4);
+    }
+    .progress-header { text-align: center; margin-bottom: 2rem; }
+    .progress-title {
+      font-size: 1.75rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-3, #06b6d4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-1, #6366f1); margin-bottom: 0.5rem;
+    }
+    .progress-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;
+    }
+    .progress-item {
+      text-align: center; padding: 1.5rem; background: white; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      cursor: pointer; border: 2px solid transparent;
+    }
+    .progress-item:hover, .progress-item:focus-within {
+      transform: translateY(-5px); box-shadow: 0 8px 24px rgba(99,102,241,0.15);
+      border-color: var(--accent-3, #06b6d4);
+    }
+    .progress-number {
+      font-size: 2.5rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-4, #f59e0b));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-1, #6366f1);
+    }
+    .editable-input {
+      font-size: 2.5rem; font-weight: 800; color: var(--accent-1, #6366f1);
+      border: 2px solid var(--accent-3, #06b6d4); border-radius: 8px;
+      padding: 0.25rem 0.5rem; text-align: center; width: 100%; max-width: 150px; background: white;
+    }
+    .progress-label { font-size: 0.95rem; color: var(--muted, #6b7280); font-weight: 600; margin-top: 0.5rem; }
+    .edit-hint { font-size: 0.75rem; color: var(--accent-3, #06b6d4); margin-top: 0.25rem; font-style: italic; }
+    .edit-icon { font-size: 0.85rem; opacity: 0; transition: opacity 0.2s ease; margin-left: 0.25rem; }
+    .progress-item:hover .edit-icon, .stat-card:hover .edit-icon { opacity: 1; }
+
+    /* Study timer */
+    .study-timer {
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.05));
+      border-radius: 20px; padding: 2.5rem; margin: var(--spacing-section, 3rem) 0;
+      border: 2px solid var(--accent-2, #8b5cf6); text-align: center;
+    }
+    .timer-display {
+      font-size: 4rem; font-weight: 800; font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-2, #8b5cf6));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-1, #6366f1); margin: 1.5rem 0; letter-spacing: 0.1em;
+    }
+    .timer-controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+    .timer-btn {
+      padding: 0.875rem 2rem; border: none; border-radius: 50px; font-weight: 700;
+      font-size: 1rem; cursor: pointer; transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .timer-btn.start { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+    .timer-btn.pause { background: linear-gradient(135deg, var(--accent-4, #f59e0b), #ea580c); color: white; }
+    .timer-btn.reset { background: linear-gradient(135deg, #6b7280, #4b5563); color: white; }
+    .timer-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .timer-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .timer-presets { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+    .preset-btn {
+      padding: 0.5rem 1.25rem; background: white; border: 2px solid var(--accent-1, #6366f1);
+      border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+    }
+    .preset-btn:hover { background: var(--accent-1, #6366f1); color: white; transform: scale(1.05); }
+
+    /* Grade calculator */
+    .grade-calculator {
+      background: linear-gradient(135deg, rgba(245,158,11,0.05), rgba(249,115,22,0.05));
+      border-radius: 20px; padding: 2.5rem; margin: var(--spacing-section, 3rem) 0;
+      border: 2px solid var(--accent-4, #f59e0b);
+    }
+    .calculator-header { text-align: center; margin-bottom: 2rem; }
+    .subject-inputs { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+    .subject-row {
+      display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; align-items: end;
+    }
+    .subject-field { display: flex; flex-direction: column; gap: 0.25rem; }
+    .subject-field-label { font-size: 0.8rem; font-weight: 600; color: var(--muted, #6b7280); }
+    .subject-input {
+      padding: 0.75rem 1rem; border: 2px solid var(--border, #e5e7eb); border-radius: 10px;
+      font-size: 1rem; transition: border-color 0.3s ease;
+    }
+    .subject-input:focus { outline: none; border-color: var(--accent-4, #f59e0b); }
+    .remove-subject {
+      padding: 0.5rem 1rem; background: #ef4444; color: white; border: none; border-radius: 8px;
+      cursor: pointer; font-weight: 600; transition: all 0.3s ease; align-self: end; margin-bottom: 2px;
+    }
+    .remove-subject:hover { background: #dc2626; transform: scale(1.05); }
+    .calculator-actions {
+      display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;
+    }
+    .calc-btn {
+      padding: 0.875rem 2rem; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .calc-btn.add { background: linear-gradient(135deg, var(--accent-3, #06b6d4), #0891b2); color: white; }
+    .calc-btn.calculate { background: linear-gradient(135deg, var(--accent-4, #f59e0b), #ea580c); color: white; }
+    .calc-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .grade-result {
+      margin-top: 2rem; padding: 2rem; background: white; border-radius: 16px;
+      text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .grade-value {
+      font-size: 3.5rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-4, #f59e0b));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--accent-1, #6366f1);
+    }
+    .grade-scale { font-size: 1.1rem; color: var(--muted, #6b7280); margin-top: 0.5rem; font-weight: 600; }
+    .grade-feedback { margin-top: 0.75rem; font-weight: 600; font-size: 1rem; }
+
+    /* Assignment tracker */
+    .assignment-tracker {
+      background: linear-gradient(135deg, rgba(6,182,212,0.05), rgba(8,145,178,0.05));
+      border-radius: 20px; padding: 2.5rem; margin: var(--spacing-section, 3rem) 0;
+      border: 2px solid var(--accent-3, #06b6d4);
+    }
+    .tracker-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .add-assignment-btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--accent-3, #06b6d4), #0891b2);
+      color: white; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .add-assignment-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(6,182,212,0.3); }
+    .assignments-list { display: flex; flex-direction: column; gap: 1rem; }
+    .assignment-item {
+      background: white; padding: 1.5rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+    }
+    .assignment-item:hover { transform: translateX(5px); box-shadow: 0 6px 20px rgba(6,182,212,0.15); }
+    .assignment-header {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;
+    }
+    .assignment-info h4 { font-size: 1.1rem; font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
+    .assignment-meta { display: flex; gap: 1rem; font-size: 0.9rem; color: var(--muted, #6b7280); flex-wrap: wrap; }
+    .assignment-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .expand-assignment {
+      padding: 0.5rem 1rem; background: var(--accent-3, #06b6d4); color: white;
+      border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;
+    }
+    .expand-assignment:hover { background: #0891b2; }
+    .assignment-status-select {
+      padding: 0.375rem 0.875rem; border-radius: 50px; font-weight: 600; font-size: 0.85rem;
+      border: 2px solid var(--border, #e5e7eb); cursor: pointer; background: white;
+    }
+    .remove-assignment {
+      padding: 0.5rem 1rem; background: #ef4444; color: white; border: none;
+      border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;
+    }
+    .remove-assignment:hover { background: #dc2626; }
+    .assignment-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    .assignment-details.expanded {
+      max-height: 1000px; margin-top: 1rem; padding-top: 1rem;
+      border-top: 2px solid var(--accent-3, #06b6d4);
+    }
+    .assignment-detail-row { margin-bottom: 0.75rem; }
+    .assignment-detail-label {
+      font-weight: 700; color: var(--accent-3, #06b6d4); display: block; margin-bottom: 0.25rem;
+    }
+    .assignment-detail-input {
+      width: 100%; padding: 0.5rem; border: 2px solid var(--border, #e5e7eb);
+      border-radius: 8px; font-size: 0.95rem;
+    }
+    .assignment-detail-input:focus { outline: none; border-color: var(--accent-3, #06b6d4); }
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted, #6b7280); }
+    .empty-state-icon { font-size: 4rem; margin-bottom: 1rem; }
+
+    /* Quotes carousel */
+    .quotes-carousel {
+      background: linear-gradient(135deg, rgba(139,92,246,0.05), rgba(168,85,247,0.05));
+      border-radius: 20px; padding: 3rem 2rem; margin: var(--spacing-section, 3rem) 0;
+      border: 2px solid var(--accent-2, #8b5cf6); text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .quote-content { max-width: 800px; margin: 0 auto; }
+    .quote-text {
+      font-size: 1.5rem; font-style: italic; color: var(--text, #1f2937);
+      line-height: 1.8; font-weight: 600; margin-bottom: 1.5rem;
+    }
+    .quote-author { font-size: 1.1rem; font-weight: 700; color: var(--accent-2, #8b5cf6); }
+    .quote-controls { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; }
+    .quote-btn {
+      width: 50px; height: 50px; border-radius: 50%; border: none;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-2, #8b5cf6));
+      color: white; font-size: 1.5rem; cursor: pointer; transition: all 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .quote-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(99,102,241,0.3); }
+
+    /* Stats dashboard */
+    .stats-dashboard {
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(6,182,212,0.05));
+      border-radius: 20px; padding: 2.5rem; margin: var(--spacing-section, 3rem) 0;
+      border: 2px solid var(--accent-1, #6366f1);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .stat-card {
+      background: white; padding: 2rem; border-radius: 16px; text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      cursor: pointer; border: 2px solid transparent;
+    }
+    .stat-card:hover, .stat-card:focus-within {
+      transform: translateY(-5px); box-shadow: 0 8px 24px rgba(99,102,241,0.15);
+      border-color: var(--accent-3, #06b6d4);
+    }
+    .stat-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .stat-value {
+      font-size: 2.5rem; font-weight: 800;
       background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-3, #06b6d4));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       color: var(--accent-1, #6366f1);
     }
-    .toolkit-subtitle {
-      text-align: center; color: var(--muted, #6b7280); font-weight: 600; margin-bottom: 2rem;
+    .stat-input {
+      font-size: 2.5rem; font-weight: 800; color: var(--accent-1, #6366f1);
+      border: 2px solid var(--accent-3, #06b6d4); border-radius: 8px;
+      padding: 0.25rem 0.5rem; text-align: center; width: 100%; max-width: 150px; background: white;
     }
-    .toolkit-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
+    .stat-label { font-size: 0.95rem; color: var(--muted, #6b7280); font-weight: 600; margin-top: 0.5rem; }
+
+    /* Note templates */
+    .note-templates {
+      background: linear-gradient(135deg, rgba(139,92,246,0.05), rgba(168,85,247,0.05));
+      border-radius: 20px; padding: 2.5rem; margin: var(--spacing-section, 3rem) 0;
+      border: 2px solid var(--accent-2, #8b5cf6);
+    }
+    .templates-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .template-card {
+      background: white; padding: 1.5rem; border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease;
+    }
+    .template-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(139,92,246,0.15); }
+    .template-preview {
+      background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;
+      font-family: 'Courier New', monospace; font-size: 0.85rem;
+      border-left: 4px solid var(--accent-2, #8b5cf6);
+    }
+    .download-btn {
+      width: 100%; padding: 0.75rem;
+      background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-2, #8b5cf6));
+      color: white; border: none; border-radius: 50px; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .download-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(99,102,241,0.3); }
+
+    /* Tools grid */
+    .tools-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem; margin: var(--spacing-section, 3rem) 0;
     }
     .tool-card {
       background: white; padding: 2rem; border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08); transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); transition: all 0.4s ease;
       border: 2px solid transparent; text-align: center;
     }
     .tool-card:hover {
-      transform: translateY(-8px); border-color: var(--accent-1, #6366f1);
-      box-shadow: 0 16px 32px rgba(99,102,241,0.15);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(99,102,241,0.15);
+      border-color: var(--accent-1, #6366f1);
     }
     .tool-icon { font-size: 3rem; margin-bottom: 1rem; display: inline-block; }
     @media (prefers-reduced-motion: no-preference) {
-      .tool-icon {
-        animation: toolFloat 3s ease-in-out infinite;
-      }
+      .tool-icon { animation: toolFloat 3s ease-in-out infinite; }
     }
     @keyframes toolFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
     }
-    .tool-label {
-      font-size: 1.15rem; font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.75rem;
-    }
-    .tool-text {
-      font-size: 0.95rem; color: var(--muted, #6b7280); line-height: 1.6; margin-bottom: 1.5rem;
-    }
+    .tool-title { font-size: 1.25rem; font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.75rem; }
+    .tool-description { font-size: 0.95rem; color: var(--muted, #6b7280); line-height: 1.6; margin-bottom: 1.5rem; }
     .tool-btn {
       padding: 0.75rem 1.5rem;
       background: linear-gradient(135deg, var(--accent-1, #6366f1), var(--accent-2, #8b5cf6));
       color: white; border: none; border-radius: 50px; font-weight: 700;
       cursor: pointer; transition: all 0.3s ease;
     }
-    .tool-btn:hover:not(:disabled) {
-      transform: scale(1.05); box-shadow: 0 6px 20px rgba(99,102,241,0.3);
-    }
-    .tool-btn:disabled {
-      opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none;
-    }
-    .coming-soon-badge {
-      display: inline-block; margin-top: 0.5rem; padding: 0.25rem 0.75rem;
-      background: var(--accent-4, #f59e0b); color: white; border-radius: 50px;
-      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-    }
+    .tool-btn:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 6px 20px rgba(99,102,241,0.3); }
+    .tool-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
 
-    /* Insight card */
-    .insight-card-wrapper {
-      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(6,182,212,0.05));
-      border-radius: 20px; padding: 2rem; margin: 3rem 0;
-      border: 2px solid var(--accent-1, #6366f1);
-      display: flex; gap: 1.5rem; align-items: flex-start;
+    /* Resource cards */
+    .resource-btn-card {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      background: white; border: 2px solid var(--border, #e5e7eb); border-radius: 16px;
+      padding: 2rem; cursor: pointer; transition: all 0.3s ease;
+      width: 100%; font-family: inherit;
     }
-    .insight-icon { font-size: 2.5rem; flex-shrink: 0; }
-    .insight-title {
-      font-size: 1.25rem; font-weight: 800; color: var(--text, #1f2937); margin-bottom: 0.5rem;
+    .resource-btn-card:disabled { opacity: 0.7; cursor: not-allowed; }
+    .resource-btn-card:not(:disabled):hover {
+      transform: translateY(-5px); box-shadow: 0 8px 24px rgba(99,102,241,0.15);
+      border-color: var(--accent-3, #06b6d4);
     }
-    .insight-text {
-      font-size: 0.95rem; color: var(--muted, #6b7280); line-height: 1.7;
-    }
-
-    /* Resource cards (disabled/coming soon) */
+    .resource-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .resource-title { font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
+    .resource-description { font-size: 0.9rem; color: var(--muted, #6b7280); line-height: 1.5; }
     .resource-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.5rem; margin-top: 2rem;
     }
-    .resource-btn-card {
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-      background: white; border: 2px solid var(--border, #e5e7eb); border-radius: 16px;
-      padding: 2rem; width: 100%; font-family: inherit; font-size: inherit;
-      transition: all 0.3s ease;
+
+    /* Quick links */
+    .quick-links {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem; margin: 2rem 0;
     }
-    .resource-btn-card:disabled { opacity: 0.65; cursor: not-allowed; }
-    .resource-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .resource-title { font-weight: 700; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
-    .resource-description { font-size: 0.9rem; color: var(--muted, #6b7280); line-height: 1.5; }
+    .quick-link {
+      padding: 1rem;
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(6,182,212,0.05));
+      border: 2px solid var(--border, #e5e7eb); border-radius: 12px;
+      text-align: center; color: var(--muted, #6b7280); font-weight: 600; opacity: 0.6;
+    }
+    .aesthetics-notice {
+      background: linear-gradient(135deg, #fef3c7, #fde68a); border: 3px solid #f59e0b;
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;
+    }
+    .aesthetics-notice-text {
+      font-size: 1.1rem; font-weight: 800; color: #92400e;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .aesthetics-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+    /* Insight card */
+    .academic-insight {
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(6,182,212,0.05));
+      border-radius: 20px; padding: 2rem; margin: var(--spacing-section, 3rem) 0;
+      border: 2px solid var(--accent-1, #6366f1);
+      display: flex; gap: 1.5rem; align-items: flex-start;
+    }
+    .insight-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .insight-title { font-size: 1.25rem; font-weight: 800; color: var(--text, #1f2937); margin-bottom: 0.5rem; }
+    .insight-text { font-size: 0.95rem; color: var(--muted, #6b7280); line-height: 1.7; }
+
+    .back-nav { margin-top: var(--spacing-section, 3rem); text-align: center; }
 
     @media (max-width: 768px) {
-      .toolkit-grid { grid-template-columns: 1fr; }
-      .resource-grid { grid-template-columns: 1fr; }
-      .insight-card-wrapper { flex-direction: column; text-align: center; }
+      .subject-row { grid-template-columns: 1fr; }
+      .timer-display { font-size: 3rem; }
+      .quote-text { font-size: 1.2rem; }
+      .progress-grid { grid-template-columns: repeat(2, 1fr); }
+      .assignment-header { flex-direction: column; }
+      .assignment-actions { width: 100%; justify-content: flex-start; }
+      .tracker-header { flex-direction: column; align-items: flex-start; }
+      .calculator-actions { flex-direction: column; align-items: center; }
+      .timer-controls { flex-direction: column; align-items: center; }
+      .academic-insight { flex-direction: column; text-align: center; }
+      .gradient-heading-primary, .gradient-heading-timer, .gradient-heading-warm,
+      .gradient-heading-cool, .gradient-heading-purple, .progress-title { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
   <a href="#main-content" class="sr-only">Skip to main content</a>
+
   <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <header class="site-header" role="banner">
@@ -214,11 +503,11 @@
         </div>
         <div>
           <h1 class="site-title">Study Buddy</h1>
-          <span class="site-sub">High School — Smart strategies for success</span>
+          <span class="site-sub">High School – Smart strategies for success</span>
         </div>
       </div>
 
-      <nav class="main-nav" aria-label="Primary navigation">
+      <nav class="main-nav" role="navigation" aria-label="Primary navigation">
         <button id="menu-toggle" class="menu-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu" type="button">☰</button>
         <ul id="menu" class="menu-list">
           <li><a href="index.html">Home</a></li>
@@ -234,153 +523,384 @@
   </header>
 
   <main id="main-content">
-    <section class="page active" aria-labelledby="hs-heading">
+    <section class="page active">
       <div class="container">
-        <h2 id="hs-heading">High School (Grades 7–10)</h2>
-        <p class="section-sub">Proven study methods to boost performance and manage your workload effectively.</p>
+        <h2>High School (Grades 7–10)</h2>
+        <p class="section-sub">Proven study methods, interactive tools, and trackers to boost your performance!</p>
 
-        <!-- Proper <ul>/<li>, no article/role="listitem" conflict, no tabindex on non-interactive cards -->
+        <!-- Academic Progress Tracker -->
+        <div class="progress-tracker">
+          <div class="progress-header">
+            <h3 class="progress-title" id="progress-heading">
+              <span aria-hidden="true">📊 </span>Your Study Progress
+            </h3>
+            <p class="section-subtitle">Track your high school journey in real-time</p>
+            <p class="edit-hint">Click or press Enter on any number to edit</p>
+          </div>
+          <div class="progress-grid" role="group" aria-labelledby="progress-heading">
+            <div class="progress-item" role="button" tabindex="0" data-edit="subjects-completed" aria-label="Edit subjects completed">
+              <div class="progress-number" id="subjects-completed">0</div>
+              <div class="progress-label">Subjects Passed <span class="edit-icon" aria-hidden="true">✏️</span></div>
+            </div>
+            <div class="progress-item" role="button" tabindex="0" data-edit="assignments-done" aria-label="Edit assignments done">
+              <div class="progress-number" id="assignments-done">0</div>
+              <div class="progress-label">Assignments Done <span class="edit-icon" aria-hidden="true">✏️</span></div>
+            </div>
+            <div class="progress-item" role="button" tabindex="0" data-edit="hs-study-hours" aria-label="Edit study hours">
+              <div class="progress-number" id="hs-study-hours">0</div>
+              <div class="progress-label">Study Hours <span class="edit-icon" aria-hidden="true">✏️</span></div>
+            </div>
+            <div class="progress-item" role="button" tabindex="0" data-edit="current-average" aria-label="Edit current average">
+              <div class="progress-number" id="current-average">0</div>
+              <div class="progress-label">Current Average (%) <span class="edit-icon" aria-hidden="true">✏️</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Focus Timer -->
+        <div class="study-timer">
+          <h3 class="gradient-heading-timer">
+            <span aria-hidden="true">⏱️ </span>Focus Timer
+          </h3>
+          <p class="section-subtitle">Use the Pomodoro technique to stay focused and avoid burnout</p>
+          <div class="timer-display" id="timer-display" role="timer" aria-live="off" aria-label="Time remaining">25:00</div>
+          <div class="timer-controls">
+            <button class="timer-btn start" id="start-timer" type="button" aria-label="Start timer">Start</button>
+            <button class="timer-btn pause" id="pause-timer" type="button" aria-label="Pause timer">Pause</button>
+            <button class="timer-btn reset" id="reset-timer" type="button" aria-label="Reset timer">Reset</button>
+          </div>
+          <div class="timer-presets" role="group" aria-label="Timer presets">
+            <button class="preset-btn" type="button" data-minutes="15">15 min</button>
+            <button class="preset-btn" type="button" data-minutes="25">25 min</button>
+            <button class="preset-btn" type="button" data-minutes="45">45 min</button>
+            <button class="preset-btn" type="button" data-minutes="5">5 min break</button>
+            <button class="preset-btn" type="button" data-minutes="10">10 min break</button>
+          </div>
+        </div>
+
+        <!-- Study Strategy Cards -->
         <ul class="card-container card-list" aria-label="Study strategies for high school students">
           <li class="card">
-            <div class="card-icon" aria-hidden="true">📝</div>
             <h3 class="card-label">Cornell Notes</h3>
-            <p class="mini">Organize lectures into cues, notes, and summaries for effective review.</p>
+            <p class="mini">
+              Organize lectures into cues, notes, and summaries for effective review. Divide your page into three sections — questions on the left, details on the right, and a summary at the bottom. This method is a game-changer for test prep!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">🧠</div>
             <h3 class="card-label">Mnemonics</h3>
-            <p class="mini">Use memory devices for sequences (e.g., PEMDAS for math order of operations).</p>
+            <p class="mini">
+              Use memory devices for sequences like PEMDAS for math order of operations. Create acronyms, rhymes, or visual associations to lock information into your long-term memory. The sillier the mnemonic, the better it sticks!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">🗺️</div>
             <h3 class="card-label">Mind Maps</h3>
-            <p class="mini">Connect ideas visually to improve understanding and make revisions easier.</p>
+            <p class="mini">
+              Connect ideas visually to improve understanding and make revisions easier. Start with a central topic and branch out into subtopics with colors and images. Perfect for science, history, and literature reviews!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">🎵</div>
             <h3 class="card-label">Study Playlist</h3>
-            <p class="mini">Instrumental music can help you focus; avoid distracting lyrics.</p>
+            <p class="mini">
+              Instrumental music can help you focus — avoid distracting lyrics. Try lo-fi beats, classical music, or ambient sounds. Create dedicated playlists for different subjects to build a focused study habit!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">📅</div>
             <h3 class="card-label">Use a Planner</h3>
-            <p class="mini">Schedule study time and balance it with hobbies and relaxation.</p>
+            <p class="mini">
+              Schedule study time and balance it with hobbies and relaxation. Write down deadlines, break big projects into small tasks, and check things off as you go. Planners help you feel in control of your workload!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">🃏</div>
             <h3 class="card-label">Flashcard Apps</h3>
-            <p class="mini">Use Anki or Quizlet for spaced repetition and better retention.</p>
+            <p class="mini">
+              Use Anki or Quizlet for spaced repetition and better retention. Create your own cards for vocabulary, formulas, and key concepts. Spaced repetition is scientifically proven to boost long-term memory!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">👥</div>
             <h3 class="card-label">Study Groups</h3>
-            <p class="mini">Explain concepts to peers to deepen your own comprehension.</p>
+            <p class="mini">
+              Explain concepts to peers to deepen your own comprehension. Teaching others is one of the most powerful learning strategies. Form regular study groups and quiz each other before exams!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">📄</div>
             <h3 class="card-label">Past Papers</h3>
-            <p class="mini">Practice with old exam formats under timed conditions to prepare.</p>
+            <p class="mini">
+              Practice with old exam formats under timed conditions to prepare. Familiarize yourself with question styles, mark allocations, and time management. Past papers reveal patterns that help you predict what's coming!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">🚫</div>
             <h3 class="card-label">Avoid Cramming</h3>
-            <p class="mini">Regular review sessions are far more effective than last-minute studying.</p>
+            <p class="mini">
+              Regular review sessions are far more effective than last-minute studying. Space your study over days and weeks, not hours before the test. Your brain needs time to process and consolidate what you learn!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">🎯</div>
             <h3 class="card-label">One Subject Focus</h3>
-            <p class="mini">Reduce context switching by focusing on one subject at a time for deeper concentration.</p>
+            <p class="mini">
+              Reduce context switching by focusing on one subject at a time for deeper concentration. Multitasking splits your attention and reduces quality. Give each subject a dedicated block for maximum results!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">⏰</div>
             <h3 class="card-label">Pomodoro Technique</h3>
-            <p class="mini">Study for 25 minutes, then take a 5-minute break for sustained focus.</p>
+            <p class="mini">
+              Study for 25 minutes, then take a 5-minute break for sustained focus. After four rounds, take a longer 15–30 minute break. This technique keeps your brain fresh and prevents burnout!
+            </p>
           </li>
           <li class="card">
-            <div class="card-icon" aria-hidden="true">✏️</div>
             <h3 class="card-label">Write Summaries</h3>
-            <p class="mini">Summarize content in your own words — it's better than just highlighting.</p>
+            <p class="mini">
+              Summarize content in your own words — it's better than just highlighting. Rewriting forces you to process and understand the material deeply. Keep a summary notebook for each subject for quick revision!
+            </p>
           </li>
         </ul>
 
-        <!-- Toolkit — heading demoted to h3, no inline onclick, disabled buttons -->
-        <section class="hs-toolkit" aria-label="High school study toolkit">
-          <h3 class="toolkit-title"><span aria-hidden="true">📚 </span>High School Study Toolkit</h3>
-          <p class="toolkit-subtitle">Shortcuts, templates, and tools to make your study routine more efficient.</p>
-          <div class="toolkit-grid">
-            <div class="tool-card">
-              <div class="tool-icon" aria-hidden="true">🧮</div>
-              <h4 class="tool-label">Grade Calculator</h4>
-              <p class="tool-text">Estimate what score you need on your next quiz or exam to hit your target grade.</p>
-              <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
-              <span class="coming-soon-badge">Coming Soon</span>
-            </div>
-            <div class="tool-card">
-              <div class="tool-icon" aria-hidden="true">🗂️</div>
-              <h4 class="tool-label">Note Style Picker</h4>
-              <p class="tool-text">Choose between Cornell, outline, or mind-map style for your next topic.</p>
-              <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
-              <span class="coming-soon-badge">Coming Soon</span>
-            </div>
-            <div class="tool-card">
-              <div class="tool-icon" aria-hidden="true">⏱️</div>
-              <h4 class="tool-label">Mini Pomodoro</h4>
-              <p class="tool-text">Try a quick 10-minute focus sprint followed by a 3-minute break for light tasks.</p>
-              <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
-              <span class="coming-soon-badge">Coming Soon</span>
+        <!-- Grade Calculator -->
+        <div class="grade-calculator">
+          <div class="calculator-header">
+            <h3 class="gradient-heading-warm">
+              <span aria-hidden="true">🎯 </span>Grade Average Calculator
+            </h3>
+            <p class="section-subtitle">Calculate your weighted average across all subjects</p>
+          </div>
+          <div class="subject-inputs" id="subject-inputs" role="group" aria-label="Subject entries">
+            <div class="subject-row">
+              <div class="subject-field">
+                <label class="subject-field-label" for="subject-name-0">Subject Name</label>
+                <input type="text" class="subject-input" id="subject-name-0" placeholder="e.g. Math" />
+              </div>
+              <div class="subject-field">
+                <label class="subject-field-label" for="subject-weight-0">Weight (%)</label>
+                <input type="number" class="subject-input" id="subject-weight-0" placeholder="100" min="1" max="100" />
+              </div>
+              <div class="subject-field">
+                <label class="subject-field-label" for="subject-grade-0">Grade (%)</label>
+                <input type="number" class="subject-input" id="subject-grade-0" placeholder="85" min="0" max="100" />
+              </div>
+              <button class="remove-subject" type="button" aria-label="Remove this subject">✕</button>
             </div>
           </div>
-        </section>
+          <div class="calculator-actions">
+            <button class="calc-btn add" id="add-subject" type="button">+ Add Subject</button>
+            <button class="calc-btn calculate" id="calculate-grade" type="button">Calculate Average</button>
+          </div>
+          <div class="grade-result" id="grade-result" style="display: none;" aria-live="polite">
+            <div class="grade-value" id="grade-value">0%</div>
+            <div class="grade-scale">Weighted Average</div>
+            <div class="grade-feedback" id="grade-feedback"></div>
+          </div>
+        </div>
 
-        <!-- Resource hub — matching Senior High/University pattern -->
-        <section class="resource-nav" aria-label="High school resources">
-          <h3 class="gradient-heading" style="text-align:center; margin-bottom:0.5rem;">
+        <!-- Assignment Tracker -->
+        <div class="assignment-tracker">
+          <div class="tracker-header">
+            <h3 class="gradient-heading-cool">
+              <span aria-hidden="true">📋 </span>Assignment Tracker
+            </h3>
+            <div>
+              <button class="add-assignment-btn" id="add-assignment" type="button">+ Add Assignment</button>
+              <button class="add-assignment-btn" id="export-data" type="button" style="background: linear-gradient(135deg, #6b7280, #4b5563); margin-left: 0.5rem;">Export Data</button>
+            </div>
+          </div>
+          <div class="assignments-list" id="assignments-list">
+            <div class="empty-state">
+              <div class="empty-state-icon" aria-hidden="true">📋</div>
+              <p>No assignments yet. Click "+ Add Assignment" to start tracking!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quotes Carousel -->
+        <div class="quotes-carousel" aria-label="Motivational quotes">
+          <div class="quote-content" aria-live="polite" aria-atomic="true">
+            <p class="quote-text" id="quote-text">"The secret of getting ahead is getting started."</p>
+            <p class="quote-author" id="quote-author">— Mark Twain</p>
+          </div>
+          <div class="quote-controls">
+            <button class="quote-btn" id="prev-quote" type="button" aria-label="Previous quote">←</button>
+            <button class="quote-btn" id="next-quote" type="button" aria-label="Next quote">→</button>
+          </div>
+        </div>
+
+        <!-- Stats Dashboard -->
+        <div class="stats-dashboard">
+          <h3 class="gradient-heading-primary" style="text-align: center; margin-bottom: 0.5rem;" id="analytics-heading">
+            <span aria-hidden="true">📈 </span>Study Analytics
+          </h3>
+          <p class="edit-hint" style="text-align: center; margin-bottom: 1rem;">Click or press Enter on any value to edit your stats</p>
+          <div class="stats-grid" role="group" aria-labelledby="analytics-heading">
+            <div class="stat-card" role="button" tabindex="0" data-stat="tests-taken" aria-label="Edit tests taken count">
+              <div class="stat-icon" aria-hidden="true">📝</div>
+              <div class="stat-value" id="tests-taken">0</div>
+              <div class="stat-label">Tests Taken <span class="edit-icon" aria-hidden="true">✏️</span></div>
+            </div>
+            <div class="stat-card" role="button" tabindex="0" data-stat="hs-notes-pages" aria-label="Edit notes pages count">
+              <div class="stat-icon" aria-hidden="true">✍️</div>
+              <div class="stat-value" id="hs-notes-pages">0</div>
+              <div class="stat-label">Notes Pages <span class="edit-icon" aria-hidden="true">✏️</span></div>
+            </div>
+            <div class="stat-card" role="button" tabindex="0" data-stat="hs-goals-achieved" aria-label="Edit goals achieved count">
+              <div class="stat-icon" aria-hidden="true">🎯</div>
+              <div class="stat-value" id="hs-goals-achieved">0</div>
+              <div class="stat-label">Goals Achieved <span class="edit-icon" aria-hidden="true">✏️</span></div>
+            </div>
+            <div class="stat-card" role="button" tabindex="0" data-stat="hs-streaks" aria-label="Edit study streak days">
+              <div class="stat-icon" aria-hidden="true">🔥</div>
+              <div class="stat-value" id="hs-streaks">0</div>
+              <div class="stat-label">Day Streak <span class="edit-icon" aria-hidden="true">✏️</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Note Templates -->
+        <div class="note-templates">
+          <h3 class="gradient-heading-purple" style="text-align: center; margin-bottom: 1rem;">
+            <span aria-hidden="true">📝 </span>Note-Taking Templates
+          </h3>
+          <p class="section-subtitle" style="margin-bottom: 2rem;">Ready-to-use templates for every study style</p>
+          <div class="templates-grid">
+            <div class="template-card">
+              <h4 class="tool-title">Cornell Notes</h4>
+              <div class="template-preview" aria-label="Cornell notes template preview">
+                Cues | Notes<br>
+                ─────┼──────<br>
+                Q:   | Main ideas<br>
+                Key  | Details<br>
+                ─────┴──────<br>
+                Summary:
+              </div>
+              <button class="download-btn" type="button" data-template="cornell">Download Template</button>
+            </div>
+            <div class="template-card">
+              <h4 class="tool-title">Mind Map</h4>
+              <div class="template-preview" aria-label="Mind map template preview">
+                    Topic<br>
+                   /  |  \<br>
+                  A   B   C<br>
+                 / \ / \ / \<br>
+                1 2 3 4 5 6
+              </div>
+              <button class="download-btn" type="button" data-template="mindmap">Download Template</button>
+            </div>
+            <div class="template-card">
+              <h4 class="tool-title">Study Guide</h4>
+              <div class="template-preview" aria-label="Study guide template preview">
+                Subject:<br>
+                Chapter:<br>
+                Key Terms:<br>
+                - Term 1:<br>
+                - Term 2:<br>
+                Practice Qs:
+              </div>
+              <button class="download-btn" type="button" data-template="studyguide">Download Template</button>
+            </div>
+            <div class="template-card">
+              <h4 class="tool-title">Homework Planner</h4>
+              <div class="template-preview" aria-label="Homework planner template preview">
+                Week of: ____<br>
+                <br>
+                Mon: ________<br>
+                Tue: ________<br>
+                Wed: ________<br>
+                Thu: ________<br>
+                Fri: ________
+              </div>
+              <button class="download-btn" type="button" data-template="homework">Download Template</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resource Cards -->
+        <div class="resource-nav">
+          <h3 class="gradient-heading-primary" style="text-align: center; margin-bottom: 0.5rem;">
             <span aria-hidden="true">🔗 </span>Study Resources
           </h3>
-          <p class="section-subtitle" style="margin-bottom:2rem;">Helpful tools for high school students</p>
+          <p class="section-subtitle" style="margin-bottom: 2rem;">Helpful tools for high school students</p>
           <div class="resource-grid">
             <button class="resource-btn-card" type="button" disabled aria-disabled="true">
               <div class="resource-icon" aria-hidden="true">📖</div>
               <div class="resource-title">Textbook Guides</div>
-              <div class="resource-description">Chapter summaries and key concept breakdowns for core subjects.</div>
-              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="resource-description">Chapter summaries and key concept breakdowns for core subjects — Coming Soon</div>
             </button>
             <button class="resource-btn-card" type="button" disabled aria-disabled="true">
               <div class="resource-icon" aria-hidden="true">🧪</div>
               <div class="resource-title">Science Lab Notes</div>
-              <div class="resource-description">Templates for lab reports, experiment tracking, and data analysis.</div>
-              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="resource-description">Templates for lab reports, experiment tracking, and data analysis — Coming Soon</div>
             </button>
             <button class="resource-btn-card" type="button" disabled aria-disabled="true">
               <div class="resource-icon" aria-hidden="true">📊</div>
               <div class="resource-title">Math Practice Sets</div>
-              <div class="resource-description">Problem sets organized by topic with step-by-step solutions.</div>
-              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="resource-description">Problem sets organized by topic with step-by-step solutions — Coming Soon</div>
             </button>
             <button class="resource-btn-card" type="button" disabled aria-disabled="true">
               <div class="resource-icon" aria-hidden="true">📝</div>
               <div class="resource-title">Essay Writing Guide</div>
-              <div class="resource-description">Structure templates and tips for persuasive, narrative, and expository essays.</div>
-              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="resource-description">Structure templates and tips for persuasive, narrative, and expository essays — Coming Soon</div>
             </button>
           </div>
-        </section>
+        </div>
 
-        <!-- Insight card — matching other pages -->
-        <div class="insight-card-wrapper" aria-label="Study tip insight">
+        <!-- Tool Cards -->
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon" aria-hidden="true">🧮</div>
+            <h4 class="tool-title">Formula Sheet Maker</h4>
+            <p class="tool-description">Create custom formula sheets for math and science exams</p>
+            <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon" aria-hidden="true">🗂️</div>
+            <h4 class="tool-title">Flashcard Creator</h4>
+            <p class="tool-description">Build digital flashcard decks for any subject with spaced repetition</p>
+            <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon" aria-hidden="true">📅</div>
+            <h4 class="tool-title">Exam Countdown</h4>
+            <p class="tool-description">Set countdowns for upcoming tests and plan your revision schedule</p>
+            <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon" aria-hidden="true">🎯</div>
+            <h4 class="tool-title">Goal Tracker</h4>
+            <p class="tool-description">Set weekly and monthly academic goals and track your progress</p>
+            <button class="tool-btn" type="button" disabled aria-disabled="true">Coming Soon</button>
+          </div>
+        </div>
+
+        <!-- Quick Access Links -->
+        <div style="margin-bottom: var(--spacing-section, 3rem);">
+          <h3 class="gradient-heading-primary" style="text-align: center; margin-bottom: 2rem;">
+            Quick Access Links
+          </h3>
+          <div class="aesthetics-notice" role="note">
+            <div class="aesthetics-icon" aria-hidden="true">⚠️</div>
+            <p class="aesthetics-notice-text">These links are for visual design purposes only</p>
+          </div>
+          <div class="quick-links" aria-hidden="true">
+            <div class="quick-link">📚 Study Notes</div>
+            <div class="quick-link">📧 School Email</div>
+            <div class="quick-link">📅 Class Schedule</div>
+            <div class="quick-link">💻 Online Classes</div>
+            <div class="quick-link">🎓 Report Card</div>
+            <div class="quick-link">📋 Homework</div>
+          </div>
+        </div>
+
+        <!-- Insight Card -->
+        <div class="academic-insight" aria-label="Study tip insight">
           <div class="insight-icon" aria-hidden="true">💡</div>
-          <div>
+          <div class="insight-content">
             <h3 class="insight-title">High School Success Tip</h3>
             <p class="insight-text">
               The best students aren't always the smartest — they're the most consistent.
               Build a routine that works for you, review a little every day, and don't be afraid to ask for help.
-              Small daily habits lead to big results over time.
+              Small daily habits lead to big results over time. Your future self will thank you!
             </p>
           </div>
         </div>
 
         <div class="back-nav">
-          <a href="index.html" class="btn">Back to Home</a>
+          <button class="btn" type="button" id="back-home">Back to Home</button>
         </div>
       </div>
     </section>
@@ -397,43 +917,64 @@
   (function() {
     'use strict';
 
-    // ===================== UTILITIES =====================
+    // ========================================
+    // Utility Functions
+    // ========================================
 
-    // Safe localStorage
     var storage = {
       get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
-      set: function(k,v) { try { localStorage.setItem(k,v); } catch(e) {} }
+      set: function(k,v) { try { localStorage.setItem(k,v); } catch(e) {} },
+      getJSON: function(k) {
+        try { var d = localStorage.getItem(k); return d ? JSON.parse(d) : null; }
+        catch(e) { return null; }
+      },
+      setJSON: function(k,v) {
+        try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {}
+      }
     };
 
-    // Toast system
-    function showToast(msg, type) {
+    function sanitize(str) {
+      var div = document.createElement('div');
+      div.textContent = String(str);
+      return div.innerHTML;
+    }
+
+    function showToast(message, type, actionText, actionCallback) {
       type = type || 'info';
-      var c = document.getElementById('toast-container');
-      if (!c) return;
-      var t = document.createElement('div');
-      t.className = 'toast toast-' + type;
-      t.textContent = msg;
-      c.appendChild(t);
+      var container = document.getElementById('toast-container');
+      var toast = document.createElement('div');
+      toast.className = 'toast toast-' + type;
+      toast.textContent = message;
+
+      if (actionText && actionCallback) {
+        var btn = document.createElement('button');
+        btn.className = 'toast-action';
+        btn.type = 'button';
+        btn.textContent = actionText;
+        btn.addEventListener('click', function() { actionCallback(); toast.remove(); });
+        toast.appendChild(btn);
+      }
+
+      container.appendChild(toast);
       requestAnimationFrame(function() {
-        requestAnimationFrame(function() { t.classList.add('show'); });
+        requestAnimationFrame(function() { toast.classList.add('show'); });
       });
-      var to = setTimeout(function() {
-        t.classList.remove('show');
-        setTimeout(function() { t.remove(); }, 300);
-      }, 4000);
-      t.addEventListener('click', function() {
-        clearTimeout(to); t.classList.remove('show');
-        setTimeout(function() { t.remove(); }, 300);
+
+      var timeout = setTimeout(function() { toast.remove(); }, 5000);
+      toast.addEventListener('click', function(e) {
+        if (e.target === toast) { clearTimeout(timeout); toast.remove(); }
       });
     }
 
-    // ===================== SETUP =====================
-
+    // ========================================
     // Footer year
+    // ========================================
     var yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    // Menu
+    // ========================================
+    // Menu toggle
+    // ========================================
     var menuToggle = document.getElementById('menu-toggle');
     var menu = document.getElementById('menu');
 
@@ -443,7 +984,6 @@
         menuToggle.setAttribute('aria-expanded', String(menu.classList.contains('active')));
       });
 
-      // Close on outside click
       document.addEventListener('click', function(e) {
         if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
           menu.classList.remove('active');
@@ -451,7 +991,6 @@
         }
       });
 
-      // Escape key
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && menu.classList.contains('active')) {
           menu.classList.remove('active');
@@ -461,15 +1000,17 @@
       });
     }
 
-    // Dark mode with system preference detection
+    // ========================================
+    // Dark mode
+    // ========================================
     var darkToggle = document.getElementById('dark-toggle');
     var html = document.documentElement;
 
     if (darkToggle) {
-      var saved = storage.get('theme');
-      if (saved === 'dark') {
+      var savedTheme = storage.get('theme');
+      if (savedTheme === 'dark') {
         html.classList.add('dark'); darkToggle.textContent = '☀️';
-      } else if (saved === 'light') {
+      } else if (savedTheme === 'light') {
         html.classList.add('light');
       } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         html.classList.add('dark'); darkToggle.textContent = '☀️';
@@ -485,27 +1026,681 @@
       });
     }
 
-    // Intersection observer — feature detection, reduced-motion check, unobserve
+    // ========================================
+    // Intersection observer
+    // ========================================
     var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!reducedMotion && ('IntersectionObserver' in window)) {
       var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.1 });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-      document.querySelectorAll('.card, .tool-card, .resource-btn-card, .insight-card-wrapper').forEach(function(el) {
-        el.classList.add('animate-ready');
-        observer.observe(el);
+      document.querySelectorAll('.card, .resource-btn-card, .tool-card, .stat-card, .template-card').forEach(function(card) {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
       });
     }
 
-    // No scroll parallax (removed — conflicts with observer, causes motion issues)
-    // No keypress handlers on non-interactive cards (removed — cards are informational only)
+    // ========================================
+    // Editable Progress & Stats
+    // ========================================
+    var editingField = null;
+
+    function startEdit(id, isPercent) {
+      if (editingField === id) return;
+      var element = document.getElementById(id);
+      if (!element || element.tagName === 'INPUT') return;
+
+      editingField = id;
+      var currentValue = element.textContent;
+      var input = document.createElement('input');
+      input.type = 'number';
+      input.className = element.className === 'stat-value' ? 'stat-input' : 'editable-input';
+      input.value = currentValue;
+      input.min = '0';
+      input.step = '1';
+      if (isPercent) input.max = '100';
+      input.setAttribute('aria-label', 'Edit value for ' + id.replace(/-/g, ' '));
+
+      element.replaceWith(input);
+      input.focus();
+      input.select();
+
+      function saveValue() {
+        if (editingField !== id) return;
+        var val = parseFloat(input.value);
+        if (isNaN(val) || val < 0) val = 0;
+        if (isPercent && val > 100) val = 100;
+
+        var newElement = document.createElement('div');
+        newElement.className = element.className;
+        newElement.id = id;
+        newElement.textContent = String(Math.round(val));
+        input.replaceWith(newElement);
+        storage.set(id, newElement.textContent);
+        editingField = null;
+        showToast('Saved!', 'success');
+      }
+
+      function cancelEdit() {
+        if (editingField !== id) return;
+        var newElement = document.createElement('div');
+        newElement.className = element.className;
+        newElement.id = id;
+        newElement.textContent = currentValue;
+        input.replaceWith(newElement);
+        editingField = null;
+      }
+
+      input.addEventListener('blur', saveValue);
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); saveValue(); }
+        if (e.key === 'Escape') { e.preventDefault(); input.removeEventListener('blur', saveValue); cancelEdit(); }
+      });
+    }
+
+    document.querySelectorAll('.progress-item').forEach(function(item) {
+      var id = item.dataset.edit;
+      var isPercent = id === 'current-average';
+      function handleActivate() { startEdit(id, isPercent); }
+      item.addEventListener('click', handleActivate);
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleActivate(); }
+      });
+    });
+
+    document.querySelectorAll('.stat-card').forEach(function(card) {
+      var id = card.dataset.stat;
+      function handleActivate() { startEdit(id, false); }
+      card.addEventListener('click', handleActivate);
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleActivate(); }
+      });
+    });
+
+    // ========================================
+    // Focus Timer
+    // ========================================
+    var timerDuration = 25 * 60;
+    var timerEndTime = null;
+    var timerRemaining = timerDuration;
+    var timerInterval = null;
+    var timerRunning = false;
+    var timerDisplay = document.getElementById('timer-display');
+
+    function updateTimerDisplay() {
+      var minutes = Math.floor(timerRemaining / 60);
+      var seconds = timerRemaining % 60;
+      timerDisplay.textContent =
+        String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+    }
+
+    function timerTick() {
+      if (!timerRunning || !timerEndTime) return;
+      var now = Date.now();
+      timerRemaining = Math.max(0, Math.round((timerEndTime - now) / 1000));
+      updateTimerDisplay();
+
+      if (timerRemaining <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        timerEndTime = null;
+        storage.set('hsTimerEndTime', '');
+        showToast("Time's up! Great focus session! 🎉", 'success');
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification('Study Buddy Timer', { body: "Time's up! Great job! 🎉" });
+        }
+        timerDisplay.setAttribute('aria-live', 'assertive');
+        setTimeout(function() { timerDisplay.setAttribute('aria-live', 'off'); }, 1000);
+      }
+    }
+
+    document.getElementById('start-timer').addEventListener('click', function() {
+      if (timerRunning) return;
+      if (timerRemaining <= 0) { timerRemaining = timerDuration; updateTimerDisplay(); }
+      timerRunning = true;
+      timerEndTime = Date.now() + (timerRemaining * 1000);
+      storage.set('hsTimerEndTime', String(timerEndTime));
+      timerInterval = setInterval(timerTick, 250);
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+    });
+
+    document.getElementById('pause-timer').addEventListener('click', function() {
+      if (!timerRunning) return;
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerRemaining = Math.max(0, Math.round((timerEndTime - Date.now()) / 1000));
+      timerEndTime = null;
+      storage.set('hsTimerEndTime', '');
+      updateTimerDisplay();
+    });
+
+    document.getElementById('reset-timer').addEventListener('click', function() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerEndTime = null;
+      timerRemaining = timerDuration;
+      storage.set('hsTimerEndTime', '');
+      updateTimerDisplay();
+    });
+
+    document.querySelectorAll('.preset-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        timerEndTime = null;
+        timerDuration = parseInt(btn.dataset.minutes) * 60;
+        timerRemaining = timerDuration;
+        storage.set('hsTimerEndTime', '');
+        updateTimerDisplay();
+      });
+    });
+
+    // Restore timer
+    (function restoreTimer() {
+      var saved = storage.get('hsTimerEndTime');
+      if (saved) {
+        var end = parseInt(saved);
+        if (!isNaN(end) && end > Date.now()) {
+          timerEndTime = end;
+          timerRemaining = Math.round((end - Date.now()) / 1000);
+          timerRunning = true;
+          updateTimerDisplay();
+          timerInterval = setInterval(timerTick, 250);
+        } else {
+          storage.set('hsTimerEndTime', '');
+        }
+      }
+    })();
+
+    // ========================================
+    // Grade Average Calculator
+    // ========================================
+    var subjectCounter = 1;
+
+    function addSubjectRow() {
+      var subjectInputs = document.getElementById('subject-inputs');
+      var n = subjectCounter++;
+      var row = document.createElement('div');
+      row.className = 'subject-row';
+
+      var nameField = document.createElement('div');
+      nameField.className = 'subject-field';
+      var nameLabel = document.createElement('label');
+      nameLabel.className = 'subject-field-label';
+      nameLabel.htmlFor = 'subject-name-' + n;
+      nameLabel.textContent = 'Subject Name';
+      var nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'subject-input';
+      nameInput.id = 'subject-name-' + n;
+      nameInput.placeholder = 'e.g. Science';
+      nameField.appendChild(nameLabel);
+      nameField.appendChild(nameInput);
+
+      var weightField = document.createElement('div');
+      weightField.className = 'subject-field';
+      var weightLabel = document.createElement('label');
+      weightLabel.className = 'subject-field-label';
+      weightLabel.htmlFor = 'subject-weight-' + n;
+      weightLabel.textContent = 'Weight (%)';
+      var weightInput = document.createElement('input');
+      weightInput.type = 'number';
+      weightInput.className = 'subject-input';
+      weightInput.id = 'subject-weight-' + n;
+      weightInput.placeholder = '100';
+      weightInput.min = '1';
+      weightInput.max = '100';
+      weightField.appendChild(weightLabel);
+      weightField.appendChild(weightInput);
+
+      var gradeField = document.createElement('div');
+      gradeField.className = 'subject-field';
+      var gradeLabel = document.createElement('label');
+      gradeLabel.className = 'subject-field-label';
+      gradeLabel.htmlFor = 'subject-grade-' + n;
+      gradeLabel.textContent = 'Grade (%)';
+      var gradeInput = document.createElement('input');
+      gradeInput.type = 'number';
+      gradeInput.className = 'subject-input';
+      gradeInput.id = 'subject-grade-' + n;
+      gradeInput.placeholder = '85';
+      gradeInput.min = '0';
+      gradeInput.max = '100';
+      gradeField.appendChild(gradeLabel);
+      gradeField.appendChild(gradeInput);
+
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'remove-subject';
+      removeBtn.type = 'button';
+      removeBtn.setAttribute('aria-label', 'Remove this subject');
+      removeBtn.textContent = '✕';
+      removeBtn.addEventListener('click', function() { row.remove(); });
+
+      row.appendChild(nameField);
+      row.appendChild(weightField);
+      row.appendChild(gradeField);
+      row.appendChild(removeBtn);
+      subjectInputs.appendChild(row);
+    }
+
+    document.getElementById('add-subject').addEventListener('click', addSubjectRow);
+
+    document.querySelectorAll('.remove-subject').forEach(function(btn) {
+      btn.addEventListener('click', function() { btn.closest('.subject-row').remove(); });
+    });
+
+    document.getElementById('calculate-grade').addEventListener('click', function() {
+      var rows = document.querySelectorAll('.subject-row');
+      var totalWeightedGrade = 0;
+      var totalWeight = 0;
+      var validSubjects = 0;
+
+      rows.forEach(function(row) {
+        var inputs = row.querySelectorAll('.subject-input');
+        var weight = parseFloat(inputs[1].value);
+        var grade = parseFloat(inputs[2].value);
+
+        if (!isNaN(weight) && weight > 0 && !isNaN(grade)) {
+          totalWeightedGrade += weight * grade;
+          totalWeight += weight;
+          validSubjects++;
+        }
+      });
+
+      var resultEl = document.getElementById('grade-result');
+      var valueEl = document.getElementById('grade-value');
+      var feedbackEl = document.getElementById('grade-feedback');
+
+      if (validSubjects === 0) {
+        showToast('Please enter weight and grade for at least one subject.', 'warning');
+        resultEl.style.display = 'none';
+        return;
+      }
+
+      var avg = (totalWeightedGrade / totalWeight).toFixed(1);
+      valueEl.textContent = avg + '%';
+      resultEl.style.display = 'block';
+
+      var avgNum = parseFloat(avg);
+      if (avgNum >= 90) { feedbackEl.textContent = 'Outstanding! You\'re crushing it! 🌟'; feedbackEl.style.color = '#065f46'; }
+      else if (avgNum >= 80) { feedbackEl.textContent = 'Great work! Keep pushing! 💪'; feedbackEl.style.color = '#065f46'; }
+      else if (avgNum >= 70) { feedbackEl.textContent = 'Good job! There\'s room to grow! 📈'; feedbackEl.style.color = '#92400e'; }
+      else if (avgNum >= 60) { feedbackEl.textContent = 'You\'re passing — let\'s aim higher! 🎯'; feedbackEl.style.color = '#92400e'; }
+      else { feedbackEl.textContent = 'Don\'t give up! Ask for help and keep trying! 💡'; feedbackEl.style.color = '#991b1b'; }
+    });
+
+    // ========================================
+    // Assignment Tracker
+    // ========================================
+    var assignmentsData = storage.getJSON('hsAssignments') || [];
+    var assignmentCounter = assignmentsData.length > 0
+      ? Math.max.apply(null, assignmentsData.map(function(a) { return a.id; })) + 1
+      : 0;
+
+    function saveAssignments() { storage.setJSON('hsAssignments', assignmentsData); }
+
+    function getAssignmentById(id) {
+      for (var i = 0; i < assignmentsData.length; i++) {
+        if (assignmentsData[i].id === id) return assignmentsData[i];
+      }
+      return null;
+    }
+
+    function removeAssignmentById(id) {
+      assignmentsData = assignmentsData.filter(function(a) { return a.id !== id; });
+      saveAssignments();
+    }
+
+    function updateAssignmentField(id, field, value) {
+      var a = getAssignmentById(id);
+      if (a) { a[field] = value; saveAssignments(); }
+    }
+
+    function renderAssignments() {
+      var list = document.getElementById('assignments-list');
+      list.innerHTML = '';
+
+      if (assignmentsData.length === 0) {
+        var empty = document.createElement('div');
+        empty.className = 'empty-state';
+        var icon = document.createElement('div');
+        icon.className = 'empty-state-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = '📋';
+        var msg = document.createElement('p');
+        msg.textContent = 'No assignments yet. Click "+ Add Assignment" to start tracking!';
+        empty.appendChild(icon);
+        empty.appendChild(msg);
+        list.appendChild(empty);
+        return;
+      }
+
+      assignmentsData.forEach(function(assignment) {
+        list.appendChild(createAssignmentElement(assignment));
+      });
+    }
+
+    function createAssignmentElement(assignment) {
+      var item = document.createElement('div');
+      item.className = 'assignment-item';
+      item.dataset.id = assignment.id;
+
+      var header = document.createElement('div');
+      header.className = 'assignment-header';
+
+      var info = document.createElement('div');
+      info.className = 'assignment-info';
+
+      var title = document.createElement('h4');
+      title.textContent = assignment.title;
+      title.setAttribute('contenteditable', 'true');
+      title.setAttribute('spellcheck', 'false');
+      title.setAttribute('role', 'textbox');
+      title.setAttribute('aria-label', 'Assignment title — click to edit');
+      title.addEventListener('blur', function() {
+        updateAssignmentField(assignment.id, 'title', title.textContent.trim() || 'Untitled');
+      });
+      title.addEventListener('paste', function(e) {
+        e.preventDefault();
+        var text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+
+      var meta = document.createElement('div');
+      meta.className = 'assignment-meta';
+      var subjectMeta = document.createElement('span');
+      subjectMeta.textContent = '📚 ' + (assignment.subject || 'No subject');
+      var dueMeta = document.createElement('span');
+      dueMeta.textContent = '📅 Due: ' + (assignment.due || 'TBD');
+      meta.appendChild(subjectMeta);
+      meta.appendChild(dueMeta);
+
+      info.appendChild(title);
+      info.appendChild(meta);
+
+      var actions = document.createElement('div');
+      actions.className = 'assignment-actions';
+
+      var expandBtn = document.createElement('button');
+      expandBtn.className = 'expand-assignment';
+      expandBtn.type = 'button';
+      expandBtn.textContent = 'Details';
+      expandBtn.setAttribute('aria-expanded', 'false');
+
+      var statusSelect = document.createElement('select');
+      statusSelect.className = 'assignment-status-select';
+      statusSelect.setAttribute('aria-label', 'Assignment status for ' + sanitize(assignment.title));
+      ['Not Started', 'In Progress', 'Almost Done', 'Completed'].forEach(function(s) {
+        var opt = document.createElement('option');
+        opt.value = s; opt.textContent = s;
+        if (assignment.status === s) opt.selected = true;
+        statusSelect.appendChild(opt);
+      });
+      statusSelect.addEventListener('change', function() {
+        updateAssignmentField(assignment.id, 'status', statusSelect.value);
+        showToast('Status updated', 'success');
+      });
+
+      var removeBtn = document.createElement('button');
+      removeBtn.className = 'remove-assignment';
+      removeBtn.type = 'button';
+      removeBtn.setAttribute('aria-label', 'Remove assignment: ' + sanitize(assignment.title));
+      removeBtn.textContent = '✕';
+
+      removeBtn.addEventListener('click', function() {
+        var removedAssignment = JSON.parse(JSON.stringify(assignment));
+        var removedIndex = assignmentsData.indexOf(getAssignmentById(assignment.id));
+        removeAssignmentById(assignment.id);
+        renderAssignments();
+        showToast('Assignment removed', 'warning', 'Undo', function() {
+          assignmentsData.splice(removedIndex, 0, removedAssignment);
+          saveAssignments();
+          renderAssignments();
+        });
+      });
+
+      actions.appendChild(expandBtn);
+      actions.appendChild(statusSelect);
+      actions.appendChild(removeBtn);
+
+      header.appendChild(info);
+      header.appendChild(actions);
+
+      // Details panel
+      var details = document.createElement('div');
+      details.className = 'assignment-details';
+      details.id = 'assignment-details-' + assignment.id;
+
+      // Subject
+      var subjectRow = document.createElement('div');
+      subjectRow.className = 'assignment-detail-row';
+      var subjectLabel = document.createElement('label');
+      subjectLabel.className = 'assignment-detail-label';
+      subjectLabel.htmlFor = 'assignment-subject-' + assignment.id;
+      subjectLabel.textContent = 'Subject:';
+      var subjectInput = document.createElement('input');
+      subjectInput.type = 'text';
+      subjectInput.className = 'assignment-detail-input';
+      subjectInput.id = 'assignment-subject-' + assignment.id;
+      subjectInput.value = assignment.subject || '';
+      subjectInput.placeholder = 'e.g. Math, Science, English';
+      subjectInput.addEventListener('change', function() {
+        updateAssignmentField(assignment.id, 'subject', subjectInput.value || 'No subject');
+        subjectMeta.textContent = '📚 ' + (subjectInput.value || 'No subject');
+      });
+      subjectRow.appendChild(subjectLabel);
+      subjectRow.appendChild(subjectInput);
+
+      // Due date
+      var dueRow = document.createElement('div');
+      dueRow.className = 'assignment-detail-row';
+      var dueLabel = document.createElement('label');
+      dueLabel.className = 'assignment-detail-label';
+      dueLabel.htmlFor = 'assignment-due-' + assignment.id;
+      dueLabel.textContent = 'Due Date:';
+      var dueInput = document.createElement('input');
+      dueInput.type = 'date';
+      dueInput.className = 'assignment-detail-input';
+      dueInput.id = 'assignment-due-' + assignment.id;
+      dueInput.value = (assignment.due && assignment.due !== 'TBD') ? assignment.due : '';
+      dueInput.addEventListener('change', function() {
+        updateAssignmentField(assignment.id, 'due', dueInput.value || 'TBD');
+        dueMeta.textContent = '📅 Due: ' + (dueInput.value || 'TBD');
+      });
+      dueRow.appendChild(dueLabel);
+      dueRow.appendChild(dueInput);
+
+      // Notes
+      var notesRow = document.createElement('div');
+      notesRow.className = 'assignment-detail-row';
+      var notesLabel = document.createElement('label');
+      notesLabel.className = 'assignment-detail-label';
+      notesLabel.htmlFor = 'assignment-notes-' + assignment.id;
+      notesLabel.textContent = 'Notes:';
+      var notesInput = document.createElement('textarea');
+      notesInput.className = 'assignment-detail-input';
+      notesInput.id = 'assignment-notes-' + assignment.id;
+      notesInput.rows = 3;
+      notesInput.value = assignment.notes || '';
+      notesInput.placeholder = 'Any extra notes about this assignment...';
+      notesInput.addEventListener('change', function() {
+        updateAssignmentField(assignment.id, 'notes', notesInput.value);
+      });
+      notesRow.appendChild(notesLabel);
+      notesRow.appendChild(notesInput);
+
+      details.appendChild(subjectRow);
+      details.appendChild(dueRow);
+      details.appendChild(notesRow);
+
+      expandBtn.addEventListener('click', function() {
+        var isExpanded = details.classList.toggle('expanded');
+        expandBtn.textContent = isExpanded ? 'Hide' : 'Details';
+        expandBtn.setAttribute('aria-expanded', String(isExpanded));
+        expandBtn.setAttribute('aria-controls', 'assignment-details-' + assignment.id);
+      });
+
+      item.appendChild(header);
+      item.appendChild(details);
+      return item;
+    }
+
+    document.getElementById('add-assignment').addEventListener('click', function() {
+      var newAssignment = {
+        id: assignmentCounter++,
+        title: 'New Assignment',
+        subject: '',
+        due: 'TBD',
+        status: 'Not Started',
+        notes: ''
+      };
+      assignmentsData.push(newAssignment);
+      saveAssignments();
+      renderAssignments();
+      showToast('Assignment added!', 'info');
+
+      var items = document.querySelectorAll('.assignment-item');
+      var last = items[items.length - 1];
+      if (last) {
+        var h4 = last.querySelector('h4');
+        if (h4) { h4.focus(); document.execCommand('selectAll', false, null); }
+      }
+    });
+
+    // Export data
+    document.getElementById('export-data').addEventListener('click', function() {
+      try {
+        var exportObj = {
+          assignments: assignmentsData,
+          stats: {},
+          progress: {},
+          exportDate: new Date().toISOString()
+        };
+
+        ['subjects-completed', 'assignments-done', 'hs-study-hours', 'current-average'].forEach(function(id) {
+          exportObj.progress[id] = storage.get(id) || '0';
+        });
+
+        ['tests-taken', 'hs-notes-pages', 'hs-goals-achieved', 'hs-streaks'].forEach(function(id) {
+          exportObj.stats[id] = storage.get(id) || '0';
+        });
+
+        var blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'study-buddy-highschool-' + new Date().toISOString().slice(0, 10) + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Data exported!', 'success');
+      } catch (e) {
+        showToast('Export failed: ' + e.message, 'error');
+      }
+    });
+
+    // ========================================
+    // Quotes Carousel
+    // ========================================
+    var quotes = [
+      { text: '"The secret of getting ahead is getting started."', author: 'Mark Twain' },
+      { text: '"It does not matter how slowly you go as long as you do not stop."', author: 'Confucius' },
+      { text: '"The expert in anything was once a beginner."', author: 'Helen Hayes' },
+      { text: '"You don\'t have to be great to start, but you have to start to be great."', author: 'Zig Ziglar' },
+      { text: '"Success is the sum of small efforts repeated day in and day out."', author: 'Robert Collier' },
+      { text: '"Believe you can and you\'re halfway there."', author: 'Theodore Roosevelt' },
+      { text: '"The only way to do great work is to love what you do."', author: 'Steve Jobs' },
+      { text: '"Education is the passport to the future, for tomorrow belongs to those who prepare for it today."', author: 'Malcolm X' }
+    ];
+    var currentQuote = 0;
+
+    function updateQuote() {
+      document.getElementById('quote-text').textContent = quotes[currentQuote].text;
+      document.getElementById('quote-author').textContent = '— ' + quotes[currentQuote].author;
+    }
+
+    document.getElementById('next-quote').addEventListener('click', function() {
+      currentQuote = (currentQuote + 1) % quotes.length;
+      updateQuote();
+    });
+
+    document.getElementById('prev-quote').addEventListener('click', function() {
+      currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+      updateQuote();
+    });
+
+    // ========================================
+    // Note Template Downloads
+    // ========================================
+    var templates = {
+      cornell: 'CORNELL NOTES TEMPLATE\n==================\n\nSubject: _____________________\nDate: _______________________\nTopic: ______________________\n\nCUES/QUESTIONS    |    NOTES\n                  |\n Key terms        |  Main ideas and\n Questions        |  detailed notes\n Prompts          |  from class or\n                  |  textbook reading\n                  |\n                  |\n                  |\n\nSUMMARY:\nWrite a 2-3 sentence summary of the main points\nin your own words.\n\n© Study Buddy High School',
+
+      mindmap: 'MIND MAP TEMPLATE\n===============\n\n         MAIN TOPIC\n              |\n       +------+------+\n       |             |\n   BRANCH 1     BRANCH 2\n       |             |\n   +---+---+     +---+---+\n   |       |     |       |\n Sub-1A Sub-1B Sub-2A Sub-2B\n\nInstructions:\n1. Write the main topic in the center\n2. Add major branches (main ideas)\n3. Add sub-branches (supporting details)\n4. Use different colors for each branch\n5. Add drawings or symbols to help remember\n6. Keep it neat but creative!\n\n© Study Buddy High School',
+
+      studyguide: 'STUDY GUIDE TEMPLATE\n===================\n\nSubject: ___________________________\nChapter/Unit: _____________________\nTest Date: ________________________\n\nKEY VOCABULARY:\n1. _____________ : _________________\n2. _____________ : _________________\n3. _____________ : _________________\n4. _____________ : _________________\n5. _____________ : _________________\n\nMAIN CONCEPTS:\nConcept 1: _________________________\nExplanation: _______________________\n\nConcept 2: _________________________\nExplanation: _______________________\n\nConcept 3: _________________________\nExplanation: _______________________\n\nIMPORTANT FORMULAS / RULES:\n- ___________________________________\n- ___________________________________\n\nPRACTICE QUESTIONS:\n1. __________________________________\n2. __________________________________\n3. __________________________________\n\nTHINGS I NEED TO REVIEW:\n[ ] __________________________________\n[ ] __________________________________\n[ ] __________________________________\n\n© Study Buddy High School',
+
+      homework: 'WEEKLY HOMEWORK PLANNER\n=====================\n\nWeek of: _________________________\n\nMONDAY:\n  Subject: _______ | Task: _____________ | Done: [ ]\n  Subject: _______ | Task: _____________ | Done: [ ]\n\nTUESDAY:\n  Subject: _______ | Task: _____________ | Done: [ ]\n  Subject: _______ | Task: _____________ | Done: [ ]\n\nWEDNESDAY:\n  Subject: _______ | Task: _____________ | Done: [ ]\n  Subject: _______ | Task: _____________ | Done: [ ]\n\nTHURSDAY:\n  Subject: _______ | Task: _____________ | Done: [ ]\n  Subject: _______ | Task: _____________ | Done: [ ]\n\nFRIDAY:\n  Subject: _______ | Task: _____________ | Done: [ ]\n  Subject: _______ | Task: _____________ | Done: [ ]\n\nWEEKEND TASKS:\n  [ ] _________________________________\n  [ ] _________________________________\n\nNOTES FOR NEXT WEEK:\n___________________________________________\n\n© Study Buddy High School'
+    };
+
+    document.querySelectorAll('.download-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var type = btn.dataset.template;
+        var content = templates[type];
+        if (!content) return;
+
+        try {
+          var blob = new Blob([content], { type: 'text/plain' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = type + '-template.txt';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast(type.charAt(0).toUpperCase() + type.slice(1) + ' template downloaded!', 'success');
+        } catch (e) {
+          showToast('Download failed: ' + e.message, 'error');
+        }
+      });
+    });
+
+    // ========================================
+    // Back to home
+    // ========================================
+    document.getElementById('back-home').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
+
+    // ========================================
+    // Load saved data
+    // ========================================
+    ['subjects-completed', 'assignments-done', 'hs-study-hours', 'current-average'].forEach(function(id) {
+      var saved = storage.get(id);
+      var el = document.getElementById(id);
+      if (saved && el) el.textContent = saved;
+    });
+
+    ['tests-taken', 'hs-notes-pages', 'hs-goals-achieved', 'hs-streaks'].forEach(function(id) {
+      var saved = storage.get(id);
+      var el = document.getElementById(id);
+      if (saved && el) el.textContent = saved;
+    });
+
+    renderAssignments();
 
   })();
   </script>
