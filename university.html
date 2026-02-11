@@ -1458,856 +1458,929 @@
        If script.js is needed for shared base functionality, ensure
        it doesn't duplicate any logic below. -->
 
-  <script>
-  (function() {
-    'use strict';
+<script>
+(() => {
+  'use strict';
 
-    // ========================================
-    // Utility Functions
-    // ========================================
-
-    // (#34) Safe localStorage wrapper
-    const storage = {
-      get(key) {
-        try { return localStorage.getItem(key); }
-        catch (e) { console.warn('localStorage read failed:', e); return null; }
-      },
-      set(key, value) {
-        try { localStorage.setItem(key, value); }
-        catch (e) { console.warn('localStorage write failed:', e); }
-      },
-      getJSON(key) {
-        try {
-          const data = localStorage.getItem(key);
-          return data ? JSON.parse(data) : null;
-        } catch (e) { console.warn('localStorage JSON parse failed:', e); return null; }
-      },
-      setJSON(key, value) {
-        try { localStorage.setItem(key, JSON.stringify(value)); }
-        catch (e) { console.warn('localStorage JSON write failed:', e); }
+  // ========================================
+  // Modern Storage Wrapper with Async Support
+  // ========================================
+  const storage = {
+    get: (key) => {
+      try {
+        return localStorage.getItem(key);
+      } catch (e) {
+        console.warn('localStorage read failed:', e);
+        return null;
       }
+    },
+    set: (key, value) => {
+      try {
+        localStorage.setItem(key, value);
+      } catch (e) {
+        console.warn('localStorage write failed:', e);
+      }
+    },
+    getJSON: (key) => {
+      try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+      } catch (e) {
+        console.warn('localStorage JSON parse failed:', e);
+        return null;
+      }
+    },
+    setJSON: (key, value) => {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (e) {
+        console.warn('localStorage JSON write failed:', e);
+      }
+    }
+  };
+
+  // ========================================
+  // HTML Sanitization
+  // ========================================
+  const sanitize = (str) => {
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+  };
+
+  // ========================================
+  // Toast Notification System
+  // ========================================
+  const showToast = (message, type = 'info', actionText, actionCallback) => {
+    const container = document.getElementById('toast-container');
+    
+    const typeStyles = {
+      success: 'bg-emerald-100 text-emerald-800 border-emerald-500',
+      info: 'bg-blue-100 text-blue-800 border-blue-500',
+      warning: 'bg-yellow-100 text-yellow-800 border-amber-500',
+      error: 'bg-red-100 text-red-800 border-red-500'
     };
+    
+    const toast = document.createElement('div');
+    toast.className = `p-4 px-6 rounded-xl font-semibold text-sm shadow-2xl translate-x-full transition-transform duration-300 pointer-events-auto flex items-center gap-3 max-w-[380px] border-2 ${typeStyles[type] ?? typeStyles.info}`;
+    toast.textContent = message;
 
-    // (#52, #67) HTML sanitization
-    function sanitize(str) {
-      const div = document.createElement('div');
-      div.textContent = String(str);
-      return div.innerHTML;
+    if (actionText && actionCallback) {
+      const btn = document.createElement('button');
+      btn.className = 'py-1.5 px-3.5 border-2 border-current rounded-full bg-transparent font-bold cursor-pointer text-xs whitespace-nowrap hover:opacity-80';
+      btn.type = 'button';
+      btn.textContent = actionText;
+      btn.addEventListener('click', () => {
+        actionCallback();
+        toast.remove();
+      });
+      toast.appendChild(btn);
     }
 
-    // (#40, #47, #79) Toast notification system
-    function showToast(message, type, actionText, actionCallback) {
-      type = type || 'info';
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      toast.className = 'toast toast-' + type;
-      toast.textContent = message;
+    container.appendChild(toast);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => toast.classList.replace('translate-x-full', 'translate-x-0'));
+    });
 
-      if (actionText && actionCallback) {
-        const btn = document.createElement('button');
-        btn.className = 'toast-action';
-        btn.type = 'button';
-        btn.textContent = actionText;
-        btn.addEventListener('click', function() {
-          actionCallback();
-          toast.remove();
-        });
-        toast.appendChild(btn);
+    const timeout = setTimeout(() => toast.remove(), 5000);
+    toast.addEventListener('click', (e) => {
+      if (e.target === toast) {
+        clearTimeout(timeout);
+        toast.remove();
       }
+    });
+  };
 
-      container.appendChild(toast);
-      requestAnimationFrame(function() {
-        requestAnimationFrame(function() { toast.classList.add('show'); });
-      });
+  // ========================================
+  // Footer Year
+  // ========================================
+  document.getElementById('year')?.textContent = new Date().getFullYear();
 
-      var timeout = setTimeout(function() { toast.remove(); }, 5000);
-      toast.addEventListener('click', function(e) {
-        if (e.target === toast) { clearTimeout(timeout); toast.remove(); }
-      });
-    }
+  // ========================================
+  // Menu Toggle
+  // ========================================
+  const menuToggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('menu');
 
-    // ========================================
-    // (#89) Footer year
-    // ========================================
-    var yearEl = document.getElementById('year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  if (menuToggle && menu) {
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('active');
+      const isExpanded = menu.classList.contains('active');
+      menuToggle.setAttribute('aria-expanded', String(isExpanded));
+    });
 
-    // ========================================
-    // Menu toggle
-    // ========================================
-    var menuToggle = document.getElementById('menu-toggle');
-    var menu = document.getElementById('menu');
-
-    if (menuToggle && menu) {
-      menuToggle.addEventListener('click', function() {
-        menu.classList.toggle('active');
-        var isExpanded = menu.classList.contains('active');
-        menuToggle.setAttribute('aria-expanded', String(isExpanded));
-      });
-
-      document.addEventListener('click', function(e) {
-        if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
-          menu.classList.remove('active');
-          menuToggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && menu.classList.contains('active')) {
-          menu.classList.remove('active');
-          menuToggle.setAttribute('aria-expanded', 'false');
-          menuToggle.focus();
-        }
-      });
-    }
-
-    // ========================================
-    // (#23) Dark mode with system preference support
-    // ========================================
-    var darkToggle = document.getElementById('dark-toggle');
-    var html = document.documentElement;
-
-    if (darkToggle) {
-      var savedTheme = storage.get('theme');
-      if (savedTheme === 'dark') {
-        html.classList.add('dark');
-        darkToggle.textContent = '☀️';
-      } else if (savedTheme === 'light') {
-        html.classList.add('light');
-      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        html.classList.add('dark');
-        darkToggle.textContent = '☀️';
+    document.addEventListener('click', (e) => {
+      if (!menuToggle.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
       }
+    });
 
-      darkToggle.addEventListener('click', function() {
-        html.classList.toggle('dark');
-        var isDark = html.classList.contains('dark');
-        darkToggle.textContent = isDark ? '☀️' : '🌙';
-        darkToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-        storage.set('theme', isDark ? 'dark' : 'light');
-        if (isDark) { html.classList.remove('light'); }
-        else { html.classList.add('light'); }
-      });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('active')) {
+        menu.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.focus();
+      }
+    });
+  }
+
+  // ========================================
+  // Dark Mode
+  // ========================================
+  const darkToggle = document.getElementById('dark-toggle');
+  const html = document.documentElement;
+
+  if (darkToggle) {
+    const savedTheme = storage.get('theme');
+    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      html.classList.add('dark');
+      darkToggle.textContent = '☀️';
+    } else if (savedTheme === 'light') {
+      html.classList.add('light');
     }
 
-    // ========================================
-    // (#20, #50, #51) Intersection observer ONLY (no conflicting scroll parallax)
-    // ========================================
-    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    darkToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      darkToggle.textContent = isDark ? '☀️' : '🌙';
+      darkToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      storage.set('theme', isDark ? 'dark' : 'light');
+      html.classList.toggle('light', !isDark);
+    });
+  }
 
-    if (!reducedMotion) {
-      var observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-            observer.unobserve(entry.target); // Stop observing after reveal
+  // ========================================
+  // Intersection Observer
+  // ========================================
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reducedMotion) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (isIntersecting) {
+            target.style.opacity = '1';
+            target.style.transform = 'translateY(0)';
+            observer.unobserve(target);
           }
         });
-      }, observerOptions);
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
 
-      document.querySelectorAll('.card, .resource-btn-card, .tool-card, .stat-card').forEach(function(card) {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
+    document.querySelectorAll('.card, .resource-btn-card, .tool-card, .stat-card').forEach((card) => {
+      Object.assign(card.style, {
+        opacity: '0',
+        transform: 'translateY(30px)',
+        transition: 'opacity 0.6s ease, transform 0.6s ease'
       });
-    }
-
-    // ========================================
-    // (#31, #32, #33, #81) Editable Progress & Stats
-    // ========================================
-    var editingField = null; // Guard against race conditions
-
-    function startEdit(id, isGpa) {
-      if (editingField === id) return; // Already editing this field
-      var element = document.getElementById(id);
-      if (!element || element.tagName === 'INPUT') return; // Already an input
-
-      editingField = id;
-      var currentValue = element.textContent;
-      var input = document.createElement('input');
-      input.type = 'number';
-      input.className = element.className === 'stat-value' ? 'stat-input' : 'editable-input';
-      input.value = currentValue;
-      input.min = '0';
-      input.step = isGpa ? '0.1' : '1';
-      if (isGpa) input.max = '4.0';
-      input.setAttribute('aria-label', 'Edit value for ' + id.replace(/-/g, ' '));
-
-      element.replaceWith(input);
-      input.focus();
-      input.select();
-
-      function saveValue() {
-        if (editingField !== id) return; // Already saved
-        var val = parseFloat(input.value);
-        if (isNaN(val) || val < 0) val = 0;
-        if (isGpa && val > 4.0) val = 4.0;
-
-        var newElement = document.createElement('div');
-        newElement.className = element.className;
-        newElement.id = id;
-        newElement.textContent = isGpa ? val.toFixed(1) : String(Math.round(val));
-        input.replaceWith(newElement);
-        storage.set(id, newElement.textContent);
-        editingField = null;
-        showToast('Saved!', 'success');
-      }
-
-      function cancelEdit() {
-        if (editingField !== id) return;
-        var newElement = document.createElement('div');
-        newElement.className = element.className;
-        newElement.id = id;
-        newElement.textContent = currentValue;
-        input.replaceWith(newElement);
-        editingField = null;
-      }
-
-      input.addEventListener('blur', saveValue);
-      input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') { e.preventDefault(); saveValue(); }
-        if (e.key === 'Escape') { e.preventDefault(); input.removeEventListener('blur', saveValue); cancelEdit(); }
-      });
-    }
-
-    // (#12) Event delegation for progress items
-    document.querySelectorAll('.progress-item').forEach(function(item) {
-      var id = item.dataset.edit;
-      var isGpa = id === 'current-gpa';
-      function handleActivate() { startEdit(id, isGpa); }
-      item.addEventListener('click', handleActivate);
-      item.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleActivate(); }
-      });
+      observer.observe(card);
     });
+  }
 
-    // (#12) Event delegation for stat cards
-    document.querySelectorAll('.stat-card').forEach(function(card) {
-      var id = card.dataset.stat;
-      function handleActivate() { startEdit(id, false); }
-      card.addEventListener('click', handleActivate);
-      card.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleActivate(); }
-      });
+  // ========================================
+  // Editable Progress & Stats
+  // ========================================
+  let editingField = null;
+
+  const startEdit = (id, isGpa = false) => {
+    if (editingField === id) return;
+    
+    const element = document.getElementById(id);
+    if (!element || element.tagName === 'INPUT') return;
+
+    editingField = id;
+    const currentValue = element.textContent;
+    
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.className = element.classList.contains('stat-value') 
+      ? 'text-[2.5rem] font-extrabold text-blue-900 border-2 border-sky-500 rounded-lg px-2 py-1 text-center w-full max-w-[150px] bg-white'
+      : 'text-[2.5rem] font-extrabold text-blue-900 border-2 border-sky-500 rounded-lg px-2 py-1 text-center w-full max-w-[150px] bg-white';
+    
+    Object.assign(input, {
+      value: currentValue,
+      min: '0',
+      step: isGpa ? '0.1' : '1',
+      ...(isGpa && { max: '4.0' })
     });
+    
+    input.setAttribute('aria-label', `Edit value for ${id.replace(/-/g, ' ')}`);
 
-    // ========================================
-    // (#39, #38, #82) Timer with Date.now() accuracy
-    // ========================================
-    var timerDuration = 25 * 60;
-    var timerEndTime = null;
-    var timerRemaining = timerDuration;
-    var timerInterval = null;
-    var timerRunning = false;
-    var timerDisplay = document.getElementById('timer-display');
+    element.replaceWith(input);
+    input.focus();
+    input.select();
 
-    function updateTimerDisplay() {
-      var minutes = Math.floor(timerRemaining / 60);
-      var seconds = timerRemaining % 60;
-      timerDisplay.textContent =
-        String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+    const saveValue = () => {
+      if (editingField !== id) return;
+      
+      let val = parseFloat(input.value);
+      if (isNaN(val) || val < 0) val = 0;
+      if (isGpa && val > 4.0) val = 4.0;
+
+      const newElement = document.createElement('div');
+      newElement.className = element.className;
+      newElement.id = id;
+      newElement.textContent = isGpa ? val.toFixed(1) : String(Math.round(val));
+      
+      input.replaceWith(newElement);
+      storage.set(id, newElement.textContent);
+      editingField = null;
+      showToast('Saved!', 'success');
+    };
+
+    const cancelEdit = () => {
+      if (editingField !== id) return;
+      
+      const newElement = document.createElement('div');
+      newElement.className = element.className;
+      newElement.id = id;
+      newElement.textContent = currentValue;
+      
+      input.replaceWith(newElement);
+      editingField = null;
+    };
+
+    input.addEventListener('blur', saveValue);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveValue();
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        input.removeEventListener('blur', saveValue);
+        cancelEdit();
+      }
+    });
+  };
+
+  // Event delegation for progress items
+  document.querySelectorAll('.progress-item').forEach((item) => {
+    const { edit: id } = item.dataset;
+    const isGpa = id === 'current-gpa';
+    const handleActivate = () => startEdit(id, isGpa);
+    
+    item.addEventListener('click', handleActivate);
+    item.addEventListener('keydown', (e) => {
+      if (['Enter', ' '].includes(e.key)) {
+        e.preventDefault();
+        handleActivate();
+      }
+    });
+  });
+
+  // Event delegation for stat cards
+  document.querySelectorAll('.stat-card').forEach((card) => {
+    const { stat: id } = card.dataset;
+    const handleActivate = () => startEdit(id);
+    
+    card.addEventListener('click', handleActivate);
+    card.addEventListener('keydown', (e) => {
+      if (['Enter', ' '].includes(e.key)) {
+        e.preventDefault();
+        handleActivate();
+      }
+    });
+  });
+
+  // ========================================
+  // Timer with Modern Class
+  // ========================================
+  class PomodoroTimer {
+    constructor(displayElement) {
+      this.displayElement = displayElement;
+      this.duration = 25 * 60;
+      this.endTime = null;
+      this.remaining = this.duration;
+      this.interval = null;
+      this.running = false;
     }
 
-    function timerTick() {
-      if (!timerRunning || !timerEndTime) return;
-      var now = Date.now();
-      timerRemaining = Math.max(0, Math.round((timerEndTime - now) / 1000));
-      updateTimerDisplay();
+    updateDisplay() {
+      const minutes = Math.floor(this.remaining / 60);
+      const seconds = this.remaining % 60;
+      this.displayElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
 
-      if (timerRemaining <= 0) {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        timerEndTime = null;
+    tick() {
+      if (!this.running || !this.endTime) return;
+      
+      const now = Date.now();
+      this.remaining = Math.max(0, Math.round((this.endTime - now) / 1000));
+      this.updateDisplay();
+
+      if (this.remaining <= 0) {
+        this.stop();
         storage.set('timerEndTime', '');
-
-        // (#82) Non-blocking notification
+        
         showToast("Time's up! Great job staying focused! 🎉", 'success');
+        
         if ('Notification' in window && Notification.permission === 'granted') {
           new Notification('Study Buddy Timer', { body: "Time's up! Great job! 🎉" });
         }
 
-        // Announce to screen readers
-        timerDisplay.setAttribute('aria-live', 'assertive');
-        setTimeout(function() { timerDisplay.setAttribute('aria-live', 'off'); }, 1000);
+        this.displayElement.setAttribute('aria-live', 'assertive');
+        setTimeout(() => this.displayElement.setAttribute('aria-live', 'off'), 1000);
       }
     }
 
-    document.getElementById('start-timer').addEventListener('click', function() {
-      if (timerRunning) return;
-      if (timerRemaining <= 0) { timerRemaining = timerDuration; updateTimerDisplay(); }
-      timerRunning = true;
-      timerEndTime = Date.now() + (timerRemaining * 1000);
-      storage.set('timerEndTime', String(timerEndTime));
-      timerInterval = setInterval(timerTick, 250); // Check 4x/sec for accuracy
-
-      // Request notification permission
-      if ('Notification' in window && Notification.permission === 'default') {
-        Notification.requestPermission();
+    async start() {
+      if (this.running) return;
+      if (this.remaining <= 0) {
+        this.remaining = this.duration;
+        this.updateDisplay();
       }
-    });
+      
+      this.running = true;
+      this.endTime = Date.now() + (this.remaining * 1000);
+      storage.set('timerEndTime', String(this.endTime));
+      this.interval = setInterval(() => this.tick(), 250);
 
-    document.getElementById('pause-timer').addEventListener('click', function() {
-      if (!timerRunning) return;
-      clearInterval(timerInterval);
-      timerRunning = false;
-      timerRemaining = Math.max(0, Math.round((timerEndTime - Date.now()) / 1000));
-      timerEndTime = null;
+      if ('Notification' in window && Notification.permission === 'default') {
+        await Notification.requestPermission();
+      }
+    }
+
+    pause() {
+      if (!this.running) return;
+      
+      clearInterval(this.interval);
+      this.running = false;
+      this.remaining = Math.max(0, Math.round((this.endTime - Date.now()) / 1000));
+      this.endTime = null;
       storage.set('timerEndTime', '');
-      updateTimerDisplay();
-    });
+      this.updateDisplay();
+    }
 
-    document.getElementById('reset-timer').addEventListener('click', function() {
-      clearInterval(timerInterval);
-      timerRunning = false;
-      timerEndTime = null;
-      timerRemaining = timerDuration;
+    reset() {
+      this.stop();
+      this.remaining = this.duration;
       storage.set('timerEndTime', '');
-      updateTimerDisplay();
-    });
+      this.updateDisplay();
+    }
 
-    document.querySelectorAll('.preset-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        timerEndTime = null;
-        timerDuration = parseInt(btn.dataset.minutes) * 60;
-        timerRemaining = timerDuration;
-        storage.set('timerEndTime', '');
-        updateTimerDisplay();
-      });
-    });
+    stop() {
+      clearInterval(this.interval);
+      this.running = false;
+      this.endTime = null;
+    }
 
-    // Restore timer on page load (#38)
-    (function restoreTimer() {
-      var saved = storage.get('timerEndTime');
+    setDuration(minutes) {
+      this.stop();
+      this.duration = minutes * 60;
+      this.remaining = this.duration;
+      storage.set('timerEndTime', '');
+      this.updateDisplay();
+    }
+
+    restore() {
+      const saved = storage.get('timerEndTime');
       if (saved) {
-        var end = parseInt(saved);
+        const end = parseInt(saved);
         if (!isNaN(end) && end > Date.now()) {
-          timerEndTime = end;
-          timerRemaining = Math.round((end - Date.now()) / 1000);
-          timerRunning = true;
-          updateTimerDisplay();
-          timerInterval = setInterval(timerTick, 250);
+          this.endTime = end;
+          this.remaining = Math.round((end - Date.now()) / 1000);
+          this.running = true;
+          this.updateDisplay();
+          this.interval = setInterval(() => this.tick(), 250);
         } else {
           storage.set('timerEndTime', '');
         }
       }
-    })();
-
-    // ========================================
-    // (#36, #37, #77) GPA Calculator with labels and validation
-    // ========================================
-    var courseCounter = 1;
-
-    function addCourseRow() {
-      var courseInputs = document.getElementById('course-inputs');
-      var n = courseCounter++;
-      var row = document.createElement('div');
-      row.className = 'course-row';
-
-      var nameField = document.createElement('div');
-      nameField.className = 'course-field';
-      var nameLabel = document.createElement('label');
-      nameLabel.className = 'course-field-label';
-      nameLabel.htmlFor = 'course-name-' + n;
-      nameLabel.textContent = 'Course Name';
-      var nameInput = document.createElement('input');
-      nameInput.type = 'text';
-      nameInput.className = 'course-input';
-      nameInput.id = 'course-name-' + n;
-      nameInput.placeholder = 'e.g. Biology 101';
-      nameField.appendChild(nameLabel);
-      nameField.appendChild(nameInput);
-
-      var credField = document.createElement('div');
-      credField.className = 'course-field';
-      var credLabel = document.createElement('label');
-      credLabel.className = 'course-field-label';
-      credLabel.htmlFor = 'course-credits-' + n;
-      credLabel.textContent = 'Credits';
-      var credInput = document.createElement('input');
-      credInput.type = 'number';
-      credInput.className = 'course-input';
-      credInput.id = 'course-credits-' + n;
-      credInput.placeholder = '3';
-      credInput.min = '1';
-      credInput.max = '6';
-      credField.appendChild(credLabel);
-      credField.appendChild(credInput);
-
-      var gradeField = document.createElement('div');
-      gradeField.className = 'course-field';
-      var gradeLabel = document.createElement('label');
-      gradeLabel.className = 'course-field-label';
-      gradeLabel.htmlFor = 'course-grade-' + n;
-      gradeLabel.textContent = 'Grade';
-      var gradeSelect = document.createElement('select');
-      gradeSelect.className = 'course-input';
-      gradeSelect.id = 'course-grade-' + n;
-      var grades = [
-        ['4.0','A (4.0)'],['3.7','A- (3.7)'],['3.3','B+ (3.3)'],['3.0','B (3.0)'],
-        ['2.7','B- (2.7)'],['2.3','C+ (2.3)'],['2.0','C (2.0)'],['1.7','C- (1.7)'],
-        ['1.3','D+ (1.3)'],['1.0','D (1.0)'],['0.0','F (0.0)']
-      ];
-      grades.forEach(function(g) {
-        var opt = document.createElement('option');
-        opt.value = g[0]; opt.textContent = g[1];
-        gradeSelect.appendChild(opt);
-      });
-      gradeField.appendChild(gradeLabel);
-      gradeField.appendChild(gradeSelect);
-
-      var removeBtn = document.createElement('button');
-      removeBtn.className = 'remove-course';
-      removeBtn.type = 'button';
-      removeBtn.setAttribute('aria-label', 'Remove this course');
-      removeBtn.textContent = '✕';
-      removeBtn.addEventListener('click', function() { row.remove(); });
-
-      row.appendChild(nameField);
-      row.appendChild(credField);
-      row.appendChild(gradeField);
-      row.appendChild(removeBtn);
-      courseInputs.appendChild(row);
     }
+  }
 
-    document.getElementById('add-course').addEventListener('click', addCourseRow);
+  const timer = new PomodoroTimer(document.getElementById('timer-display'));
+  timer.restore();
 
-    // (#37) Remove course via delegation for initial row
-    document.querySelectorAll('.remove-course').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        btn.closest('.course-row').remove();
-      });
+  document.getElementById('start-timer')?.addEventListener('click', () => timer.start());
+  document.getElementById('pause-timer')?.addEventListener('click', () => timer.pause());
+  document.getElementById('reset-timer')?.addEventListener('click', () => timer.reset());
+
+  document.querySelectorAll('.preset-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const minutes = parseInt(btn.dataset.minutes);
+      timer.setDuration(minutes);
     });
+  });
 
-    document.getElementById('calculate-gpa').addEventListener('click', function() {
-      var rows = document.querySelectorAll('.course-row');
-      var totalPoints = 0;
-      var totalCredits = 0;
-      var validCourses = 0;
+  // ========================================
+  // GPA Calculator
+  // ========================================
+  let courseCounter = 1;
 
-      rows.forEach(function(row) {
-        var inputs = row.querySelectorAll('.course-input');
-        var credits = parseFloat(inputs[1].value);
-        var grade = parseFloat(inputs[2].value);
-
-        if (!isNaN(credits) && credits > 0) {
-          totalPoints += credits * grade;
-          totalCredits += credits;
-          validCourses++;
-        }
+  const createCourseField = (label, id, type = 'text', options = {}) => {
+    const field = document.createElement('div');
+    field.className = 'flex flex-col gap-1';
+    
+    const labelEl = document.createElement('label');
+    labelEl.className = 'text-xs font-semibold text-gray-600';
+    labelEl.htmlFor = id;
+    labelEl.textContent = label;
+    
+    const input = document.createElement(type === 'select' ? 'select' : 'input');
+    input.className = 'p-3 border-2 border-gray-200 rounded-xl text-base transition-colors focus:outline-none focus:border-amber-500';
+    input.id = id;
+    
+    if (type === 'select' && options.items) {
+      options.items.forEach(([value, text]) => {
+        const opt = document.createElement('option');
+        opt.value = value;
+        opt.textContent = text;
+        input.appendChild(opt);
       });
+    } else {
+      Object.assign(input, options);
+    }
+    
+    field.append(labelEl, input);
+    return field;
+  };
 
-      var resultEl = document.getElementById('gpa-result');
-      var valueEl = document.getElementById('gpa-value');
-      var feedbackEl = document.getElementById('gpa-feedback');
+  const addCourseRow = () => {
+    const courseInputs = document.getElementById('course-inputs');
+    const n = courseCounter++;
+    
+    const row = document.createElement('div');
+    row.className = 'grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_auto] gap-4 items-end';
 
-      if (validCourses === 0) {
-        // (#77) Validation feedback
-        showToast('Please enter credits for at least one course.', 'warning');
-        resultEl.style.display = 'none';
-        return;
-      }
-
-      var gpa = (totalPoints / totalCredits).toFixed(2);
-      valueEl.textContent = gpa;
-      resultEl.style.display = 'block';
-
-      // Feedback message
-      var gpaNum = parseFloat(gpa);
-      if (gpaNum >= 3.7) feedbackEl.textContent = 'Outstanding! 🌟';
-      else if (gpaNum >= 3.0) feedbackEl.textContent = 'Great work! Keep it up! 💪';
-      else if (gpaNum >= 2.0) feedbackEl.textContent = 'Solid effort. Room to grow! 📈';
-      else feedbackEl.textContent = 'Consider seeking academic support. You\'ve got this! 💡';
-      feedbackEl.style.color = gpaNum >= 3.0 ? '#065f46' : gpaNum >= 2.0 ? '#92400e' : '#991b1b';
-    });
-
-    // ========================================
-    // Quotes Carousel
-    // ========================================
-    var quotes = [
-      { text: '"Education is the most powerful weapon which you can use to change the world."', author: 'Nelson Mandela' },
-      { text: '"The beautiful thing about learning is that no one can take it away from you."', author: 'B.B. King' },
-      { text: '"Education is not preparation for life; education is life itself."', author: 'John Dewey' },
-      { text: '"The more that you read, the more things you will know. The more that you learn, the more places you\'ll go."', author: 'Dr. Seuss' },
-      { text: '"Live as if you were to die tomorrow. Learn as if you were to live forever."', author: 'Mahatma Gandhi' },
-      { text: '"The expert in anything was once a beginner."', author: 'Helen Hayes' },
-      { text: '"Success is no accident. It is hard work, perseverance, learning, studying, sacrifice."', author: 'Pelé' }
+    const grades = [
+      ['4.0', 'A (4.0)'], ['3.7', 'A- (3.7)'], ['3.3', 'B+ (3.3)'], ['3.0', 'B (3.0)'],
+      ['2.7', 'B- (2.7)'], ['2.3', 'C+ (2.3)'], ['2.0', 'C (2.0)'], ['1.7', 'C- (1.7)'],
+      ['1.3', 'D+ (1.3)'], ['1.0', 'D (1.0)'], ['0.0', 'F (0.0)']
     ];
-        var currentQuote = 0;
 
-    function updateQuote() {
-      document.getElementById('quote-text').textContent = quotes[currentQuote].text;
-      document.getElementById('quote-author').textContent = '— ' + quotes[currentQuote].author;
+    row.append(
+      createCourseField('Course Name', `course-name-${n}`, 'text', { placeholder: 'e.g. Biology 101' }),
+      createCourseField('Credits', `course-credits-${n}`, 'number', { placeholder: '3', min: '1', max: '6' }),
+      createCourseField('Grade', `course-grade-${n}`, 'select', { items: grades })
+    );
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'px-4 py-2 bg-red-500 text-white border-0 rounded-lg cursor-pointer font-semibold transition-all duration-300 self-end mb-0.5 hover:bg-red-600 hover:scale-105';
+    removeBtn.type = 'button';
+    removeBtn.setAttribute('aria-label', 'Remove this course');
+    removeBtn.textContent = '✕';
+    removeBtn.addEventListener('click', () => row.remove());
+    
+    row.appendChild(removeBtn);
+    courseInputs.appendChild(row);
+  };
+
+  document.getElementById('add-course')?.addEventListener('click', addCourseRow);
+
+  document.querySelectorAll('.remove-course').forEach((btn) => {
+    btn.addEventListener('click', () => btn.closest('.course-row')?.remove());
+  });
+
+  document.getElementById('calculate-gpa')?.addEventListener('click', () => {
+    const rows = [...document.querySelectorAll('.course-row')];
+    
+    const courses = rows
+      .map((row) => {
+        const [, credits, grade] = [...row.querySelectorAll('.course-input')];
+        return {
+          credits: parseFloat(credits.value),
+          grade: parseFloat(grade.value)
+        };
+      })
+      .filter(({ credits }) => !isNaN(credits) && credits > 0);
+
+    const resultEl = document.getElementById('gpa-result');
+    const valueEl = document.getElementById('gpa-value');
+    const feedbackEl = document.getElementById('gpa-feedback');
+
+    if (courses.length === 0) {
+      showToast('Please enter credits for at least one course.', 'warning');
+      resultEl.style.display = 'none';
+      return;
     }
 
-    document.getElementById('next-quote').addEventListener('click', function() {
-      currentQuote = (currentQuote + 1) % quotes.length;
-      updateQuote();
-    });
+    const totalCredits = courses.reduce((sum, { credits }) => sum + credits, 0);
+    const totalPoints = courses.reduce((sum, { credits, grade }) => sum + (credits * grade), 0);
+    const gpa = (totalPoints / totalCredits).toFixed(2);
 
-    document.getElementById('prev-quote').addEventListener('click', function() {
-      currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
-      updateQuote();
-    });
+    valueEl.textContent = gpa;
+    resultEl.style.display = 'block';
 
-    // ========================================
-    // (#42, #44, #52) Research Paper Tracker — data-model driven
-    // ========================================
-    var papersData = storage.getJSON('researchPapers') || [];
-    var paperCounter = papersData.length > 0
-      ? Math.max.apply(null, papersData.map(function(p) { return p.id; })) + 1
-      : 0;
+    const gpaNum = parseFloat(gpa);
+    const feedback = [
+      [3.7, 'Outstanding! 🌟', '#065f46'],
+      [3.0, 'Great work! Keep it up! 💪', '#065f46'],
+      [2.0, 'Solid effort. Room to grow! 📈', '#92400e'],
+      [0, "Consider seeking academic support. You've got this! 💡", '#991b1b']
+    ].find(([threshold]) => gpaNum >= threshold);
 
-    function savePapersFromModel() {
-      storage.setJSON('researchPapers', papersData);
+    if (feedback) {
+      const [, text, color] = feedback;
+      feedbackEl.textContent = text;
+      feedbackEl.style.color = color;
+    }
+  });
+
+  // ========================================
+  // Quotes Carousel
+  // ========================================
+  const quotes = [
+    { text: '"Education is the most powerful weapon which you can use to change the world."', author: 'Nelson Mandela' },
+    { text: '"The beautiful thing about learning is that no one can take it away from you."', author: 'B.B. King' },
+    { text: '"Education is not preparation for life; education is life itself."', author: 'John Dewey' },
+    { text: '"The more that you read, the more things you will know. The more that you learn, the more places you\'ll go."', author: 'Dr. Seuss' },
+    { text: '"Live as if you were to die tomorrow. Learn as if you were to live forever."', author: 'Mahatma Gandhi' },
+    { text: '"The expert in anything was once a beginner."', author: 'Helen Hayes' },
+    { text: '"Success is no accident. It is hard work, perseverance, learning, studying, sacrifice."', author: 'Pelé' }
+  ];
+
+  let currentQuote = 0;
+
+  const updateQuote = () => {
+    const { text, author } = quotes[currentQuote];
+    document.getElementById('quote-text').textContent = text;
+    document.getElementById('quote-author').textContent = `— ${author}`;
+  };
+
+  document.getElementById('next-quote')?.addEventListener('click', () => {
+    currentQuote = (currentQuote + 1) % quotes.length;
+    updateQuote();
+  });
+
+  document.getElementById('prev-quote')?.addEventListener('click', () => {
+    currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+    updateQuote();
+  });
+
+  // ========================================
+  // Research Paper Tracker (Class-based)
+  // ========================================
+  class PaperTracker {
+    constructor() {
+      this.papers = storage.getJSON('researchPapers') ?? [];
+      this.counter = this.papers.length > 0
+        ? Math.max(...this.papers.map(p => p.id)) + 1
+        : 0;
     }
 
-    function getPaperById(id) {
-      for (var i = 0; i < papersData.length; i++) {
-        if (papersData[i].id === id) return papersData[i];
-      }
-      return null;
+    save() {
+      storage.setJSON('researchPapers', this.papers);
     }
 
-    function removePaperById(id) {
-      papersData = papersData.filter(function(p) { return p.id !== id; });
-      savePapersFromModel();
+    getPaper(id) {
+      return this.papers.find(p => p.id === id);
     }
 
-    function updatePaperField(id, field, value) {
-      var paper = getPaperById(id);
-      if (paper) {
-        paper[field] = value;
-        savePapersFromModel();
-      }
-    }
-
-    // (#80) Render papers from data model, updating meta on every render
-    function renderPapers() {
-      var list = document.getElementById('papers-list');
-      list.innerHTML = '';
-
-      if (papersData.length === 0) {
-        var empty = document.createElement('div');
-        empty.className = 'empty-state';
-        var icon = document.createElement('div');
-        icon.className = 'empty-state-icon';
-        icon.setAttribute('aria-hidden', 'true');
-        icon.textContent = '📄';
-        var msg = document.createElement('p');
-        msg.textContent = 'No research papers yet. Click "+ Add Paper" to start tracking!';
-        empty.appendChild(icon);
-        empty.appendChild(msg);
-        list.appendChild(empty);
-        return;
-      }
-
-      papersData.forEach(function(paper) {
-        list.appendChild(createPaperElement(paper));
-      });
-    }
-
-    // (#52, #10, #65) Build paper element safely with DOM APIs
-    function createPaperElement(paper) {
-      var item = document.createElement('div');
-      item.className = 'paper-item';
-      item.dataset.id = paper.id;
-
-      // Header
-      var header = document.createElement('div');
-      header.className = 'paper-header';
-
-      // Info
-      var info = document.createElement('div');
-      info.className = 'paper-info';
-
-      var title = document.createElement('h4');
-      title.textContent = paper.title;
-      title.setAttribute('contenteditable', 'true');
-      title.setAttribute('spellcheck', 'false');
-      title.setAttribute('role', 'textbox');
-      title.setAttribute('aria-label', 'Paper title — click to edit');
-      title.addEventListener('blur', function() {
-        updatePaperField(paper.id, 'title', title.textContent.trim() || 'Untitled');
-      });
-      // Prevent XSS via paste
-      title.addEventListener('paste', function(e) {
-        e.preventDefault();
-        var text = (e.clipboardData || window.clipboardData).getData('text/plain');
-        document.execCommand('insertText', false, text);
-      });
-
-      var meta = document.createElement('div');
-      meta.className = 'paper-meta';
-      var dueMeta = document.createElement('span');
-      dueMeta.textContent = '📅 Due: ' + (paper.due || 'TBD');
-      var progMeta = document.createElement('span');
-      progMeta.textContent = '📊 Progress: ' + (paper.progress || 0) + '%';
-      meta.appendChild(dueMeta);
-      meta.appendChild(progMeta);
-
-      info.appendChild(title);
-      info.appendChild(meta);
-
-      // Actions
-      var actions = document.createElement('div');
-      actions.className = 'paper-actions';
-
-      var expandBtn = document.createElement('button');
-      expandBtn.className = 'expand-paper';
-      expandBtn.type = 'button';
-      expandBtn.textContent = 'Details';
-      expandBtn.setAttribute('aria-expanded', 'false');
-
-      var statusSelect = document.createElement('select');
-      statusSelect.className = 'paper-status-select';
-      statusSelect.setAttribute('aria-label', 'Paper status for ' + sanitize(paper.title));
-      ['Planning', 'Writing', 'Reviewing', 'Completed'].forEach(function(s) {
-        var opt = document.createElement('option');
-        opt.value = s;
-        opt.textContent = s;
-        if (paper.status === s) opt.selected = true;
-        statusSelect.appendChild(opt);
-      });
-      statusSelect.addEventListener('change', function() {
-        updatePaperField(paper.id, 'status', statusSelect.value);
-        showToast('Status updated', 'success');
-      });
-
-      var removeBtn = document.createElement('button');
-      removeBtn.className = 'remove-paper';
-      removeBtn.type = 'button';
-      removeBtn.setAttribute('aria-label', 'Remove paper: ' + sanitize(paper.title));
-      removeBtn.textContent = '✕';
-
-      // (#53, #76) Undo-capable deletion
-      removeBtn.addEventListener('click', function() {
-        var removedPaper = JSON.parse(JSON.stringify(paper));
-        var removedIndex = papersData.indexOf(getPaperById(paper.id));
-        removePaperById(paper.id);
-        renderPapers();
-        showToast('Paper removed', 'warning', 'Undo', function() {
-          papersData.splice(removedIndex, 0, removedPaper);
-          savePapersFromModel();
-          renderPapers();
-        });
-      });
-
-      actions.appendChild(expandBtn);
-      actions.appendChild(statusSelect);
-      actions.appendChild(removeBtn);
-
-      header.appendChild(info);
-      header.appendChild(actions);
-
-      // Details panel (#65)
-      var details = document.createElement('div');
-      details.className = 'paper-details';
-      details.id = 'paper-details-' + paper.id;
-
-      // Due date
-      var dueRow = document.createElement('div');
-      dueRow.className = 'paper-detail-row';
-      var dueLabel = document.createElement('label');
-      dueLabel.className = 'paper-detail-label';
-      dueLabel.htmlFor = 'paper-due-' + paper.id;
-      dueLabel.textContent = 'Due Date:';
-      var dueInput = document.createElement('input');
-      dueInput.type = 'date';
-      dueInput.className = 'paper-detail-input';
-      dueInput.id = 'paper-due-' + paper.id;
-      dueInput.value = (paper.due && paper.due !== 'TBD') ? paper.due : '';
-      dueInput.addEventListener('change', function() {
-        updatePaperField(paper.id, 'due', dueInput.value || 'TBD');
-        dueMeta.textContent = '📅 Due: ' + (dueInput.value || 'TBD');
-      });
-      dueRow.appendChild(dueLabel);
-      dueRow.appendChild(dueInput);
-
-      // Progress
-      var progRow = document.createElement('div');
-      progRow.className = 'paper-detail-row';
-      var progLabel = document.createElement('label');
-      progLabel.className = 'paper-detail-label';
-      progLabel.htmlFor = 'paper-prog-' + paper.id;
-      progLabel.textContent = 'Progress (%):';
-      var progInput = document.createElement('input');
-      progInput.type = 'number';
-      progInput.className = 'paper-detail-input';
-      progInput.id = 'paper-prog-' + paper.id;
-      progInput.min = '0';
-      progInput.max = '100';
-      progInput.value = paper.progress || '0';
-      progInput.addEventListener('change', function() {
-        var v = Math.max(0, Math.min(100, parseInt(progInput.value) || 0));
-        progInput.value = v;
-        updatePaperField(paper.id, 'progress', String(v));
-        progMeta.textContent = '📊 Progress: ' + v + '%';
-      });
-      progRow.appendChild(progLabel);
-      progRow.appendChild(progInput);
-
-      // Notes
-      var notesRow = document.createElement('div');
-      notesRow.className = 'paper-detail-row';
-      var notesLabel = document.createElement('label');
-      notesLabel.className = 'paper-detail-label';
-      notesLabel.htmlFor = 'paper-notes-' + paper.id;
-      notesLabel.textContent = 'Notes:';
-      var notesInput = document.createElement('textarea');
-      notesInput.className = 'paper-detail-input';
-      notesInput.id = 'paper-notes-' + paper.id;
-      notesInput.rows = 3;
-      notesInput.value = paper.notes || '';
-      notesInput.addEventListener('change', function() {
-        updatePaperField(paper.id, 'notes', notesInput.value);
-      });
-      notesRow.appendChild(notesLabel);
-      notesRow.appendChild(notesInput);
-
-      details.appendChild(dueRow);
-      details.appendChild(progRow);
-      details.appendChild(notesRow);
-
-      // Expand toggle with aria-expanded (#65)
-      expandBtn.addEventListener('click', function() {
-        var isExpanded = details.classList.toggle('expanded');
-        expandBtn.textContent = isExpanded ? 'Hide' : 'Details';
-        expandBtn.setAttribute('aria-expanded', String(isExpanded));
-        expandBtn.setAttribute('aria-controls', 'paper-details-' + paper.id);
-      });
-
-      item.appendChild(header);
-      item.appendChild(details);
-      return item;
-    }
-
-    document.getElementById('add-paper').addEventListener('click', function() {
-      var newPaper = {
-        id: paperCounter++,
+    addPaper() {
+      const newPaper = {
+        id: this.counter++,
         title: 'New Research Paper',
         due: 'TBD',
         progress: '0',
         status: 'Planning',
         notes: ''
       };
-      papersData.push(newPaper);
-      savePapersFromModel();
-      renderPapers();
-      showToast('Paper added!', 'info');
+      this.papers.push(newPaper);
+      this.save();
+      return newPaper;
+    }
 
-      // Focus the new title for immediate editing
-      var items = document.querySelectorAll('.paper-item');
-      var last = items[items.length - 1];
-      if (last) {
-        var h4 = last.querySelector('h4');
-        if (h4) { h4.focus(); document.execCommand('selectAll', false, null); }
+    removePaper(id) {
+      const index = this.papers.findIndex(p => p.id === id);
+      const removed = this.papers[index];
+      this.papers.splice(index, 1);
+      this.save();
+      return { paper: removed, index };
+    }
+
+    restorePaper(paper, index) {
+      this.papers.splice(index, 0, paper);
+      this.save();
+    }
+
+    updatePaper(id, field, value) {
+      const paper = this.getPaper(id);
+      if (paper) {
+        paper[field] = value;
+        this.save();
       }
-    });
+    }
 
-    // (#54) Export all data
-    document.getElementById('export-data').addEventListener('click', function() {
+    createPaperElement(paper) {
+      const item = document.createElement('div');
+      item.className = 'bg-white p-6 rounded-2xl shadow-lg transition-all duration-300 hover:translate-x-1 hover:shadow-2xl';
+      item.dataset.id = paper.id;
+
+      // Header
+      const header = document.createElement('div');
+      header.className = 'flex justify-between items-start gap-4 mb-4 flex-wrap';
+
+      // Info section
+      const info = document.createElement('div');
+      info.className = 'flex-1';
+
+      const title = document.createElement('h4');
+      title.className = 'text-lg font-bold text-gray-800 mb-2';
+      title.textContent = paper.title;
+      title.setAttribute('contenteditable', 'true');
+      title.setAttribute('spellcheck', 'false');
+      title.setAttribute('role', 'textbox');
+      title.setAttribute('aria-label', 'Paper title — click to edit');
+      
+      title.addEventListener('blur', () => {
+        this.updatePaper(paper.id, 'title', title.textContent.trim() || 'Untitled');
+      });
+      
+      title.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData ?? window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+
+      const meta = document.createElement('div');
+      meta.className = 'flex flex-wrap gap-4 text-sm text-gray-600';
+      
+      const dueMeta = document.createElement('span');
+      dueMeta.textContent = `📅 Due: ${paper.due ?? 'TBD'}`;
+      
+      const progMeta = document.createElement('span');
+      progMeta.textContent = `📊 Progress: ${paper.progress ?? 0}%`;
+      
+      meta.append(dueMeta, progMeta);
+      info.append(title, meta);
+
+      // Actions section
+      const actions = document.createElement('div');
+      actions.className = 'flex items-center flex-wrap gap-2';
+
+      const expandBtn = document.createElement('button');
+      expandBtn.className = 'px-4 py-2 bg-sky-500 text-white border-0 rounded-lg font-semibold cursor-pointer transition-all duration-300 hover:bg-cyan-600';
+      expandBtn.type = 'button';
+      expandBtn.textContent = 'Details';
+      expandBtn.setAttribute('aria-expanded', 'false');
+
+      const statusSelect = document.createElement('select');
+      statusSelect.className = 'px-3.5 py-1.5 rounded-full font-semibold text-sm cursor-pointer border-2 border-gray-200 bg-white';
+      statusSelect.setAttribute('aria-label', `Paper status for ${sanitize(paper.title)}`);
+      
+      ['Planning', 'Writing', 'Reviewing', 'Completed'].forEach((s) => {
+        const opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        if (paper.status === s) opt.selected = true;
+        statusSelect.appendChild(opt);
+      });
+      
+      statusSelect.addEventListener('change', () => {
+        this.updatePaper(paper.id, 'status', statusSelect.value);
+        showToast('Status updated', 'success');
+      });
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'px-4 py-2 bg-red-500 text-white border-0 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:bg-red-600';
+      removeBtn.type = 'button';
+      removeBtn.setAttribute('aria-label', `Remove paper: ${sanitize(paper.title)}`);
+      removeBtn.textContent = '✕';
+      
+      removeBtn.addEventListener('click', () => {
+        const { paper: removedPaper, index } = this.removePaper(paper.id);
+        this.render();
+        
+        showToast('Paper removed', 'warning', 'Undo', () => {
+          this.restorePaper(removedPaper, index);
+          this.render();
+        });
+      });
+
+      actions.append(expandBtn, statusSelect, removeBtn);
+      header.append(info, actions);
+
+      // Details panel
+      const details = document.createElement('div');
+      details.className = 'max-h-0 overflow-hidden transition-[max-height] duration-400 ease-out';
+      details.id = `paper-details-${paper.id}`;
+
+      const createDetailRow = (label, id, type = 'text', props = {}) => {
+        const row = document.createElement('div');
+        row.className = 'mb-3';
+        
+        const labelEl = document.createElement('label');
+        labelEl.className = 'font-bold text-sky-500 block mb-1';
+        labelEl.htmlFor = id;
+        labelEl.textContent = label;
+        
+        const input = document.createElement(type === 'textarea' ? 'textarea' : 'input');
+        input.className = 'w-full p-2 rounded-lg border-2 border-gray-200 text-sm focus:outline-none focus:border-sky-500';
+        input.id = id;
+        if (type !== 'textarea') input.type = type;
+        
+        Object.assign(input, props);
+        
+        row.append(labelEl, input);
+        return { row, input };
+      };
+
+      const { row: dueRow, input: dueInput } = createDetailRow(
+        'Due Date:',
+        `paper-due-${paper.id}`,
+        'date',
+        { value: (paper.due && paper.due !== 'TBD') ? paper.due : '' }
+      );
+      
+      dueInput.addEventListener('change', () => {
+        this.updatePaper(paper.id, 'due', dueInput.value || 'TBD');
+        dueMeta.textContent = `📅 Due: ${dueInput.value || 'TBD'}`;
+      });
+
+      const { row: progRow, input: progInput } = createDetailRow(
+        'Progress (%):',
+        `paper-prog-${paper.id}`,
+        'number',
+        { min: '0', max: '100', value: paper.progress ?? '0' }
+      );
+      
+      progInput.addEventListener('change', () => {
+        const v = Math.max(0, Math.min(100, parseInt(progInput.value) || 0));
+        progInput.value = v;
+        this.updatePaper(paper.id, 'progress', String(v));
+        progMeta.textContent = `📊 Progress: ${v}%`;
+      });
+
+      const { row: notesRow, input: notesInput } = createDetailRow(
+        'Notes:',
+        `paper-notes-${paper.id}`,
+        'textarea',
+        { rows: 3, value: paper.notes ?? '' }
+      );
+      
+      notesInput.addEventListener('change', () => {
+        this.updatePaper(paper.id, 'notes', notesInput.value);
+      });
+
+      details.append(dueRow, progRow, notesRow);
+
+      // Expand toggle
+      expandBtn.addEventListener('click', () => {
+        const isExpanded = details.classList.toggle('max-h-0');
+        details.classList.toggle('max-h-[1000px]');
+        details.classList.toggle('mt-4');
+        details.classList.toggle('pt-4');
+        details.classList.toggle('border-t-2');
+        details.classList.toggle('border-sky-500');
+        
+        expandBtn.textContent = isExpanded ? 'Details' : 'Hide';
+        expandBtn.setAttribute('aria-expanded', String(!isExpanded));
+        expandBtn.setAttribute('aria-controls', `paper-details-${paper.id}`);
+      });
+
+      item.append(header, details);
+      return item;
+    }
+
+    render() {
+      const list = document.getElementById('papers-list');
+      list.innerHTML = '';
+
+      if (this.papers.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'text-center py-12 text-gray-600';
+        empty.innerHTML = `
+          <div class="text-6xl mb-4" aria-hidden="true">📄</div>
+          <p>No research papers yet. Click "+ Add Paper" to start tracking!</p>
+        `;
+        list.appendChild(empty);
+        return;
+      }
+
+      this.papers.forEach((paper) => {
+        list.appendChild(this.createPaperElement(paper));
+      });
+    }
+
+    export() {
       try {
-        var exportObj = {
-          papers: papersData,
+        const exportObj = {
+          papers: this.papers,
           stats: {},
           progress: {},
           exportDate: new Date().toISOString()
         };
 
-        ['courses-completed', 'papers-written', 'study-hours', 'current-gpa'].forEach(function(id) {
-          exportObj.progress[id] = storage.get(id) || '0';
+        ['courses-completed', 'papers-written', 'study-hours', 'current-gpa'].forEach((id) => {
+          exportObj.progress[id] = storage.get(id) ?? '0';
         });
 
-        ['books-read', 'notes-pages', 'goals-achieved', 'achievements'].forEach(function(id) {
-          exportObj.stats[id] = storage.get(id) || '0';
+        ['books-read', 'notes-pages', 'goals-achieved', 'achievements'].forEach((id) => {
+          exportObj.stats[id] = storage.get(id) ?? '0';
         });
 
-        var blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'study-buddy-data-' + new Date().toISOString().slice(0, 10) + '.json';
+        const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        Object.assign(a, {
+          href: url,
+          download: `study-buddy-data-${new Date().toISOString().slice(0, 10)}.json`
+        });
+        
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        
         showToast('Data exported!', 'success');
       } catch (e) {
-        showToast('Export failed: ' + e.message, 'error');
+        showToast(`Export failed: ${e.message}`, 'error');
       }
-    });
+    }
+  }
 
-    // ========================================
-    // Template downloads (no alert)
-    // ========================================
-    var templates = {
-      cornell: 'CORNELL NOTES TEMPLATE\n==================\n\nCourse: _____________________\nDate: _______________________\nTopic: ______________________\n\nCUES/QUESTIONS    |    NOTES\n                  |\n Key terms        |  Main ideas and\n Questions        |  detailed notes\n Prompts          |  from lecture or\n                  |  reading material\n\nSUMMARY:\nBrief summary of main points\n\n© Study Buddy University',
+  const paperTracker = new PaperTracker();
+  paperTracker.render();
 
-      mindmap: 'MIND MAP TEMPLATE\n===============\n\n         MAIN TOPIC\n              |\n       +------+------+\n       |             |\n   BRANCH 1     BRANCH 2\n       |             |\n   +---+---+     +---+---+\n   |       |     |       |\n Sub-1A Sub-1B Sub-2A Sub-2B\n\nInstructions:\n1. Write main topic in center\n2. Add major branches (themes)\n3. Add sub-branches (details)\n4. Use colors for different themes\n5. Add images/symbols\n\n© Study Buddy University',
+  document.getElementById('add-paper')?.addEventListener('click', () => {
+    paperTracker.addPaper();
+    paperTracker.render();
+    showToast('Paper added!', 'info');
 
-      research: 'RESEARCH NOTES TEMPLATE\n====================\n\nSource Information:\n-------------------\nTitle: _________________________________\nAuthor(s): _____________________________\nDate: __________________________________\nSource Type: ___________________________\nURL/Location: __________________________\n\nKey Arguments:\n--------------\n1. ____________________________________\n2. ____________________________________\n3. ____________________________________\n\nEvidence/Data:\n--------------\n- ____________________________________\n- ____________________________________\n\nQuotations (with page numbers):\n"_____________________________________" (p. ___)\n\nCritical Analysis:\nStrengths: _____________________________\nWeaknesses: ____________________________\nRelevance: _____________________________\n\nCitation (APA):\n_________________________________________\n\n© Study Buddy University',
+    const items = document.querySelectorAll('.paper-item');
+    const last = items[items.length - 1];
+    const h4 = last?.querySelector('h4');
+    
+    if (h4) {
+      h4.focus();
+      document.execCommand('selectAll', false, null);
+    }
+  });
 
-      lecture: 'LECTURE NOTES TEMPLATE\n====================\n\nCourse: ____________________________\nDate: ______________________________\nLecture #: _________________________\nInstructor: ________________________\nTopic: _____________________________\n\nMain Learning Objectives:\n1. ____________________________________\n2. ____________________________________\n3. ____________________________________\n\nKey Concepts:\n\nConcept 1: _____________________________\nDefinition: ____________________________\nExample: _______________________________\n\nConcept 2: _____________________________\nDefinition: ____________________________\nExample: _______________________________\n\nImportant Details:\n- ____________________________________\n- ____________________________________\n\nQuestions to Follow Up:\n1. ____________________________________\n2. ____________________________________\n\nAction Items:\n[ ] ____________________________________\n[ ] ____________________________________\n\nSummary:\n_________________________________________\n\n© Study Buddy University'
-    };
+  document.getElementById('export-data')?.addEventListener('click', () => {
+    paperTracker.export();
+  });
 
-    document.querySelectorAll('.download-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var type = btn.dataset.template;
-        var content = templates[type];
-        if (!content) return;
+  // ========================================
+  // Template Downloads
+  // ========================================
+  const templates = {
+    cornell: 'CORNELL NOTES TEMPLATE\n==================\n\nCourse: _____________________\nDate: _______________________\nTopic: ______________________\n\nCUES/QUESTIONS    |    NOTES\n                  |\n Key terms        |  Main ideas and\n Questions        |  detailed notes\n Prompts          |  from lecture or\n                  |  reading material\n\nSUMMARY:\nBrief summary of main points\n\n© Study Buddy University',
+    mindmap: 'MIND MAP TEMPLATE\n===============\n\n         MAIN TOPIC\n              |\n       +------+------+\n       |             |\n   BRANCH 1     BRANCH 2\n       |             |\n   +---+---+     +---+---+\n   |       |     |       |\n Sub-1A Sub-1B Sub-2A Sub-2B\n\nInstructions:\n1. Write main topic in center\n2. Add major branches (themes)\n3. Add sub-branches (details)\n4. Use colors for different themes\n5. Add images/symbols\n\n© Study Buddy University',
+    research: 'RESEARCH NOTES TEMPLATE\n====================\n\nSource Information:\n-------------------\nTitle: _________________________________\nAuthor(s): _____________________________\nDate: __________________________________\nSource Type: ___________________________\nURL/Location: __________________________\n\nKey Arguments:\n--------------\n1. ____________________________________\n2. ____________________________________\n3. ____________________________________\n\nEvidence/Data:\n--------------\n- ____________________________________\n- ____________________________________\n\nQuotations (with page numbers):\n"_____________________________________" (p. ___)\n\nCritical Analysis:\nStrengths: _____________________________\nWeaknesses: ____________________________\nRelevance: _____________________________\n\nCitation (APA):\n_________________________________________\n\n© Study Buddy University',
+    lecture: 'LECTURE NOTES TEMPLATE\n====================\n\nCourse: ____________________________\nDate: ______________________________\nLecture #: _________________________\nInstructor: ________________________\nTopic: _____________________________\n\nMain Learning Objectives:\n1. ____________________________________\n2. ____________________________________\n3. ____________________________________\n\nKey Concepts:\n\nConcept 1: _____________________________\nDefinition: ____________________________\nExample: _______________________________\n\nConcept 2: _____________________________\nDefinition: ____________________________\nExample: _______________________________\n\nImportant Details:\n- ____________________________________\n- ____________________________________\n\nQuestions to Follow Up:\n1. ____________________________________\n2. ____________________________________\n\nAction Items:\n[ ] ____________________________________\n[ ] ____________________________________\n\nSummary:\n_________________________________________\n\n© Study Buddy University'
+  };
 
-        try {
-          var blob = new Blob([content], { type: 'text/plain' });
-          var url = URL.createObjectURL(blob);
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = type + '-notes-template.txt';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          showToast(type.charAt(0).toUpperCase() + type.slice(1) + ' template downloaded!', 'success');
-        } catch (e) {
-          showToast('Download failed: ' + e.message, 'error');
-        }
+  const downloadTemplate = async (type) => {
+    const content = templates[type];
+    if (!content) return;
+
+    try {
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      
+      Object.assign(a, {
+        href: url,
+        download: `${type}-notes-template.txt`
       });
-    });
+      
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} template downloaded!`, 'success');
+    } catch (e) {
+      showToast(`Download failed: ${e.message}`, 'error');
+    }
+  };
 
-    // ========================================
-    // Back to home button (#11 — no inline onclick)
-    // ========================================
-    document.getElementById('back-home').addEventListener('click', function() {
-      window.location.href = 'index.html';
-    });
+  document.querySelectorAll('.download-btn').forEach((btn) => {
+    btn.addEventListener('click', () => downloadTemplate(btn.dataset.template));
+  });
 
-    // ========================================
-    // (#101) Load saved data on DOMContentLoaded-equivalent
-    // (We're already at the bottom of <body>, DOM is ready)
-    // ========================================
-    ['courses-completed', 'papers-written', 'study-hours', 'current-gpa'].forEach(function(id) {
-      var saved = storage.get(id);
-      var el = document.getElementById(id);
+  // ========================================
+  // Navigation
+  // ========================================
+  document.getElementById('back-home')?.addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+
+  // ========================================
+  // Load Saved Data
+  // ========================================
+  const loadSavedData = () => {
+    const progressIds = ['courses-completed', 'papers-written', 'study-hours', 'current-gpa'];
+    const statIds = ['books-read', 'notes-pages', 'goals-achieved', 'achievements'];
+
+    [...progressIds, ...statIds].forEach((id) => {
+      const saved = storage.get(id);
+      const el = document.getElementById(id);
       if (saved && el) el.textContent = saved;
     });
+  };
 
-    ['books-read', 'notes-pages', 'goals-achieved', 'achievements'].forEach(function(id) {
-      var saved = storage.get(id);
-      var el = document.getElementById(id);
-      if (saved && el) el.textContent = saved;
-    });
-
-    // Render papers from model
-    renderPapers();
-
-    // (#71) Add passive scroll listener flag for any future scroll needs
-    // (Removed the conflicting parallax handler entirely per #20/#50)
-
-  })();
-  </script>
+  loadSavedData();
+})();
+</script>
 </body>
 </html>
+
